@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<h1 id="oda-user-guide">ODA User Guide</h1>
+<p>Created by: Nathaniel J. Rhodes, PharmD, MSc and Paul R. Yarnold, PhD</p>
+<!-- badges: start -->
+
+<p><a href="https://zenodo.org/badge/latestdoi/301721752"><img src="data:image/svg+xml; charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgICAgd2lkdGg9IjE4NiIgaGVpZ2h0PSIyMCI+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMCIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgICAgICA8bWFzayBpZD0iYSIgd2lkdGg9IjE4NiIgaGVpZ2h0PSIyMCI+CiAgICAgICAgICAgIDxyZWN0IHdpZHRoPSIxODYiIGhlaWdodD0iMjAiIHJ4PSIzIgogICAgICAgICAgICBmaWxsPSIjZmZmIi8+CiAgICAgICAgPC9tYXNrPgogICAgICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDMxdjIwSDB6IiAvPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjMDA3ZWM2IgogICAgICAgICAgICBkPSJNMzEgMGgxNTV2MjBIMzF6IgogICAgICAgICAgICAvPgogICAgICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDE4NnYyMEgweiIgLz4KICAgICAgICA8L2c+CiAgICAgICAgPGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkRlamFWdSBTYW5zLAogICAgICAgIFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPgogICAgICAgICAgICA8dGV4dCB4PSIxNiIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiCiAgICAgICAgICAgIGZpbGwtb3BhY2l0eT0iLjMiPgogICAgICAgICAgICAgICAgRE9JCiAgICAgICAgICAgIDwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0iMTYiIHk9IjE0Ij4KICAgICAgICAgICAgICAgIERPSQogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9IjEwOCIKICAgICAgICAgICAgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPgogICAgICAgICAgICAgICAgMTAuNTI4MS96ZW5vZG8uNDA2OTI3MgogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9IjEwOCIgeT0iMTQiPgogICAgICAgICAgICAgICAgMTAuNTI4MS96ZW5vZG8uNDA2OTI3MgogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgPC9nPgogICAgPC9zdmc+" alt="DOI" /></a></p>
+<!-- badges: end -->
+
+<p>This package contains the functions needed to run and evaluate the output from MegaODA software. To fully utilize this interface, a valid licensed copy of MegaODA is required. For any statistical hypothesis, this non-parametric statistically-motivated machine-learning algorithm explicitly obtains the model which maximizes the (weighted) predictive accuracy for the sample. Many model validation methods are available. Users are encouraged to read about the ODA paradigm in Maximizing Predictive Accuracy (Paul Yarnold and Robert Soltysik, 2016), or on the ODA website. This package was developed by Nathaniel J. Rhodes to interface with ODA to assist the user in developing, evaluating, and validating maximum-accuracy ODA models.</p>
+<h2 id="installation">Installation</h2>
+<p>You can install ODA from <a href="https://github.com/njrhodes/ODA">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(devtools)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">install_github</span>(<span class="st">&quot;njrhodes/ODA&quot;</span>,<span class="dt">ref=</span><span class="st">&#39;main&#39;</span>)</a></code></pre></div>
+<p>Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the <a href="https://www.odajournal.com/">ODA Journal</a>.</p>
+<h2 id="what-is-optimal-data-analysis-oda">What is Optimal Data Analysis (ODA)?</h2>
+<p><em>Optimal Discriminant Analysis</em>, also known as <em>Optimal Data Analysis</em>, is a non-parametric machine learning algorithm derived using operations research optimization methods almost forty years ago.[1] For more details on ODA and ODA applications, please visit <a href="https://odajournal.com/">https://odajournal.com/</a>.</p>
+<h2 id="oda-maximizes-classification-accuracy">ODA Maximizes Classification Accuracy</h2>
+<p>Every statistical model developed using the ODA algorithm explicitly maximizes the classification accuracy which is achieved for the training sample.[2] “Optimal” means that an ODA model achieves the theoretically maximum possible level of accuracy in any given application: this is traditional nomenclature in operations research.[3]</p>
+<h2 id="what-is-meant-by-classification-accuracy-in-oda">What is Meant by Classification Accuracy in ODA?</h2>
+<p>Consider a training sample with 100 observations of an Ordered Attribute which are either from Class A or Class B (<strong>Figure 1</strong>). Assume that this model identifies a cutpoint in the data when used for classification of the the Class variable (i.e., the “dependent variable”) such that:</p>
+<ul>
+<li><em>If</em> Attribute &gt; 0.5, <em>then</em> predict Class A; <em>Otherwise</em></li>
+<li><em>If</em> Attribute &lt;= 0.5, <em>then</em> predict Class B.</li>
+</ul>
+<p>Using the Attribute (i.e., “independent variable”) cutpoint, ODA classifies each observation in the sample into one of the two Class categories in this example. If the classified category and the actual category for an observation are the same, then a point is scored. If the classified category and the actual category differ, then no point is scored. If observations are weighted (e.g., by value or importance), then the optimal weighted solution may be identified.</p>
+<p>The classification accuracy can then be calculated from the cross-class table (i.e., confusion matrix) of these predictions <em>vs</em>. the original observations as shown in <strong>Table 1</strong> below.</p>
+<pre><code>#&gt; Loading required package: ggplot2
+</code></pre>
+<img src="data:image/png;base64,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" width="100%" />
+
+<pre><code>#&gt; Table 1. Confusion Matrix for Class Observations (v1) vs.
+#&gt;  Predicted Class using Attribute Cutpoint (x)
+#&gt; [[1]]
+#&gt;    x
+#&gt; v1   0  1
+#&gt;   A 27 23
+#&gt;   B 25 25
+#&gt; Percent Accuracy in Classification = 52
+#&gt; Effect Strength for Sensitivity = 4
+</code></pre>
+<p>As illustrated above, there are two types of classification accuracy which may be optimized.</p>
+<p>First, ODA can be used to optimize the overall Percentage Accuracy in Classification or PAC: that is, the largest number of (weighted) points which it is possible to obtain for the data in the application. This objective function, as it is called in operations research, does not distinguish between Class A and Class B observations—instead the only concern is maximizing the number of (weighted) points that are obtained.</p>
+<p>Second, ODA can be used to optimize the Effect Strength for Sensitivity or ESS: that is, the largest average of (weighted) points which it is possible to obtain for the Class A and Class B observations in the sample. If the Attribute being used to make classifications between the two Classes is a random variable (as is the case in the <strong>Table 1</strong> above), then roughly half the Class A observations and half the Class B observations are expected to be correctly classified, and half of each Class are expected to be misclassified, simply by chance. Thus, unlike PAC, ESS is normed against chance.[2] Thus, ESS reflects the predictive capacity of a model above and beyond that which can be expected by random chance, serving as an intuitive re-expression of model accuracy.</p>
+<h2 id="what-do-optimal-and-suboptimal-mean-in-the-oda-paradigm">What do Optimal and Suboptimal Mean in the ODA Paradigm?</h2>
+<p>For every unique sample, variable geometry, and weighting scheme there exists an optimal solution. The optimal solution is the most accurate solution that is theoretically possible to obtain for the sample. If a statistical model explicitly obtains the most accurate possible solution for a given problem, then the model is said to be an optimal model—by definition. If a methodology explicitly obtains the most accurate possible solution for a given problem, then the methodology is said to be optimal—by definition. It is the meaning of the word in this context. Any method which fails to explicitly prove optimality is called suboptimal—by definition.</p>
+<p>To be explicitly optimal, a method must be specifically formulated to find the most accurate solution. Obtaining an optimal model is an operations research problem. Every different sample is a separate, unique optimization problem. For every statistical application the name of the most accurate possible model is the optimal solution, and there’s only one way to explicitly achieve the optimal solution—by using operations research methods, including specifically-engineered software like ODA.[4] Remarkably, it is possible to drape operations research methods in an exact statistical paradigm—the name of that paradigm is Optimal Data Analysis.[3]</p>
+<h2 id="how-does-oda-find-an-optimal-solution">How Does ODA Find an Optimal Solution?</h2>
+<p>In any given application ODA finds the cutpoint for an ordered attribute (independent variable), or the assignment rule for a categorical attribute, that most accurately (optimally) discriminates the two or more categories of the class (dependent) variable.[5] For example, imagine a hypothetical study involving a two-category class variable [whether or not a patient has cardiovascular (CV) disease]; an ordered attribute (systolic blood pressure, in mmHg); and a categorical attribute [gender: male (M) or female (F)]. Further imagine that the most accurate possible ODA model for predicting presence versus absence of disease for systolic blood pressure (SBP) is: if SBP&lt;145 mmHg, predict the patient has no disease; if SBP&gt;145 mmHg, predict the patient has disease. Finally imagine the most accurate ODA gender model for predicting presence versus absence of disease is: if gender=F, predict no disease; if gender=M, predict disease. The hypothetical data are summarized in <strong>Figure 2</strong>. The confusion matrix for the hypothetical model of disease predicted by SBP &gt;145 mmHg is shown in <strong>Table 2</strong>, and the confusion matrix for the hypothetical model of disease predicted by gender is shown in <strong>Table 3</strong>.</p>
+<img src="data:image/png;base64,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" width="100%" />
+
+<pre><code>#&gt; Table 2. Confusion Matrix for SBP Model Observations (v1) vs. Predictions (x)
+#&gt; [[1]]
+#&gt;    x
+#&gt; v1   0  1
+#&gt;   0 23  2
+#&gt;   1 13 12
+#&gt; ESS = 100*(((56+76)/2)-50)/(100-50) = 32
+#&gt; Table 3. Confusion Matrix for Gender Model Observations (v1) vs. Predictions (x)
+#&gt; [[1]]
+#&gt;    x
+#&gt; v1   0  1
+#&gt;   0 20  5
+#&gt;   1  5 20
+#&gt; ESS = 100*(((80+80)/2)-50)/(100-50) = 60
+</code></pre>
+<p>In this example the hypothetical ODA model classifiying disease which used SBP but ignored sex-based differences yielded an effect strength for sensitivity (ESS) of 32, a moderate effect.[2] On the other hand, the hypothetical ODA model that classified disease based on gender (M/F) <em>a priori</em> had an ESS of 60, a relatively strong effect.[2] The gender-based model yielded a nearly two-fold increase in predicitive accuracy <em>vs</em>. SBP alone. The difference between these models in predicitve capacity should prompt additional investigative aims and might lead an investigator to suspect that a failure to disaggregate SBP according to gender (M/F) has resulted in paradoxical confounding vis-a-vis Simpson’s paradox.[2,4]</p>
+<h2 id="how-is-the-most-accurate-possible-model-for-a-given-attribute-and-sample-identified">How is the most accurate possible model for a given attribute and sample identified?</h2>
+<p>For any given application, identifying the most accurate cutpoint (or assignment rule) requires iterating through every possible value for an ordered attribute, or rule for a categorical attribute, and computing the percentage accurate classification (PAC), or the effect strength for sensitivity (ESS), which is obtained by using each cutpoint (or rule) to classify all of the sample observations.[2]</p>
+<h2 id="computing-the-overall-pac-measure-of-classification-accuracy">Computing the Overall PAC Measure of Classification Accuracy</h2>
+<p>An index of model accuracy that does not adjust for the effect of chance, overall PAC is the total percent of (weighted) accurate classifications obtained for the total sample by using the cutpoint (or rule) to classify observations, with a minimum possible performance of 0% accurate (weighted) classifications, and maximum possible performance of 100% accurate (weighted) classifications. By definition, for any given application, the maximum accuracy optimal model uses the optimal cutpoint for ordered attributes—or the optimal assignment rule for categorical attributes—that yields the greatest overall PAC value. A maximum overall PAC model is identified by specifying <code>PRIORS OFF</code> within the MegaODA software.</p>
+<p>For example, imagine an application with two class categories, and that class 0 and class 1 both have 50 observations (total sample size is 100 observations). If the optimal model classifies 30 of the class 0 observations, and 40 of the class 1 observations, then overall PAC = 100 x (30 + 40)/100 = 70. Or, imagine an application with three class categories: 100 class 0 observations, 60 class 1 observations, and 40 class 2 observations (total sample size is 200 observations). If the optimal model classifies 60 of the class 0 observations, 40 of the class 1 observations, and 30 of the class 2 observations, then overall PAC = 100 x (60 + 40 + 30)/200 = 65. No general convention has been specified to evaluate the strength-of-effect of ODA models which maximize overall PAC.</p>
+<p>The optimal model is subjected to a non-parametric permutation test to assess statistical significance of obtained overall PAC.[1] [6] [7] Additionally, ODA model reproducibility and cross-generalizability are assessed using cross-validation methods such as leave-one-out (LOO), jackknife, K-unfolding, bootstrap, or hold-out analysis.[2][8]</p>
+<h2 id="computing-and-interpreting-the-ess-and-d-measures-of-classification-accuracy">Computing and Interpreting the ESS and D measures of Classification Accuracy</h2>
+<p>An index of model accuracy that does adjust for the effect of chance, ESS is the mean (weighted) sensitivity obtained across class categories by using the cutpoint (or rule) to classify observations, standardized using a 0%-100% scale on which 0% represents the level of classification accuracy expected by chance; 100% represents perfect accuracy; and negative ESS values indicate accuracy that is worse than is expected by chance. By definition, for every application, the maximum accuracy (optimal) model uses the cutpoint for ordered attributes—or the assignment rule for categorical attributes—yielding the greatest ESS value. A maximum ESS optimal model is identified by specifying <code>PRIORS ON</code> in the MegaODA software.</p>
+<p>ESS is easily computed. For an application involving C class categories (the minimum number of class categories is two), compute C’ = 100/C. For two class categories, C = 100/2 = 50, for three class categories, C = 100/3 = 33.3, etcetera. Also compute the mean PAC for the C categories. For two class categories, add the PAC for class 0 (called “specificity” in the field of epidemiology) and for class 1 (“sensitivity”), and divide the sum by 2. For three class categories sum PAC for classes 0, 1 and 2, and divide the sum by 3, and so forth. The formula to compute ESS for C’ class categories is:</p>
+<ul>
+<li>ESS = 100 x (PAC - C’)/(100 - C’)</li>
+</ul>
+<p>For example, for an application with two class categories (C = 2) C’ = 100/2 = 50, with a specificity of 65% and a sensitivity of 85%, therefore mean PAC = (65 + 85)/2 = 75%. ESS can then be calculated as:</p>
+<ul>
+<li>ESS = 100 x (75 - 50)/(100 - 50) = 100 x 25/50 = 100 x 0.5 = 50</li>
+</ul>
+<p>For an application with five class categories (C = 5), C’ = 100/5 = 20, with a mean PAC across the five categories of 40%, thus the ESS can be calculated as:</p>
+<ul>
+<li>ESS = 100 x (40 - 20)/(100 - 40) = 100 x 20/60 = 100 x 0.33 = 33.3</li>
+</ul>
+<p>The mean PAC expected by chance is 100/C percent for an application with C class categories. For example, the mean PAC expected by chance is 50% for a two-category class variable, and 33.3% for a three-category class variable. The convention used to evaluate the strength-of-effect of ODA models which maximize ESS derives from simulation research: ESS&lt;25% is a relatively weak effect; &lt;50% is a moderate effect; &lt;75% is a relatively strong effect; &lt;90% is a strong effect; and &gt; 90% is a very strong effect.[2]</p>
+<p>The optimal model is subjected to a non-parametric permutation test to assess statistical significance of obtained ESS.[1,6,7] Model reproducibility and cross-generalizability are assessed using cross-validation methods such as leave-one-out (LOO), jackknife, K-unfolding, bootstrap, or hold-out analysis.[2]</p>
+<p>Whereas ESS corrects classification accuracy for chance, the D statistic corrects the ESS statistic for model complexity—defined as the number of model endpoints, which are also called strata.<sup>8,9</sup> If the model has two class categories, then there are two strata; a model with three class categories has three strata, and a model with C class categories has C strata. The D statistic indicates the “distance” of an optimal solution from a perfect model which attains 100% accuracy, and it is defined as:</p>
+<ul>
+<li>D = 100/(ESS/Strata) - Strata</li>
+</ul>
+<p>For example, for a model with two class categories and ESS of 50, D = 100/(50/2) - 2, or D = 100/25 - 2, and D = 4 - 2 = 2. This value of D indicates that two additional effects with the same mean ESS value obtained by the optimal model are required to achieve perfect classification (i.e., ESS = 100). For a model with three class categories and ESS of 40, D = 100/(40/3) - 3, or D = 100/13.33 - 3, and D = 7.5 - 3 = 4.5. This value of D indicates that 4.5 additional effects with the same mean ESS value obtained by the optimal model are needed to achieve perfect classification. The minimum value of D which may be attained for any model is 0—indicating errorless (perfect) classification.[9]</p>
+<h2 id="how-is-statistical-power-assessed-in-the-oda-paradigm">How Is Statistical Power Assessed in the ODA Paradigm?</h2>
+<p>Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.[10] For unit-weighted applications, a Fisher’s Exact test is isomorphic to the power of an ODA model.[2] Additionally, the <em>a priori</em> signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: (alpha_{adjusted} =1-(1-alpha)^{(1/comparisons)}). In this way, the power of an ODA model can be approximated using Fisher’s Exact test compared to a critical value of alpha via the <code>ODApower()</code> function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one <em>vs</em> Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in <strong>Table 4</strong> below:</p>
+<pre><code>#&gt; Table 4. Power analysis for sample size n=15 to n=50 per group for ESS = 48
+#&gt;    1-comparison(s)
+#&gt; 15           0.622
+#&gt; 20           0.791
+#&gt; 25           0.908
+#&gt; 30           0.946
+#&gt; 35           0.968
+#&gt; 40           0.992
+#&gt; 45           0.994
+#&gt; 50           0.999
+</code></pre>
+<h2 id="how-are-rigor-and-reproducibility-addressed-in-the-oda-paradigm">How Are Rigor and Reproducibility Addressed in the ODA Paradigm?</h2>
+<p>When sample sizes approximate a population and effect sizes are sufficiently large, statistical analyese are unnessary because the purpose of statistical analysis is to make an inference about an effect without having to measure it within the entire population. Reliable statistical models are cruicial when effects are marginal and the consequences of using suboptimal models are substantial. A problem inherent in all fields of science relates to the rigor and reproducibility of a statistical finding. <em>Rigor</em> refers to the methods and measures used to generate an analyses or finding whereas <em>reproduciblity</em> refers to the ability to replicate a finding in an independent random sample. The sensitivity of an ODA model to outliers and errors in measurement (i.e., deficiencies in <em>rigor</em>) can be evaluated via the “leave-on-out” (LOO) or one-sample jackknife validity assessment, as discussed above. On the other hand, <em>reproducibility</em> should be addressed using external model validation. However, validation in a true independent random sample is frequently challenged by resource constrains. Such constraints make model validation by simulation an attractive option.</p>
+<p>Traditional statistical methodologies conclude that, if a given model prediction (true positive or true negative classification) exceeds a rate consistent with chance (i.e., the marginals observed exceed the marginals expected), then the predictions are unlikely to be due to chance alone. This is typically normed against a 1 in 20 false discovery rate or <em>p</em>&lt;0.05. Subsequently if model predictions are reproduced with similar performance after resampling, an investigator gains confidence that the standard error and 95% CI are well estimated. These are static 95% CIs and reflect only the effect <em>vs</em>. a hypothesized threshold (e.g., <em>p</em>&lt;0.05) value.</p>
+<p>In contradistinction, <em>novometric</em> (Lating for <em>new measure</em>) theory[4] states that the exact discrete CIs for classification performance should not overlap for a model applied to the training data (Model), <em>vs</em>. the same model applied to the training data <em>after</em> randomly scrambling these data relative to the class variable (Chance).[11] [12] That is, the lower bound (LB) 2.5% CI for Model metrics (e.g., PAC, ESS, sensitivity, specificity, etc.) should not fall below the upper bound (UB) of the corresponding 97.5% CI metrics for Chance. Consider a scenario wherein an ODA model achieves sensitivity and specificity of 74% and 74%, respectively.[13] For such a model, the confusion matrix is shown in <strong>Table 5</strong>. The exact discrete 95% CI for Model and for Chance as shown in <strong>Table 6</strong> were estimated using <code>NOVOboot()</code> which generated 5,000 bootstrap resamples from the original data (Model) and 5,000 resamples of the row-scrambled data (Chance). Each of these tables are found below:</p>
+<pre><code>#&gt; Table 5. Confusion Matrix for Model Observations (v1) vs. Predictions (x)
+#&gt; [[1]]
+#&gt;    x
+#&gt; v1   0  1
+#&gt;   0 74 26
+#&gt;   1 26 74
+#&gt; Table 6. Exact Discrete 95% CIs for Model vs Chance for ESS=48
+#&gt; It is recommended to run ODAparse() prior to NOVOboot() or supply a confusion matrix.
+#&gt;       ESS(%) Model ESS(%) Chance
+#&gt; 0%         13.9300     -39.17000
+#&gt; 2.5%       28.0400     -20.11200
+#&gt; 5%         31.3080     -16.43000
+#&gt; 25%        40.0600      -6.76250
+#&gt; 50%        46.2400       0.12000
+#&gt; 75%        52.1125       6.70750
+#&gt; 95%        60.1000      16.18000
+#&gt; 97.5%      62.3400      19.23025
+#&gt; 100%       73.3000      32.00000
+</code></pre>
+<p>The above ODA model had an ESS of 48 in training analysis and was found to have non-overlappying exact discrete 95% CI for model <em>vs</em>. chance after robust resampling, suggesting that this model is generalizable to an independent random sample. This inference is based upon the fact that the effect capured by the Model was replicated and was distinct <em>vs</em>. Chance (i.e., scrambled training data). The results generated by <code>NOVOboot()</code>are highly versitile for several reasons: they provides a convenient means of evaluating the distribution of such CIs for use in various analyses including <em>novometric</em> analyses; the full distribution of bootstrap replicates can be evaluated such that an investigator can establish his or her own level of significance for follow-up research; and simulation analyses have demonstrated that for moderate and strong effects (as measured by ESS) the decisions regarding the overlap (or lack thereof) between the exact discrete 95% CIs remained the same in over 1000 different seed numbers.[14] Additionally, when multiple comparisons are made, the <em>a priori</em> level of alpha can be corrected using a Bonferroni-Sidak type adjustment.[10]</p>
+<h2 id="are-there-example-data-sets-and-vignettes-to-learn-how-to-use-oda">Are There Example Data Sets and Vignettes to Learn How to Use ODA?</h2>
+<p>Four additional worked examples of applied ODA models are included in this package. For more information, please refer to Examples 1 through 4 which can be accessed as vignettes (<code>vignette(package=&quot;ODA&quot;)</code>) within this package.</p>
+<p>The following <em>vignettes</em> are available in ODA:</p>
+<ul>
+<li><p>Example 1. Binary Class Variable, Binary Attribute</p></li>
+<li><p>Example 2. Binary Class Variable, Multicategorical Attribute</p></li>
+<li><p>Example 3. Multicategorical Class Variable, Multicategorical Attribute</p></li>
+<li><p>Example 4. Binary Class Variable, Ordered Attribute</p></li>
+</ul>
+<h2 id="references">References</h2>
+<ol>
+<li><p>Yarnold, P.R., &amp; Soltysik, R.C. (1991). Theoretical distributions of optima for univariate discrimination of random data. <em>Decision Sciences</em>, 22, 739-752.</p></li>
+<li><p>Yarnold, P.R., &amp; Soltysik, R.C. (2005). <em>Optimal Data Analysis: A Guidebook with Software for Windows</em>. Washington, D.C.: APA Books.</p></li>
+<li><p>Yarnold, P.R. (2014). “A statistical guide for the ethically perplexed” (Chapter 4, Panter &amp; Sterba, <em>Handbook of Ethics in Quantitative Methodology</em>, Routledge, 2011): Clarifying disorientation regarding the etiology and meaning of the term Optimal as used in the Optimal Data Analysis (ODA) paradigm. <em>Optimal Data Analysis</em>, 3, 30-31.</p></li>
+<li><p>Yarnold, P.R., &amp; Soltysik, R.C. (2010). Optimal data analysis: A general statistical analysis paradigm. <em>Optimal Data Analysis</em>, 1, 10-22.</p></li>
+<li><p>Yarnold, P.R. (2017). What is optimal data analysis? <em>Optimal Data Analysis</em>, 6, 26-42.</p></li>
+<li><p>Soltysik, R.C., &amp; Yarnold, P.R. (1994). Univariable optimal discriminant analysis: One-tailed hypotheses. <em>Educational and Psychological Measurement</em>, 54, 646-653.</p></li>
+<li><p>Carmony, L., Yarnold, P.R., &amp; Naeymi-Rad, F. (1998). One-tailed Type I error rates for balanced two-category UniODA with a random ordered attribute. <em>Annals of Operations Research</em>, 74, 223-238.</p></li>
+<li><p>Yarnold, P.R., &amp; Soltysik, R.C. (2016). <em>Maximizing Predictive Accuracy</em>. Chicago, IL: ODA Books. DOI: 10.13140/RG.2.1.1368.3286</p></li>
+<li><p>Yarnold, P.R., &amp; Linden, A. (2016). Theoretical aspects of the D statistic. <em>Optimal Data Analysis</em>, 5, 171-174.</p></li>
+<li><p>Rhodes, N.J. (2020). Statistical power analysis in ODA, CTA and novometrics. <em>Optimal Data Analysis</em>, 9, 21-25.</p></li>
+<li><p>Yarnold P. R. (2018). Comparing Exact Discrete 95% CIs for Model vs. Chance ESS to Evaluate Statistical Significance. <em>Optimal Data Analysis</em>, 7, 82-84.</p></li>
+<li><p>Yarnold P.R. (2020). Reformulating the First Axiom of Novometric Theory: Assessing Minimum Sample Size in Experimental Design. <em>Optimal Data Analysis</em>, 9, 7-8.</p></li>
+<li><p>Rhodes NJ, Yarnold PR (2020). Generating novometric confidence intervals in R: Bootstrap analyses to compare model and chance ESS. <em>Optimal Data Analysis</em>, 9, 172-177.</p></li>
+<li><p>Rhodes NJ. (2020). Assessing Reproducibility of Novometric Bootstrap Confidence Interval Analysis Using Multiple Seed Numbers. <em>Optimal Data Analysis</em>, 9, 190-195.</p></li>
+</ol>
+
+</body>
+</html>

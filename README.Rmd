@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 Created by: Nathaniel J. Rhodes, PharmD, MSc and Paul R. Yarnold, PhD
 
 <!-- badges: start -->
+[![DOI](https://zenodo.org/badge/301721752.svg)](https://zenodo.org/badge/latestdoi/301721752)
 <!-- badges: end -->
 
 This package contains the functions needed to run and evaluate the output from MegaODA software. To fully utilize this interface, a valid licensed copy of MegaODA is required. For any statistical hypothesis, this non-parametric statistically-motivated machine-learning algorithm explicitly obtains the model which maximizes the (weighted) predictive accuracy for the sample. Many model validation methods are available. Users are encouraged to read about the ODA paradigm in Maximizing Predictive Accuracy (Paul Yarnold and Robert Soltysik, 2016), or on the ODA website. This package was developed by Nathaniel J. Rhodes to interface with ODA to assist the user in developing, evaluating, and validating maximum-accuracy ODA models.
@@ -27,7 +28,8 @@ This package contains the functions needed to run and evaluate the output from M
 You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 
 ``` r
-install_github("njrhodes/ODA")
+library(devtools)
+install_github("njrhodes/ODA",ref='main')
 ```
 
 Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the [ODA Journal](https://www.odajournal.com/).
@@ -39,7 +41,7 @@ _Optimal Discriminant Analysis_, also known as _Optimal Data Analysis_, is a non
 ## ODA Maximizes Classification Accuracy
 Every statistical model developed using the ODA algorithm explicitly maximizes the classification accuracy which is achieved for the training sample.^[Yarnold, P.R., & Soltysik, R.C. (2005). _Optimal Data Analysis: A Guidebook with Software for Windows_. Washington, D.C.: APA Books.] “Optimal” means that an ODA model achieves the theoretically maximum possible level of accuracy in any given application: this is traditional nomenclature in operations research.^[Yarnold, P.R. (2014). “A statistical guide for the ethically perplexed” (Chapter 4, Panter & Sterba, _Handbook of Ethics in Quantitative Methodology_, Routledge, 2011): Clarifying disorientation regarding the etiology and meaning of the term Optimal as used in the Optimal Data Analysis (ODA) paradigm. _Optimal Data Analysis_, 3, 30-31.] 
 
-##What is Meant by Classification Accuracy in ODA? 
+## What is Meant by Classification Accuracy in ODA? 
 
 Consider a training sample with 100 observations of an Ordered Attribute which are either from Class A or Class B (**Figure 1**). Assume that this model identifies a cutpoint in the data when used for classification of the the Class variable (i.e., the "dependent variable") such that:
     
@@ -117,16 +119,16 @@ For any given application, identifying the most accurate cutpoint (or assignment
 
 ## Computing the Overall PAC Measure of Classification Accuracy
 
-An index of model accuracy that does not adjust for the effect of chance, overall PAC is the total percent of (weighted) accurate classifications obtained for the total sample by using the cutpoint (or rule) to classify observations, with a minimum possible performance of 0% accurate (weighted) classifications, and maximum possible performance of 100% accurate (weighted) classifications. By definition, for any given application, the maximum accuracy optimal model uses the optimal cutpoint for ordered attributes—or the optimal assignment rule for categorical attributes—that yields the greatest overall PAC value. A maximum overall PAC model is identified by specifying `PRIORS OFF` command within the MegaODA software.
+An index of model accuracy that does not adjust for the effect of chance, overall PAC is the total percent of (weighted) accurate classifications obtained for the total sample by using the cutpoint (or rule) to classify observations, with a minimum possible performance of 0% accurate (weighted) classifications, and maximum possible performance of 100% accurate (weighted) classifications. By definition, for any given application, the maximum accuracy optimal model uses the optimal cutpoint for ordered attributes—or the optimal assignment rule for categorical attributes—that yields the greatest overall PAC value. A maximum overall PAC model is identified by specifying `PRIORS OFF` within the MegaODA software.
 
 For example, imagine an application with two class categories, and that class 0 and class 1 both have 50 observations (total sample size is 100 observations). If the optimal model classifies 30 of the class 0 observations, and 40 of the class 1 observations, then overall PAC = 100 x (30 + 40)/100 = 70.
 Or, imagine an application with three class categories: 100 class 0 observations, 60 class 1 observations, and 40 class 2 observations (total sample size is 200 observations). If the optimal model classifies 60 of the class 0 observations, 40 of the class 1 observations, and 30 of the class 2 observations, then overall PAC = 100 x (60 + 40 + 30)/200 = 65. No general convention has been specified to evaluate the strength-of-effect of ODA models which maximize overall PAC. 
 
-The optimal model is subjected to a non-parametric permutation test to assess statistical significance of obtained overall PAC.[1]^[Soltysik, R.C., & Yarnold, P.R. (1994). Univariable optimal discriminant analysis: One-tailed hypotheses. _Educational and Psychological Measurement_, 54, 646-653.] ^[Carmony, L., Yarnold, P.R., & Naeymi-Rad, F. (1998). One-tailed Type I error rates for balanced two-category UniODA with a random ordered attribute. _Annals of Operations Research_, 74, 223-238.] Additionally, ODA model reproducibility and cross-generalizability are assessed using cross-validation methods such as leave-one-out (LOO), jackknife, K-unfolding, bootstrap, or hold-out analysis.[2]^[Yarnold, P.R., & Soltysik, R.C. (2016). _Maximizing Predictive Accuracy_. Chicago, IL: ODA Books. DOI: 10.13140/RG.2.1.1368.3286]
+The optimal model is subjected to a non-parametric permutation test to assess statistical significance of obtained overall PAC.[1] ^[Soltysik, R.C., & Yarnold, P.R. (1994). Univariable optimal discriminant analysis: One-tailed hypotheses. _Educational and Psychological Measurement_, 54, 646-653.] ^[Carmony, L., Yarnold, P.R., & Naeymi-Rad, F. (1998). One-tailed Type I error rates for balanced two-category UniODA with a random ordered attribute. _Annals of Operations Research_, 74, 223-238.] Additionally, ODA model reproducibility and cross-generalizability are assessed using cross-validation methods such as leave-one-out (LOO), jackknife, K-unfolding, bootstrap, or hold-out analysis.[2]^[Yarnold, P.R., & Soltysik, R.C. (2016). _Maximizing Predictive Accuracy_. Chicago, IL: ODA Books. DOI: 10.13140/RG.2.1.1368.3286]
 
 ## Computing and Interpreting the ESS and D measures of Classification Accuracy
 
-An index of model accuracy that does adjust for the effect of chance, ESS is the mean (weighted) sensitivity obtained across class categories by using the cutpoint (or rule) to classify observations, standardized using a 0%-100% scale on which 0% represents the level of classification accuracy expected by chance; 100% represents perfect accuracy; and negative ESS values indicate accuracy that is worse than is expected by chance. By definition, for every application, the maximum accuracy (optimal) model uses the cutpoint for ordered attributes—or the assignment rule for categorical attributes—yielding the greatest ESS value. A maximum ESS optimal model is identified by specifying `PRIORS ON` in the MegaODA command software.
+An index of model accuracy that does adjust for the effect of chance, ESS is the mean (weighted) sensitivity obtained across class categories by using the cutpoint (or rule) to classify observations, standardized using a 0%-100% scale on which 0% represents the level of classification accuracy expected by chance; 100% represents perfect accuracy; and negative ESS values indicate accuracy that is worse than is expected by chance. By definition, for every application, the maximum accuracy (optimal) model uses the cutpoint for ordered attributes—or the assignment rule for categorical attributes—yielding the greatest ESS value. A maximum ESS optimal model is identified by specifying `PRIORS ON` in the MegaODA software.
 
 ESS is easily computed. For an application involving C class categories (the minimum number of class categories is two), compute C' = 100/C. For two class categories, C = 100/2 = 50, for three class categories, C = 100/3 = 33.3, etcetera. Also compute the mean PAC for the C categories. For two class categories, add the PAC for class 0 (called “specificity” in the field of epidemiology) and for class 1 (“sensitivity”), and divide the sum by 2. For three class categories sum PAC for classes 0, 1 and 2, and divide the sum by 3, and so forth. The formula to compute ESS for C' class categories is:           
 
@@ -152,7 +154,7 @@ For example, for a model with two class categories and ESS of 50, D = 100/(50/2)
 
 ## How Is Statistical Power Assessed in the ODA Paradigm?
 
-Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.^[Rhodes, N.J. (2020). Statistical power analysis in ODA, CTA and novometrics. _Optimal Data Analysis_, 9, 21-25.] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.[2] Additionally, the _a priori_ signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: $alpha_adjusted =1-(1-alpha)^{(1/comparisons)}$. In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one _vs_ Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
+Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.^[Rhodes, N.J. (2020). Statistical power analysis in ODA, CTA and novometrics. _Optimal Data Analysis_, 9, 21-25.] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.[2] Additionally, the _a priori_ signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: $alpha_{adjusted} =1-(1-alpha)^{(1/comparisons)}$. In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one _vs_ Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
 
 ```{r, echo=FALSE}
 suppressMessages(library(ODA))
@@ -198,7 +200,7 @@ The above ODA model had an ESS of 48 in training analysis and was found to have 
 
 ## Are There Example Data Sets and Vignettes to Learn How to Use ODA?
 
-Four additional worked examples of applied ODA models are included in this package. For more information, please refer to Examples 1 through 4 which can be accessed using `vignette(package="ODA")` within this package.
+Four additional worked examples of applied ODA models are included in this package. For more information, please refer to Examples 1 through 4 which can be accessed as vignettes (`vignette(package="ODA")`) within this package.
 
 The following _vignettes_ are available in ODA:
 
