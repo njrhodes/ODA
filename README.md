@@ -6,13 +6,8 @@
 Created by: Nathaniel J. Rhodes, PharmD, MSc and Paul R. Yarnold, PhD
 
 <!-- badges: start -->
-<<<<<<< HEAD
-
 [![DOI](https://zenodo.org/badge/301721752.svg)](https://zenodo.org/badge/latestdoi/301721752)
 <!-- badges: end -->
-
-This package contains the functions needed to run and evaluate the output from MegaODA software. To fully utilize this interface, a valid licensed copy of MegaODA is required. For any statistical hypothesis, this non-parametric statistically-motivated machine-learning algorithm explicitly obtains the model which maximizes the (weighted) predictive accuracy for the sample. Many model validation methods are available. Users are encouraged to read about the ODA paradigm in Maximizing Predictive Accuracy (Paul Yarnold and Robert Soltysik, 2016), or on the ODA website. This package was developed by Nathaniel J. Rhodes to interface with ODA to assist the user in developing, evaluating, and validating maximum-accuracy ODA models.
->>>>>>> 592c2365464fe8a681115d70488154918b98f26b
 
 This package contains the functions needed to run and evaluate the
 output from MegaODA software. To fully utilize this interface, a valid
