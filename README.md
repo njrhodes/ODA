@@ -6,7 +6,8 @@ ODA User Guide
 Created by: Nathaniel J. Rhodes, PharmD, MSc and Paul R. Yarnold, PhD
 
 <!-- badges: start -->
-<!-- badges: end -->
+[![DOI](https://zenodo.org/badge/301721752.svg)](https://zenodo.org/badge/latestdoi/301721752) <!-- badges: end -->
+
 This package contains the functions needed to run and evaluate the output from MegaODA software. To fully utilize this interface, a valid licensed copy of MegaODA is required. For any statistical hypothesis, this non-parametric statistically-motivated machine-learning algorithm explicitly obtains the model which maximizes the (weighted) predictive accuracy for the sample. Many model validation methods are available. Users are encouraged to read about the ODA paradigm in Maximizing Predictive Accuracy (Paul Yarnold and Robert Soltysik, 2016), or on the ODA website. This package was developed by Nathaniel J. Rhodes to interface with ODA to assist the user in developing, evaluating, and validating maximum-accuracy ODA models.
 
 Installation
@@ -15,7 +16,8 @@ Installation
 You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 
 ``` r
-install_github("njrhodes/ODA")
+library(devtools)
+install_github("njrhodes/ODA",ref='main')
 ```
 
 Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the [ODA Journal](https://www.odajournal.com/).
@@ -105,7 +107,7 @@ An index of model accuracy that does not adjust for the effect of chance, overal
 
 For example, imagine an application with two class categories, and that class 0 and class 1 both have 50 observations (total sample size is 100 observations). If the optimal model classifies 30 of the class 0 observations, and 40 of the class 1 observations, then overall PAC = 100 x (30 + 40)/100 = 70. Or, imagine an application with three class categories: 100 class 0 observations, 60 class 1 observations, and 40 class 2 observations (total sample size is 200 observations). If the optimal model classifies 60 of the class 0 observations, 40 of the class 1 observations, and 30 of the class 2 observations, then overall PAC = 100 x (60 + 40 + 30)/200 = 65. No general convention has been specified to evaluate the strength-of-effect of ODA models which maximize overall PAC.
 
-The optimal model is subjected to a non-parametric permutation test to assess statistical significance of obtained overall PAC.\[1\][6] [7] Additionally, ODA model reproducibility and cross-generalizability are assessed using cross-validation methods such as leave-one-out (LOO), jackknife, K-unfolding, bootstrap, or hold-out analysis.\[2\][8]
+The optimal model is subjected to a non-parametric permutation test to assess statistical significance of obtained overall PAC.\[1\] [6] [7] Additionally, ODA model reproducibility and cross-generalizability are assessed using cross-validation methods such as leave-one-out (LOO), jackknife, K-unfolding, bootstrap, or hold-out analysis.\[2\][8]
 
 Computing and Interpreting the ESS and D measures of Classification Accuracy
 ----------------------------------------------------------------------------
@@ -137,7 +139,7 @@ For example, for a model with two class categories and ESS of 50, D = 100/(50/2)
 How Is Statistical Power Assessed in the ODA Paradigm?
 ------------------------------------------------------
 
-Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.[10] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.\[2\] Additionally, the *a priori* signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: *a**l**p**h**a*<sub>*a*</sub>*d**j**u**s**t**e**d* = 1 − (1 − *a**l**p**h**a*)<sup>(1/*c**o**m**p**a**r**i**s**o**n**s*)</sup>. In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one *vs* Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
+Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.[10] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.\[2\] Additionally, the *a priori* signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: *a**l**p**h**a*<sub>*a**d**j**u**s**t**e**d*</sub> = 1 − (1 − *a**l**p**h**a*)<sup>(1/*c**o**m**p**a**r**i**s**o**n**s*)</sup>. In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one *vs* Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
 
     #> Table 4. Power analysis for sample size n=15 to n=50 per group for ESS = 48
     #>    1-comparison(s)
@@ -166,6 +168,7 @@ In contradistinction, *novometric* (Lating for *new measure*) theory\[4\] states
     #>   0 74 26
     #>   1 26 74
     #> Table 6. Exact Discrete 95% CIs for Model vs Chance for ESS=48
+    #> It is recommended to run ODAparse() prior to NOVOboot() or supply a confusion matrix.
     #>       ESS(%) Model ESS(%) Chance
     #> 0%         17.5700       -38.100
     #> 2.5%       32.5300       -19.810
@@ -182,7 +185,7 @@ The above ODA model had an ESS of 48 in training analysis and was found to have 
 Are There Example Data Sets and Vignettes to Learn How to Use ODA?
 ------------------------------------------------------------------
 
-Four additional worked examples of applied ODA models are included in this package. For more information, please refer to Examples 1 through 4 which can be accessed using `vignette(package="ODA")` within this package.
+Four additional worked examples of applied ODA models are included in this package. For more information, please refer to Examples 1 through 4 which can be accessed as vignettes (`vignette(package="ODA")`) within this package.
 
 The following *vignettes* are available in ODA:
 
