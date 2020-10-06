@@ -1,0 +1,27 @@
+Package: ODA
+Maintainer: Nathaniel Rhodes <nrhode@midwestern.edu>
+License: GPL-3
+Title: a package and R-interface for the MegaODA software suite
+Version: 1.1.0
+Authors@R: 
+    c(person(given = "Nathaniel", 
+            family = "Rhodes", 
+            email = "nrhode@midwestern.edu", 
+            role = c("aut","cre"), 
+            comment=c(ORCID = "0000-0002-0018-5434", "Affiliation: Midwestern University, Chicago College of Pharmacy and Pharmacometrics Center of Excellence")),
+      (person(given = "Paul",
+            family = "Yarnold", 
+            email = "paulyarnold@planentyarnold.com", 
+            role = c("ctb","cph"), 
+            comment=c("Affiliation: President and Principle Scientist, Optimal Data Analysis, LLC"))))
+Authors: Nathaniel Rhodes [aut, cre] and Paul Yarnold [ctb,cph]
+Description: This package contains the functions needed to run and evaluate the output from MegaODA software. For any statistical hypothesis this non-parametric statistically-motivated machine-learning algorithm explicitly obtains the model which maximizes the (weighted) predictive accuracy for the sample. Many model validation methods are available. Users are encouraged to read about the ODA paradigm in Maximizing Predictive Accuracy (Paul Yarnold and Robert Soltysik, 2016), or on the ODA website. This package was developed by Nathaniel J. Rhodes to interface with ODA to assist the user in developing, evaluating, and validating maximum-accuracy ODA models.
+URL: https://odajournal.com/
+Date: 2020-10-05
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Depends: R (>= 3.5.0), utils, stats
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+Imports: epitools, filesstrings, statmod, stringr

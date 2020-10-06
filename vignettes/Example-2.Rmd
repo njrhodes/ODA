@@ -1,0 +1,109 @@
+---
+title: "Example-2"
+author: "Nathaniel J. Rhodes, PharmD, MSc and Paul R. Yarnold, PhD"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example-2}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir= "data/Example 2")
+```
+
+## Example 2. Binary Class Variable, Multicategorical Attribute
+
+Employing a complex sampling and interviewing methodology, a study of gully erosion obtained data on the type of adjustment made by respondents, and investigated if adjustment was individually- or community-motivated (**Table 1**).^[Okuh D, Osumgborogwu IE (2019). Adjustments to hazards of gully erosion in rural southeast Nigeria: A case of Amacha communities. Applied Ecology and Environmental Sciences, 7, 11-20.]
+
+A summary of the data from this study follows:
+```{r}
+require(epitools)
+
+#Summary data, expanded for writing to file, then presented as a cross class table
+data <- matrix(c(85,65,172,45,173,170,10,0),
+               ncol=2,nrow=4,dimnames=list(c(1,2,3,4),c(0,1)))
+
+data.raw <- setNames(expand.table(data),c("Adjustment","Community"))
+
+data.tab <- table(cbind(data.raw[1],data.raw[2]))
+
+## Table 1: Individual- (0) vs. Community-Led (1) Adjustments in Response to Gully Erosion
+print(data.tab)
+
+#Where Adjustement was coded as follows: 1=Use of Ridges,
+# 2=Shifting Habitation, 3=Relocation, and 4=Intensified Cultivation
+
+```
+
+The MegaODA software was employed via `ODA` to discriminate source of motivation (individual vs. community, treated as a class variable) as a function of type of adjustment (multicategorical attribute). The resulting ODA model was:
+
+- _If_ Adjustment=Use of Ridges or Shifting Habitation (1 or 2), _then_ predict Motivation=Community-Led (1); **Otherwise:**
+- _If_ Adjustment=Relocation or Intensified Cultivation (3 or 4), _then_ predict Motivation=Individual-Led (0).
+
+Using the ODA model to classify the sample data yielded the confusion matrix presented in **Table 2**.
+
+```{r}
+library(ODA)
+
+#Not run-already exists
+#ODAtree("Example 2")
+
+#setwd("~/vignettes/data/Example 2/Runs")
+
+#write.csv(data.raw,file="data2.csv",row.names=F)
+
+#setwd("~/vignettes/data/Example 2")
+
+#ODAclean(data="data2.csv",output=1)
+
+## Load data.csv file and obtain recoded variable names
+ODAload(1)
+# Recoded variable (v) names to be used in ODA analysis
+print(key.1)
+
+## Run MegaODA via ODArun() specifying class and attribute and categorical variables
+#Not run-already exists
+#ODArun(run=1,vstart="v1",vend="v2",class="v2",attribute="v1", 
+#                                   categorical = "v1", miss=-9,mcarlo=T,iter=25000)
+
+## Load ODA model into active environment and evaluate output
+#ODAparse(1) 
+#Message: The default output file name of MODEL.OUT was applied.
+#Warning: A categorical model was detected. The MODEL.OUT results have been truncated.
+#Categorical ODA Model summary:
+#  Model                         Attributes                    Predictions 
+#      1 V1 = 1 , V1 = 2 , V1 = 3 , V1 = 4  V2 = 1, V2 = 1, V2 = 0, V2 = 0
+#  Overall ESS(%) Overall ESP(%) MC P-value  LOO ESS(%) LOO ESP(%) LOO P-value
+#          56.30%         65.17%   0.000000      56.30%     65.17%  .816E-0068
+
+## Generate multicategorical model predictions (not automated currently)
+data.1$Predict <- ifelse(data.1$Adjustment==1 | data.1$Adjustment==2,1,0)
+
+## Table 2. Confusion Matrix for a Binary Class, Multi-categorical Attribute, ODA Model
+print(table(cbind(data.1[2],data.1[3])))
+
+# Here, Community=observed motivation (Community = 1; Individual = 0) 
+# and Predict=predicted motivation (Community = 1; Individual = 0)
+
+#Sens for Community = 97.2%
+round(343/(343+10),3)*100
+
+#Sens for Individual = 59.1%
+round(217/(217+150),3)*100
+
+#PV for Community = 69.6%
+round(343/(343+150),3)*100
+
+#PV for Individual = 95.6%
+round(217/(217+10),3)*100
+```
+
+Because 50% correct classification of each motivation category is expected by chance, model classification of community-motivated adjustments is [(97.2/50) – 1] x 100% or 94.4% greater than expected by chance, and classification of individually-motivated adjustments is 18.2% greater than expected by chance: this is greater than a 5-fold difference in accuracy. The finding is thus dominated by the near-uniform response to community-based adjustments. For this model the ESS was 56.3, indicating a relatively strong effect.^[Yarnold, P.R., & Soltysik, R.C. (2005). _Optimal Data Analysis: A Guidebook with Software for Windows._ Washington, D.C.: APA Books.] Sensitivity and specificity indicate the ability of the ODA model to correctly classify members of the two class categories for the entire sample, while predictive value (PV) assesses the accuracy of the model when it is used to make individual point predictions into the class categories. The ODA model was >95% accurate when making a classification as an individual motivation, and almost 70% accurate when making a classification as a community motivation. Classification performance was stable in one-sample leave-one-out (LOO) jackknife validity analysis, suggesting that this model will replicate if it is used to classify an independent random sample of respondents.^2,^ ^[Yarnold, P.R. (2010). UniODA vs. chi-square: Ordinal data sometimes feign categorical. _Optimal Data Analysis_, 1, 62-65.] ^,^ ^[Yarnold PR (2019). Value-added by ODA vs. chi-square. _Optimal Data Analysis_, 8, 11-14.]
+
+

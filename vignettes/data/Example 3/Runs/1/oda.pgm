@@ -1,0 +1,10 @@
+OPEN data.txt;
+OUTPUT model.out;
+VARS v1 to v2;
+CLASS v1;
+ATTRIBUTE v2;
+CAT v2;
+MISSING ALL (-9);
+MCARLO ITER 25000 ;
+LOO;
+GO;
