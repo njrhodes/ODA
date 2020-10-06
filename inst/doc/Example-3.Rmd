@@ -1,0 +1,123 @@
+---
+title: "Example-3"
+author: "Nathaniel J. Rhodes, PharmD, MSc and Paul R. Yarnold, PhD"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example-3}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir= "data/Example 3")
+```
+
+## Example 3. Multicategorical Class Variable, Multicategorical Attribute
+
+As an example of a convergent validity analysis for an application involving a multicategorical class variable and attribute, consider Nishikawa, Kubota, and Ooi's (1983) study concerning two different theoretical approaches for classifying protein types.^[Nishikawa, K., Kubota, Y., & Ooi, T. (1983). Classification of proteins into groups based on amino acid composition and other characters, II: Grouping into four types. _Journal of Biochemistry_, 94, 997-1007.] A total of 325 proteins were independently classified into one of four mutually exclusive and exhaustive types (dummy-coded using 1 - 4) twice—once each on the basis of two different methods. One classification approach was based on biological characteristics of the proteins, and the other was based on their amino acid compositions. Because the four types of proteins identified by these two methods should theoretically be consistent, the directional alternative hypothesis is that the codes indicating the type of protein are identical between methods across proteins: that is, the two methods demonstrate convergent validity. The null hypothesis is that the codes assigned to proteins by the two methods do not correspond (i.e., are unrelated to each other): that is, the two methods fail to demonstrate convergent validity.
+
+Data were entered in tabular format as shown in **Table 1**: rows were codes for biologically-defined types of proteins (treated as the class variable), and columns were codes for amino-acid-composition-defined types of proteins (treated as the attribute). A summary of the data from this study follows:
+```{r}
+library(epitools)
+
+#Summary data, expanded for writing to file, then presented as a cross class table
+data <- matrix(c(98,13,6,7,16,50,4,19,5,2,23,14,3,8,12,45),
+               ncol=4,nrow=4,dimnames=list(c(1,2,3,4),c(1,2,3,4)))
+
+data.raw <- setNames(expand.table(data),c("Biological","Amino Acid"))
+
+data.tab <- table(cbind(data.raw[1],data.raw[2]))
+
+## Table 1: Type of Protein Assessed by Biological Characteristics and Amino Acid Composition Types (1-4)
+print(data.tab)
+
+```
+
+The MegaODA software was employed via `ODA` to associate protein typing by the two independent methods. The resulting ODA model-which supported the confirmatory _a priori_ hypothesis-was:
+
+- _If_ Amino Acid type=1, _then_ predict Biological type=1; **Otherwise:**
+- _If_ Amino Acid type=2, _then_ predict Biological type=2; **Otherwise:**
+- _If_ Amino Acid type=3, _then_ predict Biological type=3; **Otherwise:**
+- _If_ Amino Acid type=4, _then_ predict Biological type=4.
+
+Using the ODA model to classify the sample data yielded the confusion matrix presented in **Table 2**.
+
+```{r}
+library(ODA)
+
+#Not run-already exists
+#ODAtree("Example 3")
+
+#setwd("~/vignettes/data/Example 3/Runs")
+
+#write.csv(data.raw,file="data3.csv",row.names=F)
+
+#setwd("~/vignettes/data/Example 3")
+
+#ODAclean(data="data3.csv",output=1)
+
+## Load data.csv file and obtain recoded variable names
+ODAload(1)
+# Recoded variable (v) names to be used in ODA analysis
+print(key.1)
+
+## Run MegaODA via ODArun() specifying class and attribute and categorical variables
+#Not run-already exists
+#ODArun(run=1,vstart="v1",vend="v2",class="v1",attribute="v2", 
+#                                   categorical = "v2", miss=-9,mcarlo=T,iter=25000)
+
+## Load ODA model into active environment and evaluate output
+#ODAparse(1) 
+#Message: The default output file name of MODEL.OUT was applied.
+#Warning: A categorical model was detected. The MODEL.OUT results have been truncated.
+#Categorical ODA Model summary:
+#  Model                         Attributes                    Predictions 
+#1     1 V2 = 1 , V2 = 2 , V2 = 3 , V2 = 4  V1 = 1, V1 = 2, V1 = 3, V1 = 4
+#  Overall ESS(%) Overall ESP(%) MC P-value LOO ESS(%) LOO ESP(%)
+#          50.96%         51.22%   0.000000     50.96%     51.22%
+
+## Generate multicategorical model predictions (not automated currently)
+data.1$Predict <- ifelse(data.1$Amino.Acid==1 ,1,
+                         ifelse(data.1$Amino.Acid==2,2,
+                                ifelse(data.1$Amino.Acid==3,3,
+                                       4)))
+
+## Table 2. Confusion Matrix for a Muticategorical Class, Multi-categorical Attribute, ODA Model
+print(table(cbind(data.1[1],data.1[3])))
+
+# Here, Biological=observed Biological protein type (1-4) 
+# and Predict=predicted Biological protein type (1-4)
+
+#Sens for Type 1 Proteins = 80.3%
+round(98/(122),3)*100
+
+#Sens for Type 2 Proteins = 68.5%
+round(50/(73),3)*100
+
+#Sens for Type 3 Proteins = 51.1%
+round(23/(45),3)*100
+
+#Sens for Type 4 Proteins = 52.9%
+round(45/(85),3)*100
+
+#PV for Type 1 Proteins = 79.0%
+round(98/(124),3)*100
+
+#PV for Type 2 Proteins = 56.2%
+round(50/(89),3)*100
+
+#PV for Type 3 Proteins = 52.3%
+round(23/(44),3)*100
+
+#PV for Type 4 Proteins = 66.2%
+round(45/(68),3)*100
+```
+
+As shown in the analysis above, sensitivities achieved by the directional model were 80.3%, 68.5%, 51.1%, and 52.9% for protein types 1 through 4, respectively (a sensitivity of 25% is expected by chance for each protein type): _p_<0.0001. This classification performance corresponds to ESS = 51.0, indicating a relatively strong effect.^[Yarnold, P.R., & Soltysik, R.C. (2005). _Optimal Data Analysis: A Guidebook with Software for Windows._ Washington, D.C.: APA Books.] And, predictive values were 79.0%, 56.2%, 52.3%, and 66.2% for protein types 1 through 4, respectively, indicating that point predictions of individual proteins were similarly relatively strong. With multicategorical class analyses, jackknife or leave-one-out (LOO) is not conducted. In summary, the classification performance achieved by this directional ODA model was relatively strong, statistically significant, and robust—with all classification performance indices exceeding 50%.
+
+

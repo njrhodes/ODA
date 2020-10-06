@@ -1,0 +1,103 @@
+---
+title: "Example-1"
+author: "Nathaniel J. Rhodes, PharmD, MSc and Paul R. Yarnold, PhD"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example-1}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir= "data/Example 1")
+```
+
+## Example 1. Binary Class Variable, Binary Attribute
+
+A study involving a binary class variable (Democratic, Republican) and binary attribute (“Pro”, “Con”) vote on the Refugee Act of 1980 (U.S. House of Representatives) suggested the directional^[Yarnold, P.R., & Soltysik, R.C. (2010). Optimal data analysis: A general statistical analysis paradigm. _Optimal Data Analysis_, 1, 10-22.] (i.e., _a priori_, confirmatory, or “one-tailed”) hypothesis that, because the Act was sponsored by Democrats, it was a partisan objective.^[Yarnold, B.M. (1990). Refugees without refuge: Formation and failed implementation of U.S. political asylum policy in the 1980’s. Lanham, MD: University Press of America.] That is, Democrats were hypothesized to vote in favor (Pro) of the Act, and Republicans were hypothesized to vote against (Con) the Act. Visual examination of the cross-classification table (**Table 1**) indicated voting was consistent with the directional expectation.
+
+```{r}
+require(epitools)
+
+#Summary data, expanded for writing to file, then presented as a cross class table
+data <- matrix(c(118,34,78,177),ncol=2,nrow=2,dimnames=list(c(0,1),c(0,1)))
+
+data.raw <- setNames(expand.table(data),c("Pro","Democrat"))
+
+data.tab <- table(cbind(data.raw[1],data.raw[2]))
+
+## Table 1: Voting Behavior on the Refugee Act by Political Affiliation
+print(data.tab)
+
+```
+
+The MegaODA software was employed via `ODA` to discriminate Pro vs. Con vote on the Act (treated as an attribute) as a function of political party (binary class variable). The resulting ODA model was:
+
+- _If_ Political Affiliation=Republican (0), _then_ predict Vote=Con (0); **Otherwise:**
+- _If_ Political Affiliation=Democrat (1), _then_ predict Vote=Pro (1).
+
+The above ODA model was used to classify the sample data, yielding the confusion matrix shown in **Table 2** below.
+
+```{r}
+library(ODA)
+
+#Not run-already exists
+#ODAtree("Example 1")
+
+#setwd("~/vignettes/data/Example 1/Runs")
+
+#write.csv(data.raw,file="data1.csv",row.names=F)
+
+#setwd("~/vignettes/data/Example 1")
+
+#ODAclean(data="data1.csv",output=1)
+
+## Load data.csv file and obtain recoded variable names
+ODAload(1)
+# Recoded variable (v) names to be used in ODA analysis
+print(key.1)
+
+## Run MegaODA via ODArun() specifying class and attribute variables
+#Not run-already exists
+#ODArun(run=1,vstart="v1",vend="v2",class="v1",
+#                                     attribute="v2", miss=-9,mcarlo=T,iter=25000)
+
+## Load ODA model into active environment and evaluate output
+#ODAparse(1) 
+#Message: The default output file name of MODEL.OUT was applied.
+#ODA Model summary:
+#  Model        IF    THEN       IF    THEN Overall ESS(%) Overall ESP(%) MC P-value
+#      1 V2 <= 0.5  V1 = 0 0.5 < V2  V1 = 1         44.09%         47.04%   0.000000
+#  LOO ESS(%)   LOO ESP(%)   LOO P-value
+#      44.09%       47.04%    .922E-0020
+
+## Table 2. Confusion Matrix for ODA Model, for Training and LOO Analysis
+#print(oda.list.1) 
+#   x
+#v1    0   1
+#  0 118  78
+#  1  34 177
+
+# Here, v1=observed votes (Pro = 1; Con = 0) 
+# and x=predicted votes (Pro = 1; Con = 0)
+
+#Sens for Pro = 83.9%
+round(177/(177+34),3)*100
+
+#Sens for Con = 60.2%
+round(118/(118+78),3)*100
+
+#PV for Pro = 69.4%
+round(177/(177+78),3)*100
+
+#PV for Con = 77.6%
+round(118/(118+34),3)*100
+```
+
+Because 50% correct classification of each motivation category is expected by chance, model classification of voting against the Act is [(60.2/50) – 1] x 100% or 20.4% greater than expected by chance, and voting in favor of the Act is 67.8% greater than expected by chance—this is greater than a 3-fold difference in accuracy. The finding is thus dominated by the more partisan voting of the Democrats who sponsored the Act. For this model in training (total sample) analysis the ESS was 44.1, indicating a moderate effect.^[Yarnold, P.R., & Soltysik, R.C. (2005). _Optimal Data Analysis: A Guidebook with Software for Windows._ Washington, D.C.: APA Books.] Classification performance was stable in one-sample leave-one-out (LOO) jackknife validity analysis, suggesting that this model will replicate if it is used to classify an independent random sample of Representatives.^[Yarnold, P.R. (2010). UniODA vs. chi-square: Ordinal data sometimes feign categorical. _Optimal Data Analysis_, 1, 62-65.] ^,^ ^[Yarnold PR (2019). Value-added by ODA vs. chi-square. _Optimal Data Analysis_, 8, 11-14.]
+
