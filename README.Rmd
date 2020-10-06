@@ -4,6 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -34,7 +35,7 @@ install_github("njrhodes/ODA",ref='main')
 
 Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the [ODA Journal](https://www.odajournal.com/).
 
-## What is Optimal Data Analysis (ODA)?
+## What is Optimal Data Analysis (ODA)? 
 
 _Optimal Discriminant Analysis_, also known as _Optimal Data Analysis_, is a non-parametric machine learning algorithm derived using operations research optimization methods almost forty years ago.^[Yarnold, P.R., & Soltysik, R.C. (1991). Theoretical distributions of optima for univariate discrimination of random data. _Decision Sciences_, 22, 739-752.] For more details on ODA and ODA applications, please visit <https://odajournal.com/>. 
 
@@ -154,7 +155,7 @@ For example, for a model with two class categories and ESS of 50, D = 100/(50/2)
 
 ## How Is Statistical Power Assessed in the ODA Paradigm?
 
-Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.^[Rhodes, N.J. (2020). Statistical power analysis in ODA, CTA and novometrics. _Optimal Data Analysis_, 9, 21-25.] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.[2] Additionally, the _a priori_ signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: $alpha_{adjusted} =1-(1-alpha)^{(1/comparisons)}$. In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one _vs_ Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
+Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.^[Rhodes, N.J. (2020). Statistical power analysis in ODA, CTA and novometrics. _Optimal Data Analysis_, 9, 21-25.] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.[2] Additionally, the _a priori_ signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: alpha adjusted = 1-(1-alpha) x exp(1/comparisons). In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one _vs_ Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
 
 ```{r, echo=FALSE}
 suppressMessages(library(ODA))
