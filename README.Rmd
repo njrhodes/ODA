@@ -29,11 +29,12 @@ This package contains the functions needed to run and evaluate the output from M
 You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 
 ``` r
-library(devtools)
-install_github("njrhodes/ODA",ref='main')
+devtools::install_github("njrhodes/ODA",ref='main')
 ```
 
-Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the [ODA Journal](https://www.odajournal.com/).
+Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the [ODA Journal](https://www.odajournal.com/). 
+
+Warning: MegaODA.exe is only supported on Intel Processors at this time.
 
 ## What is Optimal Data Analysis (ODA)? 
 

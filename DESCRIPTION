@@ -2,7 +2,7 @@ Package: ODA
 Maintainer: Nathaniel Rhodes <nrhode@midwestern.edu>
 License: GPL-3
 Title: a package and R-interface for the MegaODA software suite
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: 
     c(person(given = "Nathaniel", 
             family = "Rhodes", 

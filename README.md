@@ -16,11 +16,12 @@ Installation
 You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 
 ``` r
-library(devtools)
-install_github("njrhodes/ODA",ref='main')
+devtools::install_github("njrhodes/ODA",ref='main')
 ```
 
 Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the [ODA Journal](https://www.odajournal.com/).
+
+Warning: MegaODA.exe is only supported on Intel Processors at this time.
 
 What is Optimal Data Analysis (ODA)?
 ------------------------------------
@@ -139,7 +140,7 @@ For example, for a model with two class categories and ESS of 50, D = 100/(50/2)
 How Is Statistical Power Assessed in the ODA Paradigm?
 ------------------------------------------------------
 
-Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.[10] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.\[2\] Additionally, the *a priori* signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: *a**l**p**h**a*<sub>*a**d**j**u**s**t**e**d*</sub> = 1 − (1 − *a**l**p**h**a*)<sup>(1/*c**o**m**p**a**r**i**s**o**n**s*)</sup>. In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one *vs* Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
+Estimating the minimum sample size required to obtain a statistically significant effect in a study is a crucial facet of experimental design and a requisite component of applications which seek approval from Institutional Review Boards or funding for proposed investigations. Accordingly, statistical power analysis simulation results have been developed for determining the “worst-case” sample size requirement for a study, assuming minimal measurement precision and relatively weak to moderate effect strengths.[10] For unit-weighted applications, a Fisher's Exact test is isomorphic to the power of an ODA model.\[2\] Additionally, the *a priori* signifiance level alpha must be adjusted based upon the number of comparisons make using a Sidak-type adjustment as follows: alpha adjusted = 1-(1-alpha) x exp(1/comparisons). In this way, the power of an ODA model can be approximated using Fisher's Exact test compared to a critical value of alpha via the `ODApower()` function. For example consider a sample size ranging between 15 and 50 subjects per group (even between groups) and an ESS of 48 (moderate effect size) with a single comparison (e.g., Group one *vs* Group two). The achievable power for an ODA model at each sample size capable of detecting a minimal ESS of 48 is given in **Table 4** below:
 
     #> Table 4. Power analysis for sample size n=15 to n=50 per group for ESS = 48
     #>    1-comparison(s)
@@ -168,6 +169,7 @@ In contradistinction, *novometric* (Lating for *new measure*) theory\[4\] states
     #>   0 74 26
     #>   1 26 74
     #> Table 6. Exact Discrete 95% CIs for Model vs Chance for ESS=48
+    #> It is recommended to run ODAparse() prior to NOVOboot() or supply a confusion matrix.
     #>       ESS(%) Model ESS(%) Chance
     #> 0%         17.5700       -38.100
     #> 2.5%       32.5300       -19.810
