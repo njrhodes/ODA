@@ -1,3 +1,7 @@
+# ODA 1.1.2 (2020-12-06)
+
+* Added MegaODA.exe to be included in package. The software is now freely available.
+
 # ODA 1.1.1 (2020-10-09)
 
 * Warnings and checks added to address unsupported processors. Only Intel processors supported by MegaODA.exe currently.

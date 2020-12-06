@@ -19,7 +19,7 @@ You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 devtools::install_github("njrhodes/ODA",ref='main')
 ```
 
-Warning: The full use of this package requires a valid licensed copy of the MegaODA suite. To obtain a valid licensed copy, the user is referred to the [ODA Journal](https://www.odajournal.com/).
+UPDATE (2020-12-06): MegaODA.exe is now freely available and included in the package. Users should install the latest version of the ODA package. The full use of this package requires that the MegaODA suite is located in the proper installation directory. For more information about ODA, the user is referred to the [ODA Journal](https://www.odajournal.com/).
 
 Warning: MegaODA.exe is only supported on Intel Processors at this time.
 
@@ -75,7 +75,7 @@ To be explicitly optimal, a method must be specifically formulated to find the m
 How Does ODA Find an Optimal Solution?
 --------------------------------------
 
-In any given application ODA finds the cutpoint for an ordered attribute (independent variable), or the assignment rule for a categorical attribute, that most accurately (optimally) discriminates the two or more categories of the class (dependent) variable.[5] For example, imagine a hypothetical study involving a two-category class variable \[whether or not a patient has cardiovascular (CV) disease\]; an ordered attribute (systolic blood pressure, in mmHg); and a categorical attribute \[gender: male (M) or female (F)\]. Further imagine that the most accurate possible ODA model for predicting presence versus absence of disease for systolic blood pressure (SBP) is: if SBP&lt;145 mmHg, predict the patient has no disease; if SBP&gt;145 mmHg, predict the patient has disease. Finally imagine the most accurate ODA gender model for predicting presence versus absence of disease is: if gender=F, predict no disease; if gender=M, predict disease. The hypothetical data are summarized in **Figure 2**. The confusion matrix for the hypothetical model of disease predicted by SBP &gt;145 mmHg is shown in **Table 2**, and the confusion matrix for the hypothetical model of disease predicted by gender is shown in **Table 3**.
+In any given application ODA finds the cutpoint for an ordered attribute (independent variable), or the assignment rule for a categorical attribute, that most accurately (optimally) discriminates the two or more categories of the class (dependent) variable.[5] For example, imagine a hypothetical study involving a two-category class variable \[whether or not a patient has cardiovascular (CV) disease\]; an ordered attribute (systolic blood pressure, in mmHg); and a categorical attribute \[sex: male (M) or female (F)\]. Further imagine that the most accurate possible ODA model for predicting presence versus absence of disease for systolic blood pressure (SBP) is: if SBP&lt;145 mmHg, predict the patient has no disease; if SBP&gt;145 mmHg, predict the patient has disease. Finally imagine the most accurate ODA sex model for predicting presence versus absence of disease is: if sex=F, predict no disease; if sex=M, predict disease. The hypothetical data are summarized in **Figure 2**. The confusion matrix for the hypothetical model of disease predicted by SBP &gt;145 mmHg is shown in **Table 2**, and the confusion matrix for the hypothetical model of disease predicted by sex is shown in **Table 3**.
 
 <img src="man/figures/README-fig2-1.png" width="100%" />
 
@@ -86,7 +86,7 @@ In any given application ODA finds the cutpoint for an ordered attribute (indepe
     #>   0 19  6
     #>   1 11 14
     #> ESS = 100*(((56+76)/2)-50)/(100-50) = 32
-    #> Table 3. Confusion Matrix for Gender Model Observations (v1) vs. Predictions (x)
+    #> Table 3. Confusion Matrix for Sex Model Observations (v1) vs. Predictions (x)
     #> [[1]]
     #>    x
     #> v1   0  1
@@ -94,7 +94,7 @@ In any given application ODA finds the cutpoint for an ordered attribute (indepe
     #>   1  5 20
     #> ESS = 100*(((80+80)/2)-50)/(100-50) = 60
 
-In this example the hypothetical ODA model classifiying disease which used SBP but ignored sex-based differences yielded an effect strength for sensitivity (ESS) of 32, a moderate effect.\[2\] On the other hand, the hypothetical ODA model that classified disease based on gender (M/F) *a priori* had an ESS of 60, a relatively strong effect.\[2\] The gender-based model yielded a nearly two-fold increase in predicitive accuracy *vs*. SBP alone. The difference between these models in predicitve capacity should prompt additional investigative aims and might lead an investigator to suspect that a failure to disaggregate SBP according to gender (M/F) has resulted in paradoxical confounding vis-a-vis Simpson's paradox.\[2,4\]
+In this example the hypothetical ODA model classifiying disease which used SBP but ignored sex-based differences yielded an effect strength for sensitivity (ESS) of 32, a moderate effect.\[2\] On the other hand, the hypothetical ODA model that classified disease based on sex (M/F) *a priori* had an ESS of 60, a relatively strong effect.\[2\] The sex-based model yielded a nearly two-fold increase in predicitive accuracy *vs*. SBP alone. The difference between these models in predicitve capacity should prompt additional investigative aims and might lead an investigator to suspect that a failure to disaggregate SBP according to sex (M/F) has resulted in paradoxical confounding vis-a-vis Simpson's paradox.\[2,4\]
 
 How is the most accurate possible model for a given attribute and sample identified?
 ------------------------------------------------------------------------------------
@@ -169,7 +169,6 @@ In contradistinction, *novometric* (Lating for *new measure*) theory\[4\] states
     #>   0 74 26
     #>   1 26 74
     #> Table 6. Exact Discrete 95% CIs for Model vs Chance for ESS=48
-    #> It is recommended to run ODAparse() prior to NOVOboot() or supply a confusion matrix.
     #>       ESS(%) Model ESS(%) Chance
     #> 0%         17.5700       -38.100
     #> 2.5%       32.5300       -19.810
