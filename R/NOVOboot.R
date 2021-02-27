@@ -228,7 +228,7 @@ NOVOboot <- function(data="",run="",predictor="",outcome="",nboot="",seed=""){
     quantile(
       model$rr, probs=c(0,0.025,0.05,0.25,0.5,0.75,0.95,0.975,1),na.rm=T),
     quantile(
-      chance$rr, probs=c(0,0.025,0.05,0.25,0.5,0.75,0.95,0.975,1),na.rm=T)
+      chance$rr, probs=c(0,0.025,0.05,0.25,0.5,0.75,0.95,0.975,1),na.rm=T),
     quantile(
       model$p, probs=c(0,0.025,0.05,0.25,0.5,0.75,0.95,0.975,1),na.rm=T),
     quantile(
