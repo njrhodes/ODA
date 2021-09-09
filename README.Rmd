@@ -32,9 +32,11 @@ You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 devtools::install_github("njrhodes/ODA",ref='main')
 ```
 
-UPDATE (2020-12-06): MegaODA.exe is now freely available and included in the package. Users should install the latest version of the ODA package. The full use of this package requires that the MegaODA suite is located in the proper installation directory. For more information about ODA, the user is referred to the [ODA Journal](https://www.odajournal.com/). 
+UPDATE (2021-09-09): MegaODA.exe is now freely available and included in the package. Users should install the latest version of the ODA package. The full use of this package requires that the MegaODA.exe file is located in the proper installation directory. Robert C. Soltysik generated the source code that created the MegaODA.exe file. His email address is: rob9944@zohomail.com
 
-Warning: MegaODA.exe is only supported on Intel Processors at this time.
+For more information about ODA, the user is referred to the [ODA Journal](https://www.odajournal.com/). 
+
+Warning: MegaODA.exe is only supported on Windows computers using Intel Processors at this time.
 
 ## What is Optimal Data Analysis (ODA)? 
 
