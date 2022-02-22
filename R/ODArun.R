@@ -287,15 +287,15 @@ ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="
     x <- list(attribute,class,categorical,weight)
     y <- lapply(x, function(ch) grep("to", ch))
     z <- list("maxsens","meansens","samplerep","balanced","distance","random","genmean")
-    ca <- lapply(attribute, function(ch) grep(categorical, ch))
+    #ca <- lapply(attribute, function(ch) grep(categorical, ch))
     ge <- lapply(x, function(ch) grep(gen, ch))
     wgt <- lapply(w, function(ch) grep(weight, ch))
     if (length(y) > 0) {
       cat("Warning: The \"to\" operator was specified within the ODArun command. Review the MODEL.OUT file to confirm the proper analysis was conducted.\n")
     }
-    if (categorical != "" & sum(unlist(ca))==0) {
-      stop(cat("Error: \"categotical\" variable must be listed in the attribute block to initiate a categorical model.\n"))
-    }
+    #if (categorical != "" & sum(unlist(ca))==0) {
+    #  stop(cat("Error: \"categorical\" variable must be listed in the attribute block to initiate a categorical model.\n"))
+    #}
     if (gen != "" & sum(unlist(ge)) != 0)  {
       stop(cat("Error: \"gen\" variable cannot be the same variable specified as class, attribute, categorical, or weight variables.\n"))
     }
