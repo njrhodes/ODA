@@ -179,7 +179,7 @@ ODAparse <- function(run="",path=getwd(),out="") {
       ess.loo <- matrix(unlist(ess.loo), ncol=2, byrow=TRUE)
       ess.loo <- gsub("Effect strength PAC ","",ess.loo)
       ess.loo <- gsub("Effect strength PV ","",ess.loo)
-      fp.start <- grep("^Fisher's exact test",file)
+      fp.start <- grep("^Fisher's exact test (directional)",file)
       fp.val <- data_raw[fp.start,]
     if(length(fp.val)>0){
       fp.val <- strsplit(fp.val, "=")
