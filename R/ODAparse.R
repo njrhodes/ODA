@@ -112,7 +112,7 @@ ODAparse <- function(run="",path=getwd(),out="") {
   index2 <- grep("^*Monte Carlo summary",file) - 3
   index3 <- grep("^*Summary for Class",file)
   index4 <- grep("^*Summary for Class",file)+12
-  index5 <- grep("^*No solution found for this problem",file)-10
+  index5 <- grep("^*No solution found for this problem",file)-16
   vars <- grep("^*Class:",file)+1
   vars <- vars[!vars %in% index5]
   vars <- data_raw[vars,]
@@ -136,7 +136,8 @@ ODAparse <- function(run="",path=getwd(),out="") {
   loo.cat.check <- grep("^Warning  7",file)
   ####Warning if one or more attributes had no solutions found.####
   if(length(index5) > 0){
-    cat("Warning: One or more attributes had no solutions found. Review the oda.model object for more information.\n")
+    stop(paste0("The following are attributes for which no solutions were found: "),data_raw[index5,],"\n",
+    "Warning: Remove the attribute(s) above and complete ODArun again before running ODAparse.\n")
   }
   ####CAT ODA Model: Warning if categorical model denoted where indicies differ by > 1 line.####
   if (max(index2-index1)>1 & length(index1)==length(index2)){
@@ -179,9 +180,9 @@ ODAparse <- function(run="",path=getwd(),out="") {
       ess.loo <- matrix(unlist(ess.loo), ncol=2, byrow=TRUE)
       ess.loo <- gsub("Effect strength PAC ","",ess.loo)
       ess.loo <- gsub("Effect strength PV ","",ess.loo)
-      fp.start <- grep("^Fisher's exact test (directional)",file)
+      fp.start <- grep("^Fisher's exact test \\(directional",file)
       fp.val <- data_raw[fp.start,]
-    if(length(fp.val)>0){
+      if(length(fp.val)>0){
       fp.val <- strsplit(fp.val, "=")
       fp.val <- matrix(unlist(fp.val), ncol=2, byrow=TRUE)
       fp.val <- fp.val[,2]
@@ -195,11 +196,212 @@ ODAparse <- function(run="",path=getwd(),out="") {
         }
       }
     assign(paste0("oda.model.",run), c.model, pos = parent.frame())
+    ### Extract categorical ODA model summary ###
+    l.list <- list()
+    for(i in seq_along(index1)){
+      l.list[[i]]<-data_raw[c(index1[i]:index2[i]),]
+      }
+    string.list <- list()
+    for(i in seq_along(index1)){
+      string.list[[i]]<-strsplit(l.list[[i]], "THEN")
+    }
+    mat.list <- list()
+    for(i in seq_along(index1)){
+      mat.list[[i]]<-matrix(unlist(string.list[[i]]), ncol=2, byrow=TRUE)
+    }
+    print.list <- list()
+    for(i in seq_along(index1)){
+      print.list[[i]]<-gsub(".*IF\\s*","",mat.list[[i]])
+    }
+    lh <- list() # left handed display = categorical attribute decision rules
+    for(i in seq_along(index1)){
+      lh[[i]]<-print.list[[i]][,1]
+    }
+    rh <- list() # right handed display = class predictions based on decision rules
+    for(i in seq_along(index1)){
+      rh[[i]]<-print.list[[i]][,2]
+    }
+    rc <- list() # class prediction for each decision rule on the left
+    for(i in seq_along(index1)){
+      rc[[i]]<-as.numeric(gsub(".*=","",rh[[i]]))
+    }
+    pred <- rc
+    cut <- list()  # decision rule on left hand side taking the first one
+    for(i in seq_along(index1)){
+      cut[[i]]<-lh[[i]]
+      cut[[i]]<-gsub(".*=","",cut[[i]])
+      cut[[i]]<-gsub(".*<","",cut[[i]])
+      cut[[i]]<-gsub(".[a-zA-Z]{1}([0-9]{5}|[0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1})","",cut[[i]])
+      cut[[i]]<-as.numeric(cut[[i]])
+      cut[[i]]<-cut[[i]][!is.na(cut[[i]])]
+    }
+
+    data <- read.csv(runfile)
+    header <- names(data)
+    c.header <- seq_len(ncol(data))
+    key <- data.frame(header, paste("v",c.header,sep=""))
+    names(data) <- key[,2]
+    cv <- data[unique(class)]
+    data[data==-9] <- NA
+    data <- data[attribute]
+
     stats <- as.data.frame(matrix(0, ncol = 0, nrow = 13))
     for(i in n.model){
       stats[, c(paste0("model.",n.model[i]))] <- cbind(data_raw[(index3[i]:index4[i]),])
     }
     assign(paste0("oda.stats.",run), stats[-13,], pos = parent.frame())
+    ### Extract ODA Performance Stats###
+
+    df <- as.data.frame(matrix(0, ncol = 0, nrow = nrow(data)))
+    for(i in n.model){
+      pos<-setNames(data.frame(cut[[i]],pred[[i]]),c(names(data[i]),"class"))
+    if(length(cut[[i]])>1){
+      df[, c(paste0("pv.",n.model[i]))] <- as.vector(pos[match(unlist(data[i]),unlist(pos[1])),2])
+    }else{
+      df[, c(paste0("pv.",n.model[i]))] <- as.vector(ifelse(data[i] > cut[[i]], pred[[i]][2], pred[[i]][1]))
+      }
+    }
+
+    predictions <- df
+    df_list <- lapply(df, function(x){
+      dfs <- list()
+      for(j in seq_along(cv))
+      {
+        dfs[[j]] <- data.frame(ifelse(x == cv[j] & x==max(cv[j]), 1, 0),
+                               ifelse(x == cv[j] & x==min(cv[j]), 1, 0),
+                               ifelse(x != cv[j] & cv[j] < x, 1, 0),
+                               ifelse(x != cv[j] & cv[j] > x, 1, 0))
+      }
+      setNames(do.call("cbind", dfs),
+               paste0(c("tp.", "tn.", "fp.", "fn."), rep(seq_along(cv), each = 4)))
+    })
+    ###Create predictions for each model and store for SDA###
+    index6 <- seq_along(cv)*4*nrow(data)
+    sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
+    if(length(sda) > 1){
+      sda.mat <- do.call(cbind, sda)
+      res <- c()
+      for(i in seq_along(index6)){
+        res[[i]] <- sda.mat[seq((index6[i]-min(index6)+1),index6[i]),]
+        rownames(res[[i]]) <- paste0(c(rep("tp.",each=nrow(data)),rep("tn.",each=nrow(data)),rep("fp.",each=nrow(data)),rep("fn.",each=nrow(data))),rep(seq(1,nrow(data),by=1),times=4))
+      }
+      sda.list <- do.call(rbind, res)
+    }else{
+      sda.list <- sda
+    }
+    sda.frame <- as.data.frame(sda.list)
+    sda.frame$id <- rep(seq(1,nrow(data),by=1),times=4)
+    sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
+    sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
+    assign(paste0("oda.sda.",run), sda.frame, pos = parent.frame())
+    ### Extract SDA report for ODA Model ###
+    df <- predictions
+    cc_list <- lapply(df, function(x){
+      cct <- list()
+      for(j in seq_along(cv))
+      {
+        cct[[j]] <- table(cbind(cv[j],x)
+        )
+      }
+      setNames(do.call("list", cct), names(cv))
+    })
+    ### Extract List of ODA Cross Class Tables###
+    assign(paste0("oda.list.",run), cc_list, pos = parent.frame())
+
+    temp <- lapply(df_list,sapply,sum,na.rm=T)
+
+    temp2 <- as.data.frame(do.call(rbind, temp))
+
+    acc.n <- as.data.frame(sapply(seq(1,length(temp2),by=4),function(i) rowSums(temp2[,i:(i+1)])))
+
+    acc.d <- as.data.frame(sapply(seq(1,length(temp2),by=4),function(i) rowSums(temp2[,i:(i+3)])))
+
+    tp <- temp2[,seq(1, ncol(temp2), 4)]        # TP
+    tn <- temp2[,seq(2, ncol(temp2), 4)]        # TN
+    fp <- temp2[,seq(3, ncol(temp2), 4)]        # FP
+    fn <- temp2[,seq(4, ncol(temp2), 4)]        # FN
+
+    n.obs.class1 <- tn+fp
+    n.obs.class2 <- tp+fn
+    n.pred.class1 <- tn+fn
+    n.pred.class2 <- tp+fp
+
+    pac <- round(acc.n/acc.d*100,digits=1)      # Percent accuracy in classfication
+    names(pac) <- paste0(rep("PAC.",length(cv)), seq_along(cv))
+
+    sens <- round(tp/(tp+fn)*100, digits=2)     # Sens
+    names(sens) <- paste0(rep("Sens.",length(cv)), seq_along(cv))
+
+    spec <- round(tn/(tn+fp)*100, digits=2)     # Spec
+    names(spec) <- paste0(rep("Spec.",length(cv)), seq_along(cv))
+
+    ppv <- round(tp/(tp+fp)*100, digits=2)      # PPV
+    names(ppv) <- paste0(rep("PPV.",length(cv)), seq_along(cv))
+
+    npv <- round(tn/(tn+fn)*100, digits=2)      # NPV
+    names(npv) <- paste0(rep("NPV.",length(cv)), seq_along(cv))
+
+    mpv <- round((ppv+npv)/2, digits=2)         # Mean predictive value in classification
+    names(mpv) <- paste0(rep("MPV.",length(cv)), seq_along(cv))
+
+    mpac <- round((sens+spec)/2, digits=2)      # Mean percent accuracy in classification
+    names(mpac) <- paste0(rep("MPAC.",length(cv)), seq_along(cv))
+
+    ess.m <- round(100*(mpac-50)/50, digits=2)  # Effect strength for sensitivity
+    names(ess.m) <- paste0(rep("ESS.",length(cv)), seq_along(cv))
+
+    esp.m <- round(100*(mpv-50)/50, digits=2)   # Effect strength for Positivity
+    names(esp.m) <- paste0(rep("ESP.",length(cv)), seq_along(cv))
+
+    for(i in seq_along(n.model)){
+      tp[i] <- ifelse(tp[i]==0,0.5,tp[i])
+      tn[i] <- ifelse(tn[i]==0,0.5,tn[i])
+      fp[i] <- ifelse(fp[i]==0,0.5,fp[i])
+      fn[i] <- ifelse(fn[i]==0,0.5,fn[i])
+    }
+
+    OR <- round((tp*tn)/(fp*fn), digits=2)      # OR
+    names(OR) <- paste0(rep("OR.",length(cv)), seq_along(cv))
+
+    SE.OR <- sqrt((1/tp+1/fp+1/fn+1/tn))        #Parametric SE for OR
+
+    LL.OR <- round(OR * exp(-1.96 * SE.OR), digits=2)        #95% CI lower limit
+    names(LL.OR) <- paste0(rep("LL.OR.",length(cv)), seq_along(cv))
+
+    UL.OR <- round(OR * exp(1.96 * SE.OR), digits=2)         #95% CI upper limit
+    names(UL.OR) <- paste0(rep("UL.OR.",length(cv)), seq_along(cv))
+
+    perf <- cbind(n.obs.class1,n.pred.class1,n.obs.class2,n.pred.class2,pac,mpac,sens,spec,ess.m,mpv,ppv,npv,esp.m,OR,LL.OR,UL.OR)
+
+    index7 <- seq_along(cv)*(nrow(perf)/length(cv))
+
+    res <- c()
+    for(i in seq_along(index7)){
+      res[[i]] <- perf[(index7[i]-min(index7)+1):index7[i],seq(i,ncol(perf),by=length(index7))]
+      names(res[[i]]) <- sub("*\\.+\\d", "", names(res[[i]]))
+    }
+    perf.list <- do.call(rbind, res)
+    p.list <- c()
+    for(i in n.model){
+      p.list$Class_variable <- c(paste0("V",class))
+      p.list$Class_name[[i]] <- header[class[i]]
+      p.list$Attribute[[i]] <- c(paste0("V",attribute[i]))
+      p.list$Attribute_name[[i]] <- header[attribute[i]]
+    }
+    perf_list <- as.data.frame(do.call("cbind",c(p.list,perf.list)))
+    assign(paste0("oda.perf.",run), perf_list, pos = parent.frame())
+    #Regenerate data key with new variables
+    a.key <- as.matrix(key[attribute,1])
+    c.key <- as.matrix(key[class,1])
+    oda.key <- data.frame(a.key,names(data),c.key,names(cv))
+    names(oda.key) <- c("Attribute Label","Attribute","Class Label","Class")
+    assign(paste0("oda.key.",run), oda.key, pos = parent.frame())
+    #Clean up and add back the class variable called class
+    data$class <- cv[,1]
+    data <- cbind(data,predictions)
+    ### Return ODA data used for analysis ###
+    assign(paste0("oda.data.",run), data, pos = parent.frame())
+    ### Print Model Summary ###
     cat("Categorical ODA Model summary:\n")
     return(c.model)
   }
@@ -467,6 +669,7 @@ ODAparse <- function(run="",path=getwd(),out="") {
     key <- data.frame(header, paste("v",c.header,sep=""))
     names(data) <- key[,2]
     cv <- data[unique(class)]
+    data[data==-9] <- NA
     data <- data[attribute]
 
     stats <- as.data.frame(matrix(0, ncol = 0, nrow = 13))
@@ -484,15 +687,15 @@ ODAparse <- function(run="",path=getwd(),out="") {
       dfs <- list()
       for(j in seq_along(cv))
       {
-        dfs[[j]] <- data.frame(ifelse(x == 1 & cv[j] == 1, 1, 0),
-                               ifelse(x == 0 & cv[j] == 0, 1, 0),
-                               ifelse(x == 1 & cv[j] == 0, 1, 0),
-                               ifelse(x == 0 & cv[j] == 1, 1, 0))
+        dfs[[j]] <- data.frame(ifelse(x == cv[j] & x==max(cv[j]) & is.na(x)==F, 1, 0),
+                               ifelse(x == cv[j] & x==min(cv[j]) & is.na(x)==F, 1, 0),
+                               ifelse(x != cv[j] & cv[j] < x & is.na(x)==F, 1, 0),
+                               ifelse(x != cv[j] & cv[j] > x & is.na(x)==F, 1, 0))
       }
       setNames(do.call("cbind", dfs),
                paste0(c("tp.", "tn.", "fp.", "fn."), rep(seq_along(cv), each = 4)))
     })
-    #Extract the classification for each model and store for SDA
+    ###Create predictions for each model and store for SDA###
     index6 <- seq_along(cv)*4*nrow(data)
     sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
     if(length(sda) > 1){
@@ -511,10 +714,8 @@ ODAparse <- function(run="",path=getwd(),out="") {
     sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
     sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
     assign(paste0("oda.sda.",run), sda.frame, pos = parent.frame())
-    df <- as.data.frame(matrix(0, ncol = 0, nrow = nrow(data)))
-    for(i in n.model){
-      df[, c(paste0("pv.",n.model[i]))] <- as.vector(ifelse(data[i] > cut[i], rc.pred[i], lc.pred[i]))
-    }
+    ### Extract SDA report for ODA Model ###
+    df <- predictions
     cc_list <- lapply(df, function(x){
       cct <- list()
       for(j in seq_along(cv))
@@ -539,6 +740,11 @@ ODAparse <- function(run="",path=getwd(),out="") {
     tn <- temp2[,seq(2, ncol(temp2), 4)]        # TN
     fp <- temp2[,seq(3, ncol(temp2), 4)]        # FP
     fn <- temp2[,seq(4, ncol(temp2), 4)]        # FN
+
+    n.obs.class1 <- tn+fp
+    n.obs.class2 <- tp+fn
+    n.pred.class1 <- tn+fn
+    n.pred.class2 <- tp+fp
 
     pac <- round(acc.n/acc.d*100,digits=1)      # Percent accuracy in classfication
     names(pac) <- paste0(rep("PAC.",length(cv)), seq_along(cv))
@@ -567,21 +773,27 @@ ODAparse <- function(run="",path=getwd(),out="") {
     esp.m <- round(100*(mpv-50)/50, digits=2)   # Effect strength for Positivity
     names(esp.m) <- paste0(rep("ESP.",length(cv)), seq_along(cv))
 
+    for(i in seq_along(n.model)){
+      tp[i] <- ifelse(tp[i]==0,0.5,tp[i])
+      tn[i] <- ifelse(tn[i]==0,0.5,tn[i])
+      fp[i] <- ifelse(fp[i]==0,0.5,fp[i])
+      fn[i] <- ifelse(fn[i]==0,0.5,fn[i])
+    }
+
     OR <- round((tp*tn)/(fp*fn), digits=2)      # OR
     names(OR) <- paste0(rep("OR.",length(cv)), seq_along(cv))
 
     SE.OR <- sqrt((1/tp+1/fp+1/fn+1/tn))        #Parametric SE for OR
 
-    LL.OR <- round(OR * exp(-1.96 * SE.OR), digits=2)        #95% CI upper limit
+    LL.OR <- round(OR * exp(-1.96 * SE.OR), digits=2)        #95% CI lower limit
     names(LL.OR) <- paste0(rep("LL.OR.",length(cv)), seq_along(cv))
 
-    UL.OR <- round(OR * exp(1.96 * SE.OR), digits=2)         #95% CI lower limit
+    UL.OR <- round(OR * exp(1.96 * SE.OR), digits=2)         #95% CI upper limit
     names(UL.OR) <- paste0(rep("UL.OR.",length(cv)), seq_along(cv))
 
-    perf <- cbind(pac,mpac,sens,spec,ess.m,mpv,ppv,npv,esp.m,OR,LL.OR,UL.OR)
+    perf <- cbind(n.obs.class1,n.pred.class1,n.obs.class2,n.pred.class2,pac,mpac,sens,spec,ess.m,mpv,ppv,npv,esp.m,OR,LL.OR,UL.OR)
 
     index7 <- seq_along(cv)*(nrow(perf)/length(cv))
-
     res <- c()
     for(i in seq_along(index7)){
       res[[i]] <- perf[(index7[i]-min(index7)+1):index7[i],seq(i,ncol(perf),by=length(index7))]
@@ -606,8 +818,9 @@ ODAparse <- function(run="",path=getwd(),out="") {
     #Clean up and add back the class variable called class
     data$class <- cv[,1]
     data <- cbind(data,predictions)
+    ### Return ODA data used for analysis ###
     assign(paste0("oda.data.",run), data, pos = parent.frame())
-    #Return Model summary
+    ### Print Model Summary ###
     cat("ODA Model summary:\n")
     return(model)
   }
