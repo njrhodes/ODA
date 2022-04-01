@@ -4,57 +4,47 @@
 \alias{ODAparse}
 \title{Parse ODA output files.}
 \usage{
-ODAparse(run = "", path = getwd(), out = "")
+ODAparse(run = "", ...)
 }
 \arguments{
 \item{run}{The numerical value of the run folder in which the data file is
 stored}
 
-\item{path}{The working directory of the project stored as \code{path} which
-should be set above the level of the Runs folder}
-
-\item{out}{The character name of the output file, when not specified it is
-assumed to be MODEL.OUT and must be the same name as was specified in
-\code{\link{ODArun}}}
+\item{...}{Additional run numbers specified as a list}
 }
 \value{
 The following objects with the run number appended are returned for
-  non categorical ODA models: \item{oda.data}{Data frame based on the
-  data.csv file from specified \code{run} folder.} \item{oda.key}{Data frame
-  containing 2 columns: the variable names from the \code{oda.data} and an
-  ODA friendly alias e.g., v1 v2 for each attribute variable included in the
-  ODA model.} \item{oda.list}{Data frame containing the confusion matrix for
-  each ODA model contained in the model.out file. This output can be used to
-  evaluate the reproducablity of the model results using a Novometric
-  bootstrap analysis, see \code{\link{NOVOboot}}.} \item{oda.model}{Data
-  frame containing the parsed model output and the ESS, ESP, and significance
-  for ODA models.} \item{oda.perf}{Data frame containing the overall
-  accuracy, sensitivity, specificity, positive predictive value, and negative
+  ODA models: \item{oda.data}{Data frame based on the data.csv file from
+  specified \code{run} folder.} \item{oda.key}{Data frame containing 2
+  columns: the variable names from the \code{oda.data} and an ODA friendly
+  alias e.g., v1 v2 for each attribute variable included in the ODA model.}
+  \item{oda.list}{Data frame containing the confusion matrix for each ODA
+  model contained in the model.out file. This output can be used to evaluate
+  the reproducibility of the model results using a Novometric bootstrap
+  analysis, see \code{\link{NOVOboot}}.} \item{oda.model}{Data frame
+  containing the parsed model output and the ESS, ESP, and significance for
+  ODA models.} \item{oda.perf}{Data frame containing the overall accuracy,
+  sensitivity, specificity, positive predictive value, and negative
   predictive value for each attribute included in the ODA model. Univariate
-  OR and 95\% CI are also presented, but caution is needed with observed cell
-  counts of zero.} \item{oda.stats}{Data frame containing the classification
-  summary for each ODA model contained in the model.out file.}
-  \item{oda.sda}{Data frame containing predictions based on the model
-  attributes and observed classifications. Correct and incorrect
-  classifications, e.g., False positive and false negative status, are
-  captured for each observation in the dataset. Structural decomposition can
-  be completed using these data in subsequent ODA models.}
+  OR and 95\% CI are also presented. The Haldane-Anscombe-Gart correction is
+  made observed cell counts of zero and a warning is displayed.}
+  \item{oda.stats}{Data frame containing the classification summary for each
+  ODA model contained in the model.out file.} \item{oda.sda}{Data frame
+  containing predictions based on the model attributes and observed
+  classifications. Correct and incorrect classifications, e.g., False
+  positive and false negative status, are captured for each observation in
+  the dataset. Structural decomposition can be completed using these data in
+  subsequent ODA models.}
 }
 \description{
 Parses model details, model predictions, and loads objects.
 }
 \details{
 When run, \code{ODAparse} will return model performance metrics and
-  data loaded within the global environement, which can be further evaluated.
+  data loaded within the global environment, which can be further evaluated.
 
-  The path to the current project must be stored as \code{path} and the files
-  to be loaded must be located in the \code{Run} folder.
-
-  Categorical ODA models are not fully supported. If a categorical model is
-  detected, a model summary and statistics will be returned and loaded.
-
-  Multisample generalizablity (GEN) analyses are partially supported. If GEN
-  models are detected, the user will be warned.
+  The working directory must be directed toward the project files to be
+  loaded and located within a \code{Run} folder inside the project tree.
 
   For each ODA model, \code{ODAparse} will return the \strong{Effect Strength
   for Sensitivity} or ESS and the \strong{Effect Strength for Predictive
@@ -78,8 +68,8 @@ When run, \code{ODAparse} will return model performance metrics and
 
   The significance values reported are from 1. Monte Carlo simulations for
   all observations and 2. Fisher's Exact tests for LOO analysis. Depending on
-  whether a GEN, CAT, or univariate ODA model is detected, and if LOO
-  jackknife is performed, the exact \code{oda.model} output will vary.
+  whether a GEN, CAT, or ordered ODA model is detected, and if LOO jackknife
+  is performed, the exact \code{oda.model} output will vary.
 
   The user is referred to the ODA User guide \code{\link{ODAmanual}} and is
   encouraged to review the data contained within the MODEL.OUT file for more
