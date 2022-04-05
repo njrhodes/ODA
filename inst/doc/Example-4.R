@@ -26,11 +26,9 @@ library(ODA)
 #Not run-already exists
 #ODAtree("Example 4")
 
-#setwd("~/vignettes/data/Example 4/Runs")
+#setwd("Example 4")
 
-#write.csv(data.raw,file="data3.csv",row.names=F)
-
-#setwd("~/vignettes/data/Example 4")
+#write.csv(data.raw,file="Runs/data4.csv",row.names=F)
 
 #ODAclean(data="data4.csv",output=1)
 
@@ -41,31 +39,17 @@ print(key.1)
 
 ## Run MegaODA via ODArun() specifying binary class and ordered attribute variables
 #Not run-already exists
-#ODArun(run=1,vstart="v1",vend="v2",class="v2",attribute="v1", 
-#                                   miss=-9,mcarlo=T,iter=25000)
+#ODArun(run=1,vstart="v1",vend="v2",class="v2",attribute="v1")
 
 ## Load ODA model into active environment and evaluate output
-#ODAparse(1) 
-#Message: The default output file name of MODEL.OUT was applied.
-#ODA Model summary:
-#  Model        IF    THEN       IF    THEN Overall ESS(%) Overall ESP(%) MC P-value 
-#      1 V1 <= 0.5  V2 = 0 0.5 < V1  V2 = 1         24.69%         31.41%   0.086760 
-#  LOO ESS(%) LOO ESP(%) LOO P-value
-#      24.69%     31.41%     .021822
+ODAparse(1) 
+print(oda.model.1)
 
 ## Display model performance metrics
-#print(oda.perf.1)
-#Class_variable  Class_name Attribute Attribute_name  PAC  mpac  sens  spec ess.m 
-#            V2 Treatment.2        V1        Attacks 62.7 62.34 85.29 39.39 24.68 
-# mpv   ppv   npv esp.m   OR  LL.OR UL.OR
-# 65.7 59.18 72.22  31.4 3.77  1.16 12.25
+print(oda.perf.1)
 
 ## Table 2. Confusion Matrix for a Binary Class, Ordered Attribute, ODA Model
-#print(oda.list.1)
-#   x
-#v2   0  1
-#  0 13 20
-#  1  5 29
+print(oda.list.1)
 
 # Here, v2=Observed Treatment 2  status (1 or 0)
 # and x=ODA predicted Treatment 2 status (1 or 0)

@@ -8,7 +8,7 @@
 #'
 ODAmanual <- function () {
   shell(paste("start acrord32.exe ",shQuote(normalizePath(
-    system.file("doc","pdf", "ODA_1.2.0.pdf", package = "ODA"),  winslash = "\\")), sep = ""))
+    system.file("doc","pdf", "ODA_1.2.1.pdf", package = "ODA"),  winslash = "\\")), sep = ""))
   shell(paste("start acrord32.exe ",shQuote(normalizePath(
     system.file("doc","pdf", "ODA-User-Guide.pdf", package = "ODA"),  winslash = "\\")), sep = ""))
   shell(paste("start acrord32.exe ",shQuote(normalizePath(

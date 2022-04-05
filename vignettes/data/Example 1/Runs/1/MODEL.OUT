@@ -1,11 +1,10 @@
 -------------------------------------------------------------------------------
-Page 1                     Optimal Data Analysis           14:01:15  09-29-20
+Page 1                     Optimal Data Analysis           10:20:17  04-05-22
  
 VARS V1 TO V2;
 CLASS V1;
 ATTRIBUTE V2;
-MISSING ALL (-9);
-MCARLO ITER 25000;
+MCARLO ITER 1000;
 LOO;
 GO;
  
@@ -26,7 +25,7 @@ Missing:     0
 Excluded:    0
 Classes:     2
 Solution:    OPTIMAL
-Time (sec):  7
+Time (sec):  1
 Hypothesis:  NONDIRECTIONAL
 Categorical: OFF
 Priors:      ON
@@ -35,7 +34,7 @@ Primary:     MAXSENS
 Secondary:   SAMPLEREP
  
 -------------------------------------------------------------------------------
-Page 2                     Optimal Data Analysis           14:01:22  09-29-20
+Page 2                     Optimal Data Analysis           10:20:18  04-05-22
  
 ODA model:
 ----------
@@ -45,7 +44,7 @@ IF 0.5 < V2 THEN V1 = 1
  
 Monte Carlo summary (Fisher randomization):
 -------------------------------------------
-Iterations:  25000
+Iterations:  1000
 Estimated p: 0.000000
  
  
@@ -53,7 +52,7 @@ Confidence levels for estimated p:
 ----------------------------------
 Desired p   Confidence      Desired p   Confidence
 ---------   ----------      ---------   ----------
- p<.001       100.00%         p>.001         0.00%
+ p<.001        63.27%         p>.001        36.73%
  p<.01        100.00%         p>.01          0.00%
  p<.05        100.00%         p>.05          0.00%
  p<.10        100.00%         p>.10          0.00%
@@ -80,7 +79,7 @@ l      -----------------
  
 Effect strength PAC    44.09%      Effect strength PV   47.04%
 -------------------------------------------------------------------------------
-Page 3                     Optimal Data Analysis           14:01:22  09-29-20
+Page 3                     Optimal Data Analysis           10:20:18  04-05-22
  
 Results of leave-one-out analysis
 ---------------------------------

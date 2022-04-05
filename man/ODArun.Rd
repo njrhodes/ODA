@@ -26,7 +26,7 @@ ODArun(
   miss = "",
   weight = "",
   mcarlo = T,
-  iter = "1000",
+  iter = "25000",
   target = "",
   sidak = "",
   stop = "",
@@ -71,7 +71,7 @@ of observations that are included e.g., \code{"v2=2"} or \code{"v3>=50"}}
 that are excluded}
 
 \item{direction}{An optional character name and direction e.g., \code{v2 < 1
-or v2 LT 1} specifiying a directional hypothesis}
+or v2 LT 1} specifying a directional hypothesis for the class variable}
 
 \item{degen}{An optional character name specifying attributes for which
 degenerate solutions are allowed, off by default}
@@ -183,7 +183,7 @@ The working directory of the project is stored as \code{path}. All
 }
 \examples{
 # Not run:
-# ODArun(run=1, vstart="v1",vend="v45",class="v45",attribute="v1 to v44")
+# ODArun(run=1, vstart="v1",vend="v45",class="v45",attribute="v1 to v44", categorical="v1 v3")
 
 }
 \references{

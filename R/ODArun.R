@@ -25,7 +25,7 @@
 #' @param exclude An optional character name specifying the variable and a value
 #'   that are excluded
 #' @param direction An optional character name and direction e.g., \code{v2 < 1
-#'   or v2 LT 1} specifiying a directional hypothesis
+#'   or v2 LT 1} specifying a directional hypothesis for the class variable
 #' @param degen An optional character name specifying attributes for which
 #'   degenerate solutions are allowed, off by default
 #' @param gen An optional character name specifying the variable whose values
@@ -122,7 +122,7 @@
 #'
 #' @examples
 #' # Not run:
-#' # ODArun(run=1, vstart="v1",vend="v45",class="v45",attribute="v1 to v44")
+#' # ODArun(run=1, vstart="v1",vend="v45",class="v45",attribute="v1 to v44", categorical="v1 v3")
 #'
 #' @references Yarnold P.R. and Soltysik R.C. (2005). \emph{Optimal data
 #'   analysis: Guidebook with software for Windows}. APA Books.
@@ -130,7 +130,7 @@
 #'   Yarnold, P.R. and Soltysik, R.C. (2016). \emph{Maximizing Predictive
 #'   Accuracy}. ODA Books. DOI: 10.13140/RG.2.1.1368.3286
 #'
-ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="", vstart="", vend="", class="", attribute="", categorical="", include="", exclude="", direction="", degen="", gen="", primary="", secondary="", nopriors=F, miss="", weight="", mcarlo=T, iter = "1000", target = "", sidak = "", stop = "", adjust=F, setseed = "", loooff=F, overwrite = FALSE) {
+ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="", vstart="", vend="", class="", attribute="", categorical="", include="", exclude="", direction="", degen="", gen="", primary="", secondary="", nopriors=F, miss="", weight="", mcarlo=T, iter = "25000", target = "", sidak = "", stop = "", adjust=F, setseed = "", loooff=F, overwrite = FALSE) {
   `%notin%` <- Negate(`%in%`)
   if(run == ""){
     cat("Error: User must specify the run folder in which to execute ODArun().")
@@ -285,16 +285,12 @@ ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="
     ## Error checking for potentially problematic variable specifications
     w <- list(class,attribute,gen,categorical)
     x <- list(attribute,class,categorical,weight)
-    y <- lapply(x, function(ch) grep("to", ch))
+    #y <- lapply(x, function(ch) grep("to", ch))
     z <- list("maxsens","meansens","samplerep","balanced","distance","random","genmean")
-    #ca <- lapply(attribute, function(ch) grep(categorical, ch))
     ge <- lapply(x, function(ch) grep(gen, ch))
     wgt <- lapply(w, function(ch) grep(weight, ch))
-    if (length(y) > 0) {
-      cat("Warning: The \"to\" operator was specified within the ODArun command. Review the MODEL.OUT file to confirm the proper analysis was conducted.\n")
-    }
-    #if (categorical != "" & sum(unlist(ca))==0) {
-    #  stop(cat("Error: \"categorical\" variable must be listed in the attribute block to initiate a categorical model.\n"))
+    #if (length(y) > 0) {
+    #  cat("Warning: The \"to\" operator was specified within the ODArun command. Review the MODEL.OUT file to confirm the proper analysis was conducted.\n")
     #}
     if (gen != "" & sum(unlist(ge)) != 0)  {
       stop(cat("Error: \"gen\" variable cannot be the same variable specified as class, attribute, categorical, or weight variables.\n"))

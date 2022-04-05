@@ -42,6 +42,15 @@
 #'   encouraged to review the data contained within the MODEL.OUT file for more
 #'   information.
 #'
+#'   \code{ODAparse} is not compatible with models where mcarlo = F see
+#'   \code{ODArun}
+#'
+#'   Users may receive the unexpected warning: "Warning  7: WEIGHTed CATEGORICAL
+#'   LOO not available. LOO switched to OFF." If this warning does not reflect
+#'   specification of a categorical weighted model, it is possible that the
+#'   attribute does not vary within one or more classes. Selection of a
+#'   different attribute / predictor is suggested.
+#'
 #' @return The following objects with the run number appended are returned for
 #'   ODA models: \item{oda.data}{Data frame based on the data.csv file from
 #'   specified \code{run} folder.} \item{oda.key}{Data frame containing 2

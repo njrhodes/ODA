@@ -49,39 +49,28 @@ library(ODA)
 #Not run-already exists
 #ODAtree("Example 1")
 
-#setwd("~/vignettes/data/Example 1/Runs")
+#setwd("Example 1")
 
-#write.csv(data.raw,file="data1.csv",row.names=F)
+#write.csv(data.raw,file="Runs/data1.csv",row.names=F)
 
-#setwd("~/vignettes/data/Example 1")
-
-#ODAclean(data="data1.csv",output=1)
+#ODAclean("data1.csv",output=1)
 
 ## Load data.csv file and obtain recoded variable names
 ODAload(1)
+
 # Recoded variable (v) names to be used in ODA analysis
 print(key.1)
 
 ## Run MegaODA via ODArun() specifying class and attribute variables
 #Not run-already exists
-#ODArun(run=1,vstart="v1",vend="v2",class="v1",
-#                                     attribute="v2", miss=-9,mcarlo=T,iter=25000)
+#ODArun(run=1,vstart="v1",vend="v2",class="v1",attribute="v2")
 
 ## Load ODA model into active environment and evaluate output
-#ODAparse(1) 
-#Message: The default output file name of MODEL.OUT was applied.
-#ODA Model summary:
-#  Model        IF    THEN       IF    THEN Overall ESS(%) Overall ESP(%) MC P-value
-#      1 V2 <= 0.5  V1 = 0 0.5 < V2  V1 = 1         44.09%         47.04%   0.000000
-#  LOO ESS(%)   LOO ESP(%)   LOO P-value
-#      44.09%       47.04%    .922E-0020
+ODAparse(1)
+print(oda.model.1)
 
-## Table 2. Confusion Matrix for ODA Model, for Training and LOO Analysis
-#print(oda.list.1) 
-#   x
-#v1    0   1
-#  0 118  78
-#  1  34 177
+## Table 2. Confusion Matrix for Categorical ODA Model, for Training and LOO Analysis
+print(oda.list.1) 
 
 # Here, v1=observed votes (Pro = 1; Con = 0) 
 # and x=predicted votes (Pro = 1; Con = 0)

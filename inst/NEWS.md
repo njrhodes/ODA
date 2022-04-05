@@ -1,3 +1,9 @@
+# ODA 1.2.1
+
+* Updated vignettes to reflect current functionality. 
+* Modified Rscript skeleton to be compatable with current functionality.
+* Updated documentation files for ODArun and ODAparse
+
 # ODA 1.2.0 (2022-04-01)
 
 * Improved functionality and compatiblity of ODAparse() for multiple model types.

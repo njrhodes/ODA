@@ -74,6 +74,15 @@ When run, \code{ODAparse} will return model performance metrics and
   The user is referred to the ODA User guide \code{\link{ODAmanual}} and is
   encouraged to review the data contained within the MODEL.OUT file for more
   information.
+
+  \code{ODAparse} is not compatible with models where mcarlo = F see
+  \code{ODArun}
+
+  Users may receive the unexpected warning: "Warning  7: WEIGHTed CATEGORICAL
+  LOO not available. LOO switched to OFF." If this warning does not reflect
+  specification of a categorical weighted model, it is possible that the
+  attribute does not vary within one or more classes. Selection of a
+  different attribute / predictor is suggested.
 }
 \examples{
 # Not run:

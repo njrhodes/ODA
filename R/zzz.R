@@ -13,7 +13,7 @@
   } else(oda.warn <-"Pass check: MegaODA.exe is located in the proper folder.\n")
   if(benchmarkme::get_cpu()[1] != "GenuineIntel"){cpu.warn <- "Fail check: MegaODA.exe is only supported on Intel Processors currently.\n"
   } else(cpu.warn <- "Pass Check: Running on an Intel Machine.\n")
-  start_message <- c("Welcome to the ODA package for R, version 1.2.0. \n\n",
+  start_message <- c("Welcome to the ODA package for R, version 1.2.1. \n\n",
                      "For updates to this package or to contribute visit our GitHub. \n\n",
                      "Use ODAmanual() to get help with the package. \n\n",
                      "For information about ODA and ODA applications, please visit https://odajournal.com/ \n\n",

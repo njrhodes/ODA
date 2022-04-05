@@ -26,11 +26,9 @@ library(ODA)
 #Not run-already exists
 #ODAtree("Example 3")
 
-#setwd("~/vignettes/data/Example 3/Runs")
+#setwd("Example 3")
 
-#write.csv(data.raw,file="data3.csv",row.names=F)
-
-#setwd("~/vignettes/data/Example 3")
+#write.csv(data.raw,file="Runs/data3.csv",row.names=F)
 
 #ODAclean(data="data3.csv",output=1)
 
@@ -41,30 +39,18 @@ print(key.1)
 
 ## Run MegaODA via ODArun() specifying class and attribute and categorical variables
 #Not run-already exists
-#ODArun(run=1,vstart="v1",vend="v2",class="v1",attribute="v2", 
-#                                   categorical = "v2", miss=-9,mcarlo=T,iter=25000)
+#ODArun(run=1,vstart="v1",vend="v2",class="v1",attribute="v2", categorical = "v2")
 
 ## Load ODA model into active environment and evaluate output
-#ODAparse(1) 
-#Message: The default output file name of MODEL.OUT was applied.
-#Warning: A categorical model was detected. The MODEL.OUT results have been truncated.
-#Categorical ODA Model summary:
-#  Model                         Attributes                    Predictions 
-#1     1 V2 = 1 , V2 = 2 , V2 = 3 , V2 = 4  V1 = 1, V1 = 2, V1 = 3, V1 = 4
-#  Overall ESS(%) Overall ESP(%) MC P-value LOO ESS(%) LOO ESP(%)
-#          50.96%         51.22%   0.000000     50.96%     51.22%
+ODAparse(1) 
+print(oda.model.1)
 
-## Generate multicategorical model predictions (not automated currently)
-data.1$Predict <- ifelse(data.1$Amino.Acid==1 ,1,
-                         ifelse(data.1$Amino.Acid==2,2,
-                                ifelse(data.1$Amino.Acid==3,3,
-                                       4)))
 
 ## Table 2. Confusion Matrix for a Muticategorical Class, Multi-categorical Attribute, ODA Model
-print(table(cbind(data.1[1],data.1[3])))
+print(oda.list.1)
 
-# Here, Biological=observed Biological protein type (1-4) 
-# and Predict=predicted Biological protein type (1-4)
+# Here, v1=observed Biological protein type (1-4) 
+# and x=predicted Biological protein type (1-4)
 
 #Sens for Type 1 Proteins = 80.3%
 round(98/(122),3)*100
