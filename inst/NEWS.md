@@ -1,12 +1,18 @@
-# ODA 1.2.1
+# ODA 1.3.0 (2022-04-06)
+
+* Bug fixes applied for ODAparse with multiple class evaluations.
+* Bug fixes applied for ODAsummary facilitating write to csv file.
+* Update NOVOboot to allow selection of direction or non-directional Fisher's Exact hypothesis testing.
+
+# ODA 1.2.1 (2022-04-05)
 
 * Updated vignettes to reflect current functionality. 
-* Modified Rscript skeleton to be compatable with current functionality.
-* Updated documentation files for ODArun and ODAparse
+* Modified Rscript skeleton to be compatible with current functionality.
+* Updated documentation files for ODArun and ODAparse.
 
 # ODA 1.2.0 (2022-04-01)
 
-* Improved functionality and compatiblity of ODAparse() for multiple model types.
+* Improved functionality and compatibility of ODAparse() for multiple model types.
 * Added ODAsummary function to facilitate merger of reports from ODAparse().
 
 # ODA 1.1.2 (2020-12-06)

@@ -10,7 +10,8 @@ NOVOboot(
   predictor = "",
   outcome = "",
   nboot = "",
-  seed = ""
+  seed = "",
+  alternative = ""
 )
 }
 \arguments{
@@ -35,6 +36,9 @@ replacement. The default value is 25,000 replicates.}
 \item{seed}{The seed number passed to \code{\link{set.seed}} that serves as
 the origin of the pseudorandom numbers generated for the bootstrap
 resampling. The default seed number is the current system time.}
+
+\item{alternative}{Specification of a two-tailed test as \code{two.sided} is
+assumed but alternative specifications are \code{greater} or or \code{less}}
 }
 \value{
 An array of percentiles from 0\% to 100\% capturing the resampled

@@ -95,6 +95,8 @@ ODAsummary <- function(run="",...) {
 
       model$Model <- as.numeric(as.character(model$Model))
 
+      model <- data.frame(lapply(model,as.character), stringsAsFactors = F)
+
       msumm[[thisrun]] <- cbind(model,perf)
 
     }

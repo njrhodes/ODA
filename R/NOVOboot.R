@@ -16,6 +16,8 @@
 #' @param seed The seed number passed to \code{\link{set.seed}} that serves as
 #'   the origin of the pseudorandom numbers generated for the bootstrap
 #'   resampling. The default seed number is the current system time.
+#' @param alternative Specification of a two-tailed test as \code{two.sided} is
+#'   assumed but alternative specifications are \code{greater} or or \code{less}
 #'
 #' @return An array of percentiles from 0\% to 100\% capturing the resampled
 #'   model and chance performance metrics. The simulated bootstraps are stored
@@ -109,7 +111,7 @@
 #'   Yarnold, P.R. and Soltysik, R.C. (2016). \emph{Maximizing Predictive
 #'   Accuracy}. ODA Books. DOI: 10.13140/RG.2.1.1368.3286
 #'
-NOVOboot <- function(data="",run="",predictor="",outcome="",nboot="",seed=""){
+NOVOboot <- function(data="",run="",predictor="",outcome="",nboot="",seed="",alternative=""){
   if(!exists(paste0("oda.list.",run))){
     cat("It is recommended to run ODAparse() prior to NOVOboot() or supply a confusion matrix.\n")
   }
@@ -127,6 +129,11 @@ NOVOboot <- function(data="",run="",predictor="",outcome="",nboot="",seed=""){
     reps <- 25000
   }
   else(reps<-nboot)
+  if(missing(alternative)){
+    cat("Default two-sided test assumed.\n")
+    alt <- "two.sided"
+  }
+  else{alt<-alternative}
   if(missing(seed)){
     set.seed(as.numeric(Sys.time()))
   }
@@ -163,7 +170,7 @@ NOVOboot <- function(data="",run="",predictor="",outcome="",nboot="",seed=""){
     spec[[i]] <- tab[[i]][1,1]/sum(tab[[i]][1,1],tab[[i]][1,2])
     mpac[[i]] <- (sens[[i]]+spec[[i]])/2
     ess[[i]]  <- (mpac[[i]]-0.5)/0.5
-    p[[i]]    <- fisher.test(tab[[i]])[1]
+    p[[i]]    <- fisher.test(tab[[i]],alternative = alt)[1]
     or[[i]]   <- (tab[[i]][2,2] / tab[[i]][1,2]) / (tab[[i]][2,1] / tab[[i]][1,1])
     rr[[i]]   <- (tab[[i]][2,2] / sum(tab[[i]][2,2],tab[[i]][1,2])) / (tab[[i]][2,1] / sum(tab[[i]][2,1],tab[[i]][1,1]))
   }
@@ -199,7 +206,7 @@ NOVOboot <- function(data="",run="",predictor="",outcome="",nboot="",seed=""){
     spec[[i]] <- tab[[i]][1,1]/sum(tab[[i]][1,1],tab[[i]][1,2])
     mpac[[i]] <- (sens[[i]]+spec[[i]])/2
     ess[[i]]  <- (mpac[[i]]-0.5)/0.5
-    p[[i]]    <- fisher.test(tab[[i]])[1]
+    p[[i]]    <- fisher.test(tab[[i]],alternative = alt)[1]
     or[[i]]   <- (tab[[i]][2,2] / tab[[i]][1,2]) / (tab[[i]][2,1] / tab[[i]][1,1])
     rr[[i]]   <- (tab[[i]][2,2] / sum(tab[[i]][2,2],tab[[i]][1,2])) / (tab[[i]][2,1] / sum(tab[[i]][2,1],tab[[i]][1,1]))
   }
