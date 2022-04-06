@@ -410,8 +410,8 @@ ODAparse <- function(run="",...) {
       n.pred.class2 <- (tp+fp)
 
       names(n.obs.class1) <- paste0("n.obs.class1.",seq_along(cv))
-      names(n.obs.class2) <- paste0("n.pred.class2.",seq_along(cv))
-      names(n.pred.class1) <- paste0("n.obs.class1.",seq_along(cv))
+      names(n.obs.class2) <- paste0("n.obs.class2.",seq_along(cv))
+      names(n.pred.class1) <- paste0("n.pred.class1.",seq_along(cv))
       names(n.pred.class2) <- paste0("n.pred.class2.",seq_along(cv))
 
       pac <- round(acc.n/acc.d*100,digits=1)      # Overall accuracy in classification
