@@ -441,6 +441,7 @@ ODAparse <- function(run="",...) {
       esp.m <- round(100*(mpv-50)/50, digits=2)   # Effect strength for Positivity
       names(esp.m) <- paste0(rep("ESP.",length(cv)), seq_along(cv))
 
+      if(length(cv)>1){
       for(i in seq_along(n.model)){
         if(min(tp[i,],tn[i,],fp[i,],fn[i,])==0){
           tp[i,] <- tp[i,]+0.5
@@ -453,6 +454,22 @@ ODAparse <- function(run="",...) {
           tn[i,] <- tn[i,]
           fp[i,] <- fp[i,]
           fn[i,] <- fn[i,]
+        }
+      }
+      } else{
+        for(i in seq_along(n.model)){
+          if(min(tp[i],tn[i],fp[i],fn[i])==0){
+            tp[i] <- tp[i]+0.5
+            tn[i] <- tn[i]+0.5
+            fp[i] <- fp[i]+0.5
+            fn[i] <- fn[i]+0.5
+            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
+          } else{
+            tp[i] <- tp[i]
+            tn[i] <- tn[i]
+            fp[i] <- fp[i]
+            fn[i] <- fn[i]
+          }
         }
       }
 
@@ -786,11 +803,16 @@ ODAparse <- function(run="",...) {
       tn <- temp2[,seq(2, ncol(temp2), 4)]        # TN
       fp <- temp2[,seq(3, ncol(temp2), 4)]        # FP
       fn <- temp2[,seq(4, ncol(temp2), 4)]        # FN
-
+      
       n.obs.class1 <- (tn+fp)
       n.obs.class2 <- (tp+fn)
       n.pred.class1 <- (tn+fn)
       n.pred.class2 <- (tp+fp)
+      
+      names(n.obs.class1) <- paste0("n.obs.class1.",seq_along(cv))
+      names(n.obs.class2) <- paste0("n.obs.class2.",seq_along(cv))
+      names(n.pred.class1) <- paste0("n.pred.class1.",seq_along(cv))
+      names(n.pred.class2) <- paste0("n.pred.class2.",seq_along(cv))
 
       pac <- round(acc.n/acc.d*100,digits=1)      # Overall accuracy in classification
       names(pac) <- paste0(rep("PAC.",length(cv)), seq_along(cv))
@@ -819,18 +841,35 @@ ODAparse <- function(run="",...) {
       esp.m <- round(100*(mpv-50)/50, digits=2)   # Effect strength for Positivity
       names(esp.m) <- paste0(rep("ESP.",length(cv)), seq_along(cv))
 
-      for(i in seq_along(n.model)){
-        if(min(tp[i],tn[i],fp[i],fn[i])==0){
-          tp[i] <- tp[i]+0.5
-          tn[i] <- tn[i]+0.5
-          fp[i] <- fp[i]+0.5
-          fn[i] <- fn[i]+0.5
-          cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
-        } else{
-          tp[i] <- tp[i]
-          tn[i] <- tn[i]
-          fp[i] <- fp[i]
-          fn[i] <- fn[i]
+      if(length(cv)>1){
+        for(i in seq_along(n.model)){
+          if(min(tp[i,],tn[i,],fp[i,],fn[i,])==0){
+            tp[i,] <- tp[i,]+0.5
+            tn[i,] <- tn[i,]+0.5
+            fp[i,] <- fp[i,]+0.5
+            fn[i,] <- fn[i,]+0.5
+            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
+          } else{
+            tp[i,] <- tp[i,]
+            tn[i,] <- tn[i,]
+            fp[i,] <- fp[i,]
+            fn[i,] <- fn[i,]
+          }
+        }
+      } else{
+        for(i in seq_along(n.model)){
+          if(min(tp[i],tn[i],fp[i],fn[i])==0){
+            tp[i] <- tp[i]+0.5
+            tn[i] <- tn[i]+0.5
+            fp[i] <- fp[i]+0.5
+            fn[i] <- fn[i]+0.5
+            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
+          } else{
+            tp[i] <- tp[i]
+            tn[i] <- tn[i]
+            fp[i] <- fp[i]
+            fn[i] <- fn[i]
+          }
         }
       }
 
