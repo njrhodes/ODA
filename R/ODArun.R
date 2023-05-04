@@ -1,11 +1,10 @@
 #' @title Execute an ODA model run.
 #'
-#' @description Creates an command file using the parameters below and calls
-#'   MegaODA
+#' @description Creates and processes files needed for MegaODA.exe program
 #'
 #' @param run A numerical value specifying the run folder containing the data
 #' @param path The working directory of the project stored as \code{path}
-#' @param data A character name specifying the data.txt file in the runs folder
+#' @param data A character name specifying the data.txt file in the model folder
 #' @param out A character name specifying the output file with "model.out" as
 #'   the default
 #' @param hold A character name specifying the holdout data file, omitted by
@@ -29,7 +28,7 @@
 #' @param degen An optional character name specifying attributes for which
 #'   degenerate solutions are allowed, off by default
 #' @param gen An optional character name specifying the variable whose values
-#'   denote groups for a multisample generalizablity analysis, off by default
+#'   denote groups for a multisample generalizability analysis, off by default
 #' @param primary An optional character vector specifying the primary criterion
 #'   for choosing among optimal solutions, see \code{Details}
 #' @param secondary An optional character vector specifying the secondary
@@ -64,16 +63,17 @@
 #' @param loooff An optional logical value specifying whether leave one out or
 #'   LOO analysis should be turned off with \code{loooff = FALSE} as the default
 #' @param overwrite An optional logical value specifying whether previous files
-#'   in the \code{Run} folder should be overwritten with \code{overwrite =
-#'   FALSE} as the default
+#'   in the model folder should be overwritten with \code{overwrite = FALSE} as
+#'   the default
 #'
 #' @details The working directory of the project is stored as \code{path}. All
-#'   files needed for the run must be located in the appropriate \code{run}
-#'   folder beneath this level. See \code{\link{ODAclean}}.
+#'   files needed for the model run must be located in the appropriate model run
+#'   folder. See \code{\link{ODAclean}}.
 #'
-#'   \code{ODArun} will produce a command file with an extension of .pgm and two
-#'   files with .out extensions. Resulting MODEL.OUT files can be parsed using
-#'   \code{\link{ODAparse}}.
+#'   \code{ODArun} will produce a command file with a .pgm extension, a model
+#'   file with a .out extension, and a batch file with .bat extension. The .bat
+#'   file must be executed within the model directory. Model output files can be
+#'   parsed using \code{\link{ODAparse}}.
 #'
 #'   The ODA algorithm explicitly maximizes the classification accuracy which is
 #'   achieved for the training sample see Yarnold, 2005.
@@ -94,7 +94,7 @@
 #'   When \code{gen} is active, other options include: \code{genmean} and
 #'   \code{gensens(attribute)}
 #'
-#'   There are several disallowed specifications. Error checking is
+#'   There are several disallowed run specifications. Error checking is
 #'   automatically performed on the user inputs. However, if the \code{to}
 #'   keyword is used with a range of variables, it is suggested that the user
 #'   confirm that the desired analysis was performed as some error checking is
@@ -104,14 +104,13 @@
 #'   and listed as any of the following \code{attribute} \code{categorical}
 #'   \code{class} \code{weight}.
 #'
-#' @return Nothing is returned. Three files are created in the \code{Run}
-#'   folder: \item{MODEL.out}{The model file that contains the commands from
-#'   MEGAODA syntax and analysis results, see \code{\link{ODAmanual}}. This file
-#'   is required for \code{\link{ODAparse}}} \item{OUT.out}{The echo file that
-#'   contains the inital commands for OPEN and OUTPUT from MEGAODA syntax, see
-#'   \code{\link{ODAmanual}}.} \item{OUT.pgm}{The command file that contains all
-#'   of the commands for MEGAODA passed from R based on user input to
-#'   \code{ODArun}.}
+#' @return Nothing is returned. Three files are created in the model folder:
+#'   \item{MODEL.out}{The model file that contains the commands from MEGAODA
+#'   syntax and analysis results, see \code{\link{ODAmanual}} This file is
+#'   required for \code{\link{ODAparse}}.}\item{oda.pgm}{The command file that
+#'   contains all of the commands for MEGAODA passed from R based on user input
+#'   to \code{ODArun}.}\item{odarun.bat}{The batch file that must be executed to
+#'   begin the model run.}
 #' @export
 #'
 #' @importFrom utils read.table
@@ -133,20 +132,20 @@
 ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="", vstart="", vend="", class="", attribute="", categorical="", include="", exclude="", direction="", degen="", gen="", primary="", secondary="", nopriors=F, miss="", weight="", mcarlo=T, iter = "25000", target = "", sidak = "", stop = "", adjust=F, setseed = "", loooff=F, overwrite = FALSE) {
   `%notin%` <- Negate(`%in%`)
   if(run == ""){
-    cat("Error: User must specify the run folder in which to execute ODArun().")
+    cat("Error: User must specify the folder in which to execute ODArun().")
   }
   else{
-    rundir <- paste(path,"Runs",run,sep="/")
+    rundir <- paste(path,"ODA",run,sep="/")
     odadir <- paste(path,"Program",sep="/")
     prevrun <- paste(rundir,out,sep="/")
     if (file.exists(prevrun)) {
-      cat("Warning: The specified run directory already contains at least one ODA model. Do you wish to overwrite the files in this run?\n")
-      overwrite <- readline(prompt="Message: Overwrite all files in this run (Y/N): ")
+      cat("Warning: The specified directory already contains at least one ODA model. Do you wish to overwrite the files in this folder?\n")
+      overwrite <- readline(prompt="Message: Overwrite all model files in this folder (Y/N): ")
       if (overwrite == "Y" | overwrite == "y"){
         overwrite <- TRUE
       }
       else{
-        stop(cat("Warning: ODArun() stopped at user request. Run directory already exists.\n"))
+        stop(cat("Warning: ODArun() stopped at user request. File directory already exists.\n"))
       }
     }
     file.copy(paste(odadir,"MEGAODA.EXE",sep="/"), rundir)
@@ -285,13 +284,10 @@ ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="
     ## Error checking for potentially problematic variable specifications
     w <- list(class,attribute,gen,categorical)
     x <- list(attribute,class,categorical,weight)
-    #y <- lapply(x, function(ch) grep("to", ch))
     z <- list("maxsens","meansens","samplerep","balanced","distance","random","genmean")
     ge <- lapply(x, function(ch) grep(gen, ch))
     wgt <- lapply(w, function(ch) grep(weight, ch))
-    #if (length(y) > 0) {
-    #  cat("Warning: The \"to\" operator was specified within the ODArun command. Review the MODEL.OUT file to confirm the proper analysis was conducted.\n")
-    #}
+
     if (gen != "" & sum(unlist(ge)) != 0)  {
       stop(cat("Error: \"gen\" variable cannot be the same variable specified as class, attribute, categorical, or weight variables.\n"))
     }
@@ -354,11 +350,35 @@ ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="
   for (n in 1:nfiles) {
     odalist <- writefile(n)
   }
-  shell("megaoda.exe oda.pgm", intern=F)
-  #Clean up files and reset wd to current
-  if(file.exists("MEGAODA.EXE")){
-    file.remove("MEGAODA.EXE")
-  }
+  ## Create batch file for execution and run in cmd window externally
+  file.create("odarun.bat")
+  out<-sink("odarun.bat",type="output")
+  writeLines(
+    as.character(
+      cat(
+        "@echo off
+echo. & echo Beginning ODA run.... & echo.
+start /wait cmd /k \"megaoda.exe oda.pgm & pause >nul & exit\"
+echo. & echo Run complete. Cleaning up.... & echo.
+echo off
+del megaoda.exe
+mkdir etc
+move oda.pgm etc
+mkdir inputs
+move data.csv inputs
+move data.txt inputs
+mkdir outputs
+move model* outputs
+copy odarun.bat etc
+echo. & echo Press any key to complete run and close this window... & echo.
+pause > nul
+erase out.out
+erase odarun.bat
+")
+    )
+  )
+  sink()
+  shell("odarun.bat",wait=F)
   setwd(current)
   return(invisible(T))
 }

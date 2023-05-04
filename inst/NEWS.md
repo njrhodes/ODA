@@ -1,3 +1,15 @@
+# ODA 2.0.0 (2023-05-03)
+* Adding CTA.exe functions CTArun() and CTAparse()
+* Updated batch file method for file handling and executing runs for ODArun() and CTArun()
+* Updating ODAtree() ODAclean() and ODAparse() to be compatible with new workflow
+* New dependancies including dplyr and tidyr
+
+# ODA 1.4.0 (2023-03-10)
+
+* Bug fixes with ODAclean fixed (ipsative)
+* Adding CTA.exe file to installation. The software is now freely available.
+* Found parsing error with ODAparse() found with multicategoral models. NOT fixed as of this update.
+
 # ODA 1.3.0 (2022-04-06)
 
 * Bug fixes applied for ODAparse with multiple class evaluations.
@@ -22,14 +34,11 @@
 # ODA 1.1.1 (2020-10-09)
 
 * Warnings and checks added to address unsupported processors. Only Intel processors supported by MegaODA.exe currently.
-
 * Consolidated warning messages on startup.
-
 * Updated vignettes to render under version 1.1.0
 
 
 # ODA 1.1.0 (2020-10-05)
 
 * Initial Release to GitHub
-
 * Prior to this it was a private package

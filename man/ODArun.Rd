@@ -41,7 +41,7 @@ ODArun(
 
 \item{path}{The working directory of the project stored as \code{path}}
 
-\item{data}{A character name specifying the data.txt file in the runs folder}
+\item{data}{A character name specifying the data.txt file in the model folder}
 
 \item{out}{A character name specifying the output file with "model.out" as
 the default}
@@ -77,7 +77,7 @@ or v2 LT 1} specifying a directional hypothesis for the class variable}
 degenerate solutions are allowed, off by default}
 
 \item{gen}{An optional character name specifying the variable whose values
-denote groups for a multisample generalizablity analysis, off by default}
+denote groups for a multisample generalizability analysis, off by default}
 
 \item{primary}{An optional character vector specifying the primary criterion
 for choosing among optimal solutions, see \code{Details}}
@@ -126,31 +126,30 @@ Carlo analysis with the current system time as the default}
 LOO analysis should be turned off with \code{loooff = FALSE} as the default}
 
 \item{overwrite}{An optional logical value specifying whether previous files
-in the \code{Run} folder should be overwritten with \code{overwrite =
-FALSE} as the default}
+in the model folder should be overwritten with \code{overwrite = FALSE} as
+the default}
 }
 \value{
-Nothing is returned. Three files are created in the \code{Run}
-  folder: \item{MODEL.out}{The model file that contains the commands from
-  MEGAODA syntax and analysis results, see \code{\link{ODAmanual}}. This file
-  is required for \code{\link{ODAparse}}} \item{OUT.out}{The echo file that
-  contains the inital commands for OPEN and OUTPUT from MEGAODA syntax, see
-  \code{\link{ODAmanual}}.} \item{OUT.pgm}{The command file that contains all
-  of the commands for MEGAODA passed from R based on user input to
-  \code{ODArun}.}
+Nothing is returned. Three files are created in the model folder:
+  \item{MODEL.out}{The model file that contains the commands from MEGAODA
+  syntax and analysis results, see \code{\link{ODAmanual}} This file is
+  required for \code{\link{ODAparse}}.}\item{oda.pgm}{The command file that
+  contains all of the commands for MEGAODA passed from R based on user input
+  to \code{ODArun}.}\item{odarun.bat}{The batch file that must be executed to
+  begin the model run.}
 }
 \description{
-Creates an command file using the parameters below and calls
-  MegaODA
+Creates and processes files needed for MegaODA.exe program
 }
 \details{
 The working directory of the project is stored as \code{path}. All
-  files needed for the run must be located in the appropriate \code{run}
-  folder beneath this level. See \code{\link{ODAclean}}.
+  files needed for the model run must be located in the appropriate model run
+  folder. See \code{\link{ODAclean}}.
 
-  \code{ODArun} will produce a command file with an extension of .pgm and two
-  files with .out extensions. Resulting MODEL.OUT files can be parsed using
-  \code{\link{ODAparse}}.
+  \code{ODArun} will produce a command file with a .pgm extension, a model
+  file with a .out extension, and a batch file with .bat extension. The .bat
+  file must be executed within the model directory. Model output files can be
+  parsed using \code{\link{ODAparse}}.
 
   The ODA algorithm explicitly maximizes the classification accuracy which is
   achieved for the training sample see Yarnold, 2005.
@@ -171,7 +170,7 @@ The working directory of the project is stored as \code{path}. All
   When \code{gen} is active, other options include: \code{genmean} and
   \code{gensens(attribute)}
 
-  There are several disallowed specifications. Error checking is
+  There are several disallowed run specifications. Error checking is
   automatically performed on the user inputs. However, if the \code{to}
   keyword is used with a range of variables, it is suggested that the user
   confirm that the desired analysis was performed as some error checking is

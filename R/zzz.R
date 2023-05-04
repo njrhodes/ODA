@@ -9,11 +9,13 @@
 .onAttach <- function(libname, pkgname) {
   if(.Platform$OS.type != "windows"){win.warn <- "Fail check: Warning ODA is not currently supported on platforms other than Windows.\n"
   } else(win.warn <- "Pass check: Package loaded on a Windows Platform.\n")
-  if(!file.exists(paste(system.file("win32", "bin", "MegaODA.EXE", package = "ODA")))){oda.warn <- "Fail check: MegaODA.exe file is missing in the package directory ~/ODA/win32/bin location.\nWarning: Full use of this package requires a valid licensed copy of MegaODA.exe.\n"
+  if(!file.exists(paste(system.file("win32", "bin", "MegaODA.EXE", package = "ODA")))){oda.warn <- "Fail check: MegaODA.exe file is missing in the package directory ~/ODA/win32/bin location.\nWarning: Full use of this package requires a valid copy of MegaODA.exe.\n"
   } else(oda.warn <-"Pass check: MegaODA.exe is located in the proper folder.\n")
-  if(benchmarkme::get_cpu()[1] != "GenuineIntel"){cpu.warn <- "Fail check: MegaODA.exe is only supported on Intel Processors currently.\n"
-  } else(cpu.warn <- "Pass Check: Running on an Intel Machine.\n")
-  start_message <- c("Welcome to the ODA package for R, version 1.3.0. \n\n",
+  if(!file.exists(paste(system.file("win32", "bin", "CTA.EXE", package = "ODA")))){oda.warn <- "Fail check: CTA.exe file is missing in the package directory ~/ODA/win32/bin location.\nWarning: Full use of this package requires a valid copy of CTA.exe.\n"
+  } else(cta.warn <-"Pass check: CTA.exe is located in the proper folder.\n")
+  if(benchmarkme::get_cpu()[1] != "GenuineIntel"){cpu.warn <- "Fail check: MegaODA.exe and CTA.exe are only supported on Intel Processors currently.\n"
+  } else(cpu.warn <- "Pass check: Running on an Intel Machine.\n")
+  start_message <- c("Welcome to the ODA package for R, version 2.0.0. \n\n",
                      "For updates to this package or to contribute visit our GitHub. \n\n",
                      "Use ODAmanual() to get help with the package. \n\n",
                      "For information about ODA and ODA applications, please visit https://odajournal.com/ \n\n",
@@ -21,7 +23,8 @@
                      "Checking for required components for package...\n",
                      win.warn,
                      cpu.warn,
-                     oda.warn
+                     oda.warn,
+                     cta.warn
   )
   packageStartupMessage(start_message)
   invisible()

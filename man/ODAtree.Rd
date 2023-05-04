@@ -14,11 +14,13 @@ is the current working directory.}
 }
 \value{
 A new folder named as \code{project} containing the following
-  subfolders: \item{Rscript}{The folder for the Rscript file with templated
-  syntax as a skeleton Rscript for the project.} \item{Runs}{The folder for
-  the \code{\link{ODArun}} outputs and data files for cleaning and analysis.}
-  \item{Program}{The folder containing the executable program used for all
-  \code{\link{ODArun}} analyses.}
+  subfolders:\item{CTA}{The folder to contain the \code{\link{CTArun}}
+  outputs and data files for the project.} \item{ODA}{The folder to contain
+  the \code{\link{ODArun}} outputs and data files for the project.}
+  \item{Program}{The folder containing the executable programs used for
+  \code{\link{ODArun}} and \code{\link{CTArun}} analyses.} \item{Rscript}{The
+  folder for the Rscript file with a skeleton Rscript containing command
+  syntax for the project.}
 }
 \description{
 Establishes a subdirectory for an ODA project within a given working

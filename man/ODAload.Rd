@@ -2,9 +2,9 @@
 % Please edit documentation in R/ODAload.R
 \name{ODAload}
 \alias{ODAload}
-\title{Load data files and variable key for ODA}
+\title{Load data files and variable key for ODA or CTA}
 \usage{
-ODAload(run = "", path = getwd(), ...)
+ODAload(run = "", type = "", ...)
 }
 \arguments{
 \item{run}{The numerical value of the folder number containing the data
@@ -13,20 +13,20 @@ uniquely by appending \code{run} to the object e.g. data.1 for Run 1. At
 least one value for this parameter must be supplied by the user as no
 defaults are supplied.}
 
-\item{path}{The working directory of the project stored. the working
-directory should be set above the level of the Runs folder.}
+\item{type}{A character string which should contain either "ODA" or "CTA".
+Default value is "ODA".}
 
 \item{...}{Additional data files to load and review, if desired.}
 }
 \value{
 The following objects are loaded into R \item{data}{Data frame of
   data.csv from specified \code{run} folder.} \item{key}{Data frame
-  containing 2 columns: the variable names from the \code{data} and an
-  ODA-friendly alias e.g., v1 v2}
+  containing 2 columns: the variable names from the \code{data} and the coded
+  variable names for use in with \code{ODArun} and \code{CTArun}.}
 }
 \description{
-Loads the primary data file from the specified run folder and
-  generates an ODA-friendly key for the user.
+Loads the data file from the specified model folder and
+  generates a variable key for use with \code{ODArun} and \code{CTArun}.
 }
 \details{
 The current working directory is stored as the \code{path} and the
@@ -34,7 +34,7 @@ The current working directory is stored as the \code{path} and the
 }
 \examples{
 # Not run:
-# ODAload(1)
+# ODAload(1,type="CTA")
 }
 \author{
 Nathaniel J. Rhodes
