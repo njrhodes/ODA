@@ -28,42 +28,43 @@
 #' @examples
 #' # Not run:
 #' # ODAload(1,type="CTA")
-ODAload <- function(run="",type="",...){
-  if(run==""){
-    stop("Error: User must specify which ~/Runs folder from which to load data file(s).\n")
+ODAload <- function(run = "", type = "", ...) {
+  if (run == "") {
+    stop("Error: User must specify which folder(s) from which to load data file(s).\n")
   }
-  if("" %in% type){
+  if ("" %in% type) {
     type <- "ODA"
     cat("Message: The default model type of 'ODA' was applied.\n")
   }
-  else {
-    if(!type %in% list("CTA","cta","ODA","oda")){
-      stop(cat("Error: Model type must be either 'ODA' or 'CTA'.\n"))
-    }
-    else(type <- type)
+  if (!type %in% list("cta", "oda")) {
+    stop(cat("Error: Model type must be either 'oda' or 'cta'.\n"))
   }
   otherruns <- list(...)
-  if(length(otherruns) > 0) {
-    allruns <- c(run,unlist(otherruns))
-  }
-  else {
+  if (length(otherruns) > 0) {
+    allruns <- c(run, unlist(otherruns))
+  } else {
     allruns <- run
   }
-  for(thisrun in allruns){
-    input_dir <- paste(getwd(),type,thisrun,sep="/")
+  for (thisrun in allruns) {
+    input_dir <- paste(getwd(), type, thisrun, "inputs", sep = "/")
     filename <- "data.csv"
-    outfile <- paste(input_dir, filename, sep="/")
-    if (file.exists(outfile)){
+    outfile <- paste(input_dir, filename, sep = "/")
+    if (file.exists(outfile)) {
       filename <- outfile
       if (file.exists(filename)) {
-        data <- read.csv(file=filename)
+        data <- read.csv(file = filename)
         header <- names(data)
         c.header <- seq_len(ncol(data))
-        key <- data.frame(header, paste("v",c.header,sep=""))
-        colnames(key) <- c("label","variable")
-        assign(paste0(type,".key.",thisrun), key, pos = parent.frame())
-        assign(paste0(cta,".data.",thisrun), data, pos = parent.frame())
+        key <- data.frame(header, paste("v", c.header, sep = ""))
+        colnames(key) <- c("label", "variable")
+        assign(paste0(type, ".key.", thisrun), key, pos = parent.frame())
+        assign(paste0(type, ".data.", thisrun), data, pos = parent.frame())
+      } else {
+        stop(paste0("Error: File ", filename, " does not exist.\n"))
       }
+    } else {
+      stop(paste0("Error: File ", outfile, " does not exist.\n"))
     }
   }
 }
+
