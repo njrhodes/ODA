@@ -3,9 +3,8 @@
 #' @description Creates and processes files needed for CTA.exe program
 #'
 #' @param run A numerical value specifying the run folder containing the data
-#' @param path The working directory of the project stored as \code{path}
 #' @param data A character name specifying the data.txt file in the model folder
-#' @param out A character name specifying the output file with "model.out" as
+#' @param out A character name specifying the output file with "model.txt" as
 #'   the default
 #' @param vstart A character name specifying the start variable, see \code{key}
 #'   object from \code{\link{ODAload}}
@@ -70,22 +69,22 @@
 #'   in the model folder should be overwritten with \code{overwrite = FALSE} as
 #'   the default
 #'
-#' @details The working directory of the project is stored as \code{path}. All
-#'   files needed for the model run must be located in the appropriate model run
-#'   folder. See \code{\link{ODAclean}}.
+#' @details The working directory must be set to the current project. All files
+#'   needed for the model run must be located in the appropriate CTA folder. See
+#'   \code{\link{ODAclean}}.
 #'
 #'   \code{CTArun} will produce a command file with a .pgm extension, a model
-#'   file with a .out extension, and a batch file with .bat extension. The .bat
-#'   file must be executed within the model directory. Model output files can be
-#'   parsed using \code{\link{CTAparse}}.
+#'   file with a .txt extension, and a batch file with .bat extension. The .bat
+#'   file must be executed by the user within the model directory. Model output
+#'   files can be parsed using \code{\link{CTAparse}}.
 #'
-#' @return Nothing is returned. Three files are created in the model folder:
-#'   \item{MODEL.out}{The model file that contains the commands from CTA syntax
-#'   and analysis results, see \code{\link{ODAmanual}}. This file is required
-#'   for \code{\link{CTAparse}}.}\item{cta.pgm}{The command file that contains
-#'   all of the commands for CTA passed from R based on user input to
-#'   \code{CTArun}.}\item{ctarun.bat}{The batch file that must be executed to
-#'   begin the model run.}
+#' @return Nothing is returned. Three files are created in the model
+#'   folder:\item{MODEL1.out}{The model file that contains the commands from
+#'   MEGAODA syntax and analysis results, see \code{\link{ODAmanual}}. This
+#'   file is required for \code{\link{CTAparse}}.}\item{cta.pgm}{The command
+#'   file that contains all of the commands for CTA passed from R based on user
+#'   input to \code{CTArun}.}\item{ctarun.bat}{The batch file that must be
+#'   executed to begin the model run.}
 #' @export
 #'
 #' @importFrom utils read.table
@@ -105,23 +104,25 @@
 #'   Accuracy}. ODA Books. DOI: 10.13140/RG.2.1.1368.3286
 #'
 #'
-CTArun <-function(run="", path=getwd(), data="data.txt", out="model1.txt", vstart="", vend="", class="", attribute="", categorical="", include="", exclude="", direction="", force=F, forcenode="", nodevar="", miss="", weight="", usefisher=F, mciter ="", cutoff="", stop = "", nopriors=F, mindenom="",maxlevel="", prune="", skipnode="",enumerate="",loo="",overwrite = FALSE) {
-  `%notin%` <- Negate(`%in%`)
+CTArun <-function(run="", data="", out="", vstart="", vend="", class="", attribute="", categorical="", include="", exclude="", direction="", force=F, forcenode="", nodevar="", miss="", weight="", usefisher=F, mciter ="", cutoff="", stop = "", nopriors=F, mindenom="",maxlevel="", prune="", skipnode="",enumerate="",loo="",overwrite = FALSE) {
   if(run == ""){
     cat("Error: User must specify the folder in which to execute CTArun().")
   }
   else{
-    rundir <- paste(path,"CTA",run,sep="/")
-    ctadir <- paste(path,"Program",sep="/")
+    rundir <- paste(getwd(),"CTA",run,sep="/")
+    ctadir <- paste(getwd(),"Program",sep="/")
     prevrun <- paste(rundir,out,sep="/")
     if (file.exists(prevrun)) {
       cat("Warning: The specified run directory already contains at least one CTA model. Do you wish to overwrite the files in this folder?\n")
-      overwrite <- readline(prompt="Message: Overwrite all model files in this folder (Y/N): ")
+      overwrite <- readline(prompt="Message: Overwrite all model files in this directory (Y/N): ")
       if (overwrite == "Y" | overwrite == "y"){
         overwrite <- TRUE
       }
       else{
-        stop(cat("Warning: CTArun() stopped at user request. File directory already exists.\n"))
+        rundir <- paste(getwd(),"CTA",run+1,sep="/")
+        file.copy(paste(rundir,"inputs","data.csv",sep="/"), rundir)
+        file.copy(paste(rundir,"inputs","data.txt",sep="/"), rundir)
+        file.copy(paste(odadir,"CTA.EXE",sep="/"), rundir)
       }
     }
     file.copy(paste(ctadir,"CTA.EXE",sep="/"), rundir)
@@ -136,9 +137,9 @@ CTArun <-function(run="", path=getwd(), data="data.txt", out="model1.txt", vstar
     else(datafile <- paste0("OPEN ",data,";\n")
     )
     if (out == "") {
-      outfile <- paste0("OUTPUT ","model1.out",";\n")
+      outfile <- paste0("OUTPUT ","MODEL1.TXT",";\n")
     }
-    else(outfile <- paste0("OUTPUT ",out,";\n")
+    else(outfile <- paste0("OUTPUT MODEL.",out,".TXT;\n")
     )
     if (vstart=="" | vend =="") {
       stop(cat("Error: The starting and ending variables must be supplied as quoted strings.\n"))

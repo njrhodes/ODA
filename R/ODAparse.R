@@ -124,6 +124,7 @@ ODAparse <- function(run="",mod="",...) {
 
   for (thismod in allmods){
     #### Extract the ODA models, variables, and class summaries from the OUT file####
+    out <- paste0("MODEL",thismod,".OUT")
     rundir <- paste(getwd(),"ODA",thismod,"inputs",sep="/")
     runfile <- paste(rundir,list.files(rundir,pattern="*.csv"),sep="/")
     outfile <- paste(getwd(),"ODA",thismod,"outputs",out,sep="/")
@@ -158,6 +159,10 @@ ODAparse <- function(run="",mod="",...) {
     n.class <- data_raw[n.class,]
     n.class <- gsub("Classes:","",n.class)
     n.class <- as.numeric(as.character(n.class))
+    multi.class <- ifelse(max(n.class)>2,1,0)
+    if(multi.class>0){
+      stop(cat("Error: ODAparse not compatible with multiclass models.\n"))
+    }
     n.model <- seq_along(index1)
     cat.check <- grep("^*CAT ",file) # determine if a categorical model specified
     loo.check <- grep("^LOO OFF;",file)
@@ -323,9 +328,14 @@ ODAparse <- function(run="",mod="",...) {
       cut <- list()  # decision rule on left hand side taking the first one
       for(i in seq_along(index1)){
         cut[[i]]<-lh[[i]]
+        # Remove everything except numeric values
+        cut[[i]] <- lapply(cut[[i]],function(x) {
+          gsub("^([^<=<]+).*", "\\1", x)
+        })
         cut[[i]]<-gsub(".*=","",cut[[i]])
-        cut[[i]]<-gsub(".*<","",cut[[i]])
+        cut[[i]]<-gsub(".^<","",cut[[i]])
         cut[[i]]<-gsub(".[a-zA-Z]{1}([0-9]{5}|[0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1})","",cut[[i]])
+        cut[[i]]<-gsub("(\\d+(?:\\.\\d+)?)\\s*<[[:alpha:]]+>\\s*|<[[:alpha:]]+>\\s*", "\\1 ", cut[[i]])
         cut[[i]]<-as.numeric(cut[[i]])
         cut[[i]]<-cut[[i]][!is.na(cut[[i]])]
       }

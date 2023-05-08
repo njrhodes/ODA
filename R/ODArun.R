@@ -3,7 +3,6 @@
 #' @description Creates and processes files needed for MegaODA.exe program
 #'
 #' @param run A numerical value specifying the run folder containing the data
-#' @param path The working directory of the project stored as \code{path}
 #' @param data A character name specifying the data.txt file in the model folder
 #' @param out A character name specifying the output file with "model.out" as
 #'   the default
@@ -66,14 +65,14 @@
 #'   in the model folder should be overwritten with \code{overwrite = FALSE} as
 #'   the default
 #'
-#' @details The working directory of the project is stored as \code{path}. All
-#'   files needed for the model run must be located in the appropriate model run
-#'   folder. See \code{\link{ODAclean}}.
+#' @details The working directory must be set to the current project. All files
+#'   needed for the model run must be located in the appropriate ODA folder. See
+#'   \code{\link{ODAclean}}.
 #'
 #'   \code{ODArun} will produce a command file with a .pgm extension, a model
 #'   file with a .out extension, and a batch file with .bat extension. The .bat
-#'   file must be executed within the model directory. Model output files can be
-#'   parsed using \code{\link{ODAparse}}.
+#'   file must be executed by the user within the model directory. Model output
+#'   files can be parsed using \code{\link{ODAparse}}.
 #'
 #'   The ODA algorithm explicitly maximizes the classification accuracy which is
 #'   achieved for the training sample see Yarnold, 2005.
@@ -105,7 +104,7 @@
 #'   \code{class} \code{weight}.
 #'
 #' @return Nothing is returned. Three files are created in the model folder:
-#'   \item{MODEL.out}{The model file that contains the commands from MEGAODA
+#'   \item{MODEL1.out}{The model file that contains the commands from MEGAODA
 #'   syntax and analysis results, see \code{\link{ODAmanual}} This file is
 #'   required for \code{\link{ODAparse}}.}\item{oda.pgm}{The command file that
 #'   contains all of the commands for MEGAODA passed from R based on user input
@@ -129,23 +128,25 @@
 #'   Yarnold, P.R. and Soltysik, R.C. (2016). \emph{Maximizing Predictive
 #'   Accuracy}. ODA Books. DOI: 10.13140/RG.2.1.1368.3286
 #'
-ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="", vstart="", vend="", class="", attribute="", categorical="", include="", exclude="", direction="", degen="", gen="", primary="", secondary="", nopriors=F, miss="", weight="", mcarlo=T, iter = "25000", target = "", sidak = "", stop = "", adjust=F, setseed = "", loooff=F, overwrite = FALSE) {
-  `%notin%` <- Negate(`%in%`)
+ODArun <-function(run="", data="", out="", hold="", vstart="", vend="", class="", attribute="", categorical="", include="", exclude="", direction="", degen="", gen="", primary="", secondary="", nopriors=F, miss="", weight="", mcarlo=T, iter = "25000", target = "", sidak = "", stop = "", adjust=F, setseed = "", loooff=F, overwrite = FALSE) {
   if(run == ""){
     cat("Error: User must specify the folder in which to execute ODArun().")
   }
   else{
-    rundir <- paste(path,"ODA",run,sep="/")
-    odadir <- paste(path,"Program",sep="/")
-    prevrun <- paste(rundir,out,sep="/")
+    rundir <- paste(getwd(),"ODA",run,sep="/")
+    odadir <- paste(getwd(),"Program",sep="/")
+    prevrun <- paste(rundir,"outputs",out,sep="/")
     if (file.exists(prevrun)) {
       cat("Warning: The specified directory already contains at least one ODA model. Do you wish to overwrite the files in this folder?\n")
-      overwrite <- readline(prompt="Message: Overwrite all model files in this folder (Y/N): ")
+      overwrite <- readline(prompt="Message: Overwrite all model files in this directory (Y/N): ")
       if (overwrite == "Y" | overwrite == "y"){
         overwrite <- TRUE
       }
       else{
-        stop(cat("Warning: ODArun() stopped at user request. File directory already exists.\n"))
+        rundir <- paste(getwd(),"ODA",run+1,sep="/")
+        file.copy(paste(rundir,"inputs","data.csv",sep="/"), rundir)
+        file.copy(paste(rundir,"inputs","data.txt",sep="/"), rundir)
+        file.copy(paste(odadir,"MEGAODA.EXE",sep="/"), rundir)
       }
     }
     file.copy(paste(odadir,"MEGAODA.EXE",sep="/"), rundir)
@@ -160,9 +161,9 @@ ODArun <-function(run="", path=getwd(), data="data.txt", out="model.out", hold="
     else(datafile <- paste0("OPEN ",data,";\n")
     )
     if (out == "") {
-      outfile <- paste0("OUTPUT ","model.out",";\n")
+      outfile <- paste0("OUTPUT ","MODEL1.OUT",";\n")
     }
-    else(outfile <- paste0("OUTPUT ",out,";\n")
+    else(outfile <- paste0("OUTPUT MODEL.",out,".OUT;\n")
     )
     if (hold != "") {
       holdout <- paste0("HOLD ",hold,";\n")
