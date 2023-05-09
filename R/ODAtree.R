@@ -43,17 +43,17 @@ ODAtree <- function (project = "NewProject", folder = getwd()){
                "",
                paste("setwd(\"", newFolder, "\")", sep = ""),
                "",
-               "#### Clean data files for ODArun() ####",
+               "#### Clean data files for ODArun() for data file located in /ODA ####",
                "",
-               "ODAclean(data=\"data.csv\",output=1)",
+               "ODAclean(data=\"data.csv\",output=1,type='oda')",
                "",
-               "#### Load data file, view data summary and variable labels, and prepare ODArun() syntax ####",
+               "#### View data summary and variable labels, and prepare ODArun() syntax ####",
                "",
-               "ODAload(1)",
+               "ODAload(1,type='oda')",
                "",
-               "key.1 # obtain vstart and vend from this list",
-               "ls(data.1)",
-               "summary(data.1)",
+               "oda.key.1 # obtain vstart and vend from this list",
+               "ls(oda.data.1)",
+               "summary(oda.data.1)",
                "",
                "#### ODA Run 1 - [add analysis description here] ####",
                "",
@@ -65,7 +65,7 @@ ODAtree <- function (project = "NewProject", folder = getwd()){
                categorical=\"[replace with categorial attribute(s), if any, in same order as attribute block otherwise leave blank]\",\n
                miss=\"[Default value -9, change if needed]\")",
                "",
-               "# note that the first column of data is vstart and the last column is vend",
+               "# note: the first column of data is vstart and the last column is vend",
                "",
                "#### Parse Run 1. ODAparse() will load objects including data and key, predictions, model summaries, model performance metrics, a list of confusion matricies, and a list of model stats before and after LOO (default) ####",
                "",
@@ -80,7 +80,37 @@ ODAtree <- function (project = "NewProject", folder = getwd()){
                "print(oda.summary.1)",
                "",
                "write.csv(oda.summary.1,\"ODAsummary1.csv\") #for viewing and/or filtering report by user",
-               ""
+               "",
+               "#### Clean data files for CTArun() for data file located in /CTA ####",
+               "",
+               "ODAclean(data=\"data.csv\",output=1,type='cta')",
+               "",
+               "#### View data summary and variable labels, and prepare CTArun() syntax ####",
+               "",
+               "ODAload(1,type='cta')",
+               "",
+               "oda.key.1 # obtain vstart and vend from this list",
+               "ls(cta.data.1)",
+               "summary(cta.data.1)",
+               "",
+               "#### CTA Run 1 - [add analysis description here] note: multiclass solutions not currently allowed ####",
+               "",
+               "CTArun(run=1,\n
+               vstart=\"[replace with starting variable]\",\n
+               vend=\"[replace with ending variable]\",\n
+               class=\"[replace with class variable]\",\n
+               attribute=\"[replace with attribute(s) including categorical attributes in same order as categorical block]\",\n
+               categorical=\"[replace with categorial attribute(s), if any, in same order as attribute block otherwise leave blank]\",\n
+               miss=\"[Default value -9, change if needed]\",\n
+               mindenom = 1)",
+               "",
+               "# note: the first column of data is vstart and the last column is vend",
+               "",
+               "#### Parse Run 1. CTAparse() will load objects including data and key, predictions, model summaries, model performance metrics, a list of confusion matricies, and a list of model stats before and after LOO (default) ####",
+               "",
+               "CTAparse(1,1)",
+               "",
+               "print(cta.model.1.1)"
                ),
              con = paste(newFolder, "/Rscript/", project, ".R", sep = ""))
   file.copy(paste(system.file("win32", "bin", "MegaODA.EXE", package = "ODA")),

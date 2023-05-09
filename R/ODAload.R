@@ -46,7 +46,7 @@ ODAload <- function(run = "", type = "", ...) {
     allruns <- run
   }
   for (thisrun in allruns) {
-    input_dir <- paste(getwd(), type, thisrun, "inputs", sep = "/")
+    input_dir <- paste(getwd(), type, thisrun, sep = "/")
     filename <- "data.csv"
     outfile <- paste(input_dir, filename, sep = "/")
     if (file.exists(outfile)) {

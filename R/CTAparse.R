@@ -650,12 +650,12 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
   }
   }
   for (thismod in allmods){
-    assign(paste0("cta.model.",run,thismod), mosumm[[thismod]], pos = parent.frame())
-    assign(paste0("cta.sum.",run,thismod), csumm[[thismod]], pos = parent.frame())
-    assign(paste0("cta.denom.",run,thismod), dsumm[[thismod]], pos = parent.frame())
-    assign(paste0("cta.list.",run,thismod), lsumm[[thismod]], pos = parent.frame())
+    assign(paste0("cta.model.",run,".",thismod), mosumm[[thismod]], pos = parent.frame())
+    assign(paste0("cta.sum.",run,".",thismod), csumm[[thismod]], pos = parent.frame())
+    assign(paste0("cta.denom.",run,".",thismod), dsumm[[thismod]], pos = parent.frame())
+    assign(paste0("cta.list.",run,".",thismod), lsumm[[thismod]], pos = parent.frame())
     if(length(index5) > 0){
-      assign(paste0("cta.miss.",run,thismod), misumm[[thismod]], pos = parent.frame())
+      assign(paste0("cta.miss.",run,".",thismod), misumm[[thismod]], pos = parent.frame())
     }
   }
 }
