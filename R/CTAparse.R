@@ -145,7 +145,7 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
   }
   ## Print error message if all tree models have no solution and stop ##
   tryCatch({
-    if(length(index2) | length(index3) == 0 ){
+    if((length(index2) | length(index3)) == 0 ){
       stop(cat("Error: no tree solutions found for any model(s)"))
     }
   },error=function(e){})
@@ -186,8 +186,9 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
     wess$`Weighted ESS` <- as.numeric(sub("%", "", wess$`Weighted ESS`))
 
     ### Extract List of CTA cross class tables ###
-    index6 <- grep("^*            0       1",file)
-    index7 <- grep("^*            0       1",file)+6
+    index6 <- grep("^*        -----   -----",file)
+    index6 <- index6[seq(1, length(index6)-1, by = 2)]-1
+    index7 <- index6+6
 
     p.mat <- c()
     p.stat <- c()
@@ -195,8 +196,8 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
       p.mat[[i]] <- cbind(data_raw[(index6[i]:index7[i]),])
     }
 
-    p.mat[] <- lapply(p.mat, gsub, pattern = "            0       1", replacement = "", fixed = TRUE)
-    p.mat[] <- lapply(p.mat, gsub, pattern = "        -----   -----", replacement = "", fixed = TRUE)
+    p.mat[] <- lapply(p.mat, function(x){x[c(1,2,5)] <- ""
+    return(x)})
     p.mat[] <- lapply(p.mat, gsub, pattern = "|", replacement = " ", fixed = TRUE)
     p.mat[] <- lapply(p.mat, gsub, pattern = "\\s+", replacement = " ")
     p.mat[] <- lapply(p.mat, function(z){ z[!is.na(z) & z != ""]})
@@ -206,23 +207,30 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
     p.mat[] <- lapply(p.mat, strsplit, split = " ")
     p.stat[]<- lapply(p.stat, function(z){ z[!is.na(z) & z != ""]})
 
+
     s.list <- lapply(p.stat,as.data.frame)
     s.list <- lapply(s.list,"[",2:3,,drop=FALSE)
     s.list <- lapply(s.list,function(x) {colnames(x) <- c("PV","Weighted PV"); x})
     s.list <- lapply(s.list,function(x) {rownames(x) <- c(1,2); x})
-    s.list <- lapply(s.list,function(x) within(x,"Class" <- c(0,1)))
 
     p.list <- lapply(p.mat,as.data.frame)
     p.list <- lapply(p.list,t)
     p.list <- lapply(p.list,as.data.frame)
     p.list <- lapply(p.list,"[",,c(2:6),drop=FALSE)
     p.list <- lapply(p.list,function(x) {rownames(x) <- c(1,2); x})
-    p.list <- lapply(p.list,function(x) {colnames(x) <- c("Class",
-                                                          "Pred 0",
-                                                          "Pred 1",
-                                                          "Sens",
-                                                          "Weighted Sens"); x})
-    c.names <- c(0,1)
+    p.class <- lapply(p.list,"[",,c(1),drop=FALSE)
+    p.label <- as.numeric(unlist(p.class[[1]]))
+    p.label <- c("Class",
+                 paste0("Pred ",p.label[1]),
+                 paste0("Pred ",p.label[2]),
+                 "Sens",
+                 "Weighted Sens")
+    p.list <- lapply(p.list,function(x) {colnames(x) <- p.label; x})
+
+    c.names <- as.numeric(unlist(p.class[[1]]))
+
+    s.list <- lapply(s.list,function(x) within(x,"Class" <- c.names))
+
     c.list <- lapply(p.list,"[",,c(2:3),drop=FALSE)
     c.list <- lapply(c.list,function(x) {colnames(x) <- c.names; x})
     c.list <- lapply(c.list,function(x) {rownames(x) <- c.names; x})
@@ -236,7 +244,7 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
 
     ### Extract CTA Models and Performance Metrics ###
     index8 <- grep("^*     ATTRIBUTE",file)+2
-    index9 <- grep("^*            0       1",file)-2
+    index9 <- index6-2
 
     mods <- list()
     for(i in seq_along(n.model)){
@@ -371,8 +379,8 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
                  m.d),
       c("tree.num",
         "mindenom",
-        "n class 0",
-        "n class 1",
+        paste0("n.class.",c.names[1]),
+        paste0("n.class.",c.names[2]),
         "Sensitivity",
         "Specificiy",
         "PPV",
@@ -388,8 +396,9 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
     #### Extract and load model elements for un-weighted CTA models####
 
     ### Extract List of CTA cross class tables ###
-    index6 <- grep("^*            0       1",file)
-    index7 <- grep("^*            0       1",file)+5
+    index6 <- grep("^*        -----   -----",file)
+    index6 <- index6[seq(1, length(index6)-1, by = 2)]-1
+    index7 <- index6+5
 
     p.mat <- c()
     p.stat <- c()
@@ -397,8 +406,8 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
       p.mat[[i]] <- cbind(data_raw[(index6[i]:index7[i]),])
     }
 
-    p.mat[] <- lapply(p.mat, gsub, pattern = "            0       1", replacement = "", fixed = TRUE)
-    p.mat[] <- lapply(p.mat, gsub, pattern = "        -----   -----", replacement = "", fixed = TRUE)
+    p.mat[] <- lapply(p.mat, function(x){x[c(1,2,5)] <- ""
+    return(x)})
     p.mat[] <- lapply(p.mat, gsub, pattern = "|", replacement = " ", fixed = TRUE)
     p.mat[] <- lapply(p.mat, gsub, pattern = "\\s+", replacement = " ")
     p.mat[] <- lapply(p.mat, function(z){ z[!is.na(z) & z != ""]})
@@ -412,19 +421,25 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
     s.list <- lapply(s.list,"[",2:3,,drop=FALSE)
     s.list <- lapply(s.list,function(x) {colnames(x) <- c("PV"); x})
     s.list <- lapply(s.list,function(x) {rownames(x) <- c(1,2); x})
-    s.list <- lapply(s.list,function(x) within(x,"Class" <- c(0,1)))
+
 
     p.list <- lapply(p.mat,as.data.frame)
     p.list <- lapply(p.list,t)
     p.list <- lapply(p.list,as.data.frame)
     p.list <- lapply(p.list,"[",,c(2:5),drop=FALSE)
     p.list <- lapply(p.list,function(x) {rownames(x) <- c(1,2); x})
-    p.list <- lapply(p.list,function(x) {colnames(x) <- c("Class",
-                                                          "Pred 0",
-                                                          "Pred 1",
-                                                          "Sens"); x})
+    p.class <- lapply(p.list,"[",,c(1),drop=FALSE)
+    p.label <- as.numeric(unlist(p.class[[1]]))
+    p.label <- c("Class",
+                 paste0("Pred ",p.label[1]),
+                 paste0("Pred ",p.label[2]),
+                 "Sens")
+    p.list <- lapply(p.list,function(x) {colnames(x) <- p.label; x})
 
-    c.names <- c(0,1)
+    c.names <- as.numeric(unlist(p.class[[1]]))
+
+    s.list <- lapply(s.list,function(x) within(x,"Class" <- c.names))
+
     c.list <- lapply(p.list,"[",,c(2:3),drop=FALSE)
     c.list <- lapply(c.list,function(x) {colnames(x) <- c.names; x})
     c.list <- lapply(c.list,function(x) {rownames(x) <- c.names; x})
@@ -439,7 +454,7 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
 
     ### Extract CTA Models and Performance Metrics ###
     index8 <- grep("^*     ATTRIBUTE",file)+2
-    index9 <- grep("^*            0       1",file)-2
+    index9 <- index6-2
 
     mods <- list()
     for(i in seq_along(n.model)){
@@ -577,8 +592,8 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
                  m.d),
       c("tree.num",
         "mindenom",
-        "n class 0",
-        "n class 1",
+        paste0("n.class.",c.names[1]),
+        paste0("n.class.",c.names[2]),
         "Sensitivity",
         "Specificiy",
         "PPV",
@@ -598,7 +613,7 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
     cta.sum <- cta.sum[seq(m.type, nrow(cta.sum), m.type), ]
     cta.sum$mindenom <- min_values # replace placeholder setting with obs mindenom
     cta.sum <- as.data.frame(lapply(cta.sum,function(x) {rownames(x) <- NULL; x}))
-    cta.sum$wD <- ((100/cta.sum$wess)/cta.sum$Strata)-cta.sum$Strata
+    cta.sum$wD <- ((100/cta.sum$Weighted.ESS)/cta.sum$Strata)-cta.sum$Strata
     min_wD_value <- min(cta.sum$wD)
     min_wD_row <- which(cta.sum$wD==min_wD_value)
     cat("The smallest observed wD statistic was:", min_wD_value, "\n")
@@ -639,6 +654,8 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
     assign(paste0("cta.sum.",run,thismod), csumm[[thismod]], pos = parent.frame())
     assign(paste0("cta.denom.",run,thismod), dsumm[[thismod]], pos = parent.frame())
     assign(paste0("cta.list.",run,thismod), lsumm[[thismod]], pos = parent.frame())
-    assign(paste0("cta.miss.",run,thismod), misumm[[thismod]], pos = parent.frame())
+    if(length(index5) > 0){
+      assign(paste0("cta.miss.",run,thismod), misumm[[thismod]], pos = parent.frame())
+    }
   }
 }
