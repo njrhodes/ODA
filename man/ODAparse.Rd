@@ -7,8 +7,7 @@
 ODAparse(run = "", ...)
 }
 \arguments{
-\item{run}{The numerical value of the run folder in which the data file is
-stored}
+\item{run}{The numeric value of the folder where the model output is saved.}
 
 \item{...}{Additional run numbers specified as a list}
 }
@@ -29,22 +28,19 @@ The following objects with the run number appended are returned for
   OR and 95\% CI are also presented. The Haldane-Anscombe-Gart correction is
   made observed cell counts of zero and a warning is displayed.}
   \item{oda.stats}{Data frame containing the classification summary for each
-  ODA model contained in the model.out file.} \item{oda.sda}{Data frame
-  containing predictions based on the model attributes and observed
-  classifications. Correct and incorrect classifications, e.g., False
-  positive and false negative status, are captured for each observation in
-  the dataset. Structural decomposition can be completed using these data in
-  subsequent ODA models.}
+  ODA model contained in the model.out file.}
 }
 \description{
-Parses model details, model predictions, and loads objects.
+Parses ODA model details, model predictions, and loads objects.
 }
 \details{
-When run, \code{ODAparse} will return model performance metrics and
-  data loaded within the global environment, which can be further evaluated.
+When executed, \code{ODAparse} will return model performance metrics
+  and data loaded within the global environment, which can be further
+  evaluated.
 
-  The working directory must be directed toward the project files to be
-  loaded and located within a \code{Run} folder inside the project tree.
+  The working directory must be directed toward the project, the input files
+  must be located within the input folder, and model output files must be
+  located within the output folder.
 
   For each ODA model, \code{ODAparse} will return the \strong{Effect Strength
   for Sensitivity} or ESS and the \strong{Effect Strength for Predictive

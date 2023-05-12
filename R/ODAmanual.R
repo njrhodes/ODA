@@ -6,13 +6,16 @@
 #'
 #' @export
 #'
-ODAmanual <- function () {
-  shell(paste("start acrord32.exe ",shQuote(normalizePath(
-    system.file("doc","pdf", "ODA_1.3.0.pdf", package = "ODA"),  winslash = "\\")), sep = ""))
-  shell(paste("start acrord32.exe ",shQuote(normalizePath(
-    system.file("doc","pdf", "ODA-User-Guide.pdf", package = "ODA"),  winslash = "\\")), sep = ""))
-  shell(paste("start acrord32.exe ",shQuote(normalizePath(
-    system.file("doc","pdf", "Command_List.pdf", package = "ODA"),  winslash = "\\")), sep = ""))
-  shell(paste("start acrord32.exe ",shQuote(normalizePath(
-    system.file("doc","pdf", "MPE.pdf", package = "ODA"),  winslash = "\\")), sep = ""))
+ODAmanual <- function() {
+  pdf1_path <- normalizePath(system.file("doc", "pdf", "ODA_2.0.0.pdf", package = "ODA"), winslash = "\\")
+  pdf2_path <- normalizePath(system.file("doc", "pdf", "MPE.pdf", package = "ODA"), winslash = "\\")
+  if (.Platform$OS.type == "windows") {
+    shell.exec(pdf1_path)
+    shell.exec(pdf2_path)
+  } else {
+    shell(paste("open", shQuote(pdf1_path)))
+    shell(paste("open", shQuote(pdf2_path)))
+  }
 }
+
+

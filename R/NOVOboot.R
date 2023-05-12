@@ -72,34 +72,41 @@
 #' ## Not run
 #' ## NOVOboot(data=oda.list.1,run=1,predictor=1,outcome=1,seed=1234)
 #'
-#' ## Example of a moderate effect size (ESS) exact discrete 95% confidence interval
-#' ess <- ((((14/14)+(20/64))/2)-0.5)/.5        # 31.25% ESS, a moderate effect
+#' ## Example of a moderate effect size (ESS)
+#' ess <- ((((14/14)+(20/64))/2)-0.5)/.5    # 31.25% ESS, a moderate effect
 #' data <- matrix(c(20,0,44,14),ncol=2,nrow=2,dimnames=list(c(0,1),c(0,1)))
 #' data.raw <- epitools::expand.table(data)
 #' data.tab <- list(table(cbind(data.raw[1],data.raw[2]),dnn=c("v1","x")))
-#' oda.list.1 <- list()                         # supply list formatted for NOVOboot
+#' oda.list.1 <- list()                   # supply list formatted for NOVOboot
 #' oda.list.1[[1]] <- do.call("list",data.tab)  # supply data for NOVOboot
 #'
-#' # NOVOboot(data=oda.list.1,run=1,predictor=1,outcome=1,seed=1234, nboot=25000)
+#' #NOVOboot(data=oda.list.1,run=1,predictor=1,outcome=1,seed=1234, nboot=25000)
 #'
 #' # boot.1 <- novo.boot.1 # added after NOVOboot() run
 #'
-#' # print(sum.boot.1[[1]]) # displays the quantile summary of Model vs. Chance ESS
+#' # print(sum.boot.1[[1]]) # displays the quantiles of Model vs. Chance ESS
 #'
-#' # boot.list <- setNames(data.frame(boot.1$ess.model,boot.1$ess.chance),c("Model","Chance"))
+#' # boot.list <- setNames(data.frame(boot.1$ess.model,boot.1$ess.chance),
+#' #c("Model","Chance"))
 #'
 #' # df <- stack(boot.list,select=c("Model","Chance"))
 #'
 #' # library(ggplot2)
 #' # ggplot(df,aes(x=values)) +
-#' # geom_histogram(data=subset(df, ind== 'Chance'),fill="skyblue",colour="black",binwidth = 2) +
-#' # geom_histogram(data=subset(df, ind== 'Model'), fill="pink", colour="black",binwidth=2) +
+#' # geom_histogram(data=subset(df, ind== 'Chance'),
+#' fill="skyblue",colour="black",binwidth = 2) +
+#' # geom_histogram(data=subset(df, ind== 'Model'),
+#' fill="pink", colour="black",binwidth=2) +
 #' # xlab("Effect strength for sensitivity (ESS %)") +
 #' # ylab("Frequency of bootstrap replicates") +
-#' # geom_vline(aes(xintercept = quantile(boot.1$ess.model,probs=0.025, na.rm=T), color="LB"), linetype="dashed") +
-#' # geom_vline(aes(xintercept = quantile(boot.1$ess.chance,probs=0.975, na.rm=T), color="UB"), linetype="dashed") +
-#' # labs(title = "Bootstrap 95% Interval for ESS from Final Model vs. 95% Interval for Chance",
-#' # subtitle = "ESS Distribution for Chance (Blue) vs. Model (Red) resamples (n=25,000)") +
+#' # geom_vline(aes(xintercept =
+#' # quantile(boot.1$ess.model,probs=0.025, na.rm=T), color="LB"),
+#' # linetype="dashed") +
+#' # geom_vline(aes(xintercept =
+#' # quantile(boot.1$ess.chance,probs=0.975, na.rm=T), color="UB"),
+#' # linetype="dashed") +
+#' # labs(title = "Novoboot plot",
+#' # subtitle = "ESS for Chance (Blue) and for Model (Red) (n=25000)") +
 #' # scale_color_manual(name = "95% PI", values = c(UB = "Blue", LB = "Red")) +
 #' # theme_bw()
 #'

@@ -30,6 +30,17 @@ You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 devtools::install_github("njrhodes/ODA",ref='main')
 ```
 
+UPDATE (2023-05-03): Development version ODA version 2.0 is available
+which supports CTA.exe functions. Additional guidance on the use of CTA
+and Novometrics is forthcoming.
+
+UPDATE (2023-03-10): CTA.exe is now freely available and included in the
+package. Users should install the latest version of the ODA package. The
+full use of this package requires that the CTA.exe file is located in
+the proper installation directory. Robert C. Soltysik generated the
+source code that created the CTA.exe file. His email address is:
+<rob9944@zohomail.com>
+
 UPDATE (2021-09-09): MegaODA.exe is now freely available and included in
 the package. Users should install the latest version of the ODA package.
 The full use of this package requires that the MegaODA.exe file is
@@ -47,7 +58,7 @@ Processors at this time.
 
 *Optimal Discriminant Analysis*, also known as *Optimal Data Analysis*,
 is a non-parametric machine learning algorithm derived using operations
-research optimization methods almost forty years ago.[1] For more
+research optimization methods almost forty years ago.[^1] For more
 details on ODA and ODA applications, please visit
 <https://odajournal.com/>.
 
@@ -55,9 +66,9 @@ details on ODA and ODA applications, please visit
 
 Every statistical model developed using the ODA algorithm explicitly
 maximizes the classification accuracy which is achieved for the training
-sample.[2] “Optimal” means that an ODA model achieves the theoretically
+sample.[^2] “Optimal” means that an ODA model achieves the theoretically
 maximum possible level of accuracy in any given application: this is
-traditional nomenclature in operations research.[3]
+traditional nomenclature in operations research.[^3]
 
 ## What is Meant by Classification Accuracy in ODA?
 
@@ -67,7 +78,7 @@ this model identifies a cutpoint in the data when used for
 classification of the the Class variable (i.e., the “dependent
 variable”) such that:
 
--   *If* Attribute > 0.5, *then* predict Class A; *Otherwise*
+-   *If* Attribute \> 0.5, *then* predict Class A; *Otherwise*
 -   *If* Attribute \<= 0.5, *then* predict Class B.
 
 Using the Attribute (i.e., “independent variable”) cutpoint, ODA
@@ -139,7 +150,7 @@ unique optimization problem. For every statistical application the name
 of the most accurate possible model is the optimal solution, and there’s
 only one way to explicitly achieve the optimal solution—by using
 operations research methods, including specifically-engineered software
-like ODA.[4] Remarkably, it is possible to drape operations research
+like ODA.[^4] Remarkably, it is possible to drape operations research
 methods in an exact statistical paradigm—the name of that paradigm is
 Optimal Data Analysis.\[3\]
 
@@ -148,14 +159,14 @@ Optimal Data Analysis.\[3\]
 In any given application ODA finds the cutpoint for an ordered attribute
 (independent variable), or the assignment rule for a categorical
 attribute, that most accurately (optimally) discriminates the two or
-more categories of the class (dependent) variable.[5] For example,
+more categories of the class (dependent) variable.[^5] For example,
 imagine a hypothetical study involving a two-category class variable
 \[whether or not a patient has cardiovascular (CV) disease\]; an ordered
 attribute (systolic blood pressure, in mmHg); and a categorical
 attribute \[sex: male (M) or female (F)\]. Further imagine that the most
 accurate possible ODA model for predicting presence versus absence of
 disease for systolic blood pressure (SBP) is: if SBP\<145 mmHg, predict
-the patient has no disease; if SBP>145 mmHg, predict the patient has
+the patient has no disease; if SBP\>145 mmHg, predict the patient has
 disease. Finally imagine the most accurate ODA sex model for predicting
 presence versus absence of disease is: if sex=F, predict no disease; if
 sex=M, predict disease. The hypothetical data are summarized in **Figure
@@ -230,10 +241,10 @@ to evaluate the strength-of-effect of ODA models which maximize overall
 PAC.
 
 The optimal model is subjected to a non-parametric permutation test to
-assess statistical significance of obtained overall PAC.\[1\] [6] [7]
+assess statistical significance of obtained overall PAC.\[1\] [^6] [^7]
 Additionally, ODA model reproducibility and cross-generalizability are
 assessed using cross-validation methods such as leave-one-out (LOO),
-jackknife, K-unfolding, bootstrap, or hold-out analysis.\[2\][8]
+jackknife, K-unfolding, bootstrap, or hold-out analysis.\[2\][^8]
 
 ## Computing and Interpreting the ESS and D measures of Classification Accuracy
 
@@ -309,7 +320,7 @@ D = 7.5 - 3 = 4.5. This value of D indicates that 4.5 additional effects
 with the same mean ESS value obtained by the optimal model are needed to
 achieve perfect classification. The minimum value of D which may be
 attained for any model is 0—indicating errorless (perfect)
-classification.[9]
+classification.[^9]
 
 ## How Is Statistical Power Assessed in the ODA Paradigm?
 
@@ -320,7 +331,7 @@ Institutional Review Boards or funding for proposed investigations.
 Accordingly, statistical power analysis simulation results have been
 developed for determining the “worst-case” sample size requirement for a
 study, assuming minimal measurement precision and relatively weak to
-moderate effect strengths.[10] For unit-weighted applications, a
+moderate effect strengths.[^10] For unit-weighted applications, a
 Fisher’s Exact test is isomorphic to the power of an ODA model.\[2\]
 Additionally, the *a priori* signifiance level alpha must be adjusted
 based upon the number of comparisons make using a Sidak-type adjustment
@@ -381,11 +392,11 @@ theory\[4\] states that the exact discrete CIs for classification
 performance should not overlap for a model applied to the training data
 (Model), *vs*. the same model applied to the training data *after*
 randomly scrambling these data relative to the class variable
-(Chance).[11] [12] That is, the lower bound (LB) 2.5% CI for Model
+(Chance).[^11] [^12] That is, the lower bound (LB) 2.5% CI for Model
 metrics (e.g., PAC, ESS, sensitivity, specificity, etc.) should not fall
 below the upper bound (UB) of the corresponding 97.5% CI metrics for
 Chance. Consider a scenario wherein an ODA model achieves sensitivity
-and specificity of 74% and 74%, respectively.[13] For such a model, the
+and specificity of 74% and 74%, respectively.[^13] For such a model, the
 confusion matrix is shown in **Table 5**. The exact discrete 95% CI for
 Model and for Chance as shown in **Table 6** were estimated using
 `NOVOboot()` which generated 5,000 bootstrap resamples from the original
@@ -400,6 +411,7 @@ Each of these tables are found below:
     #>   1 26 74
     #> Table 6. Exact Discrete 95% CIs for Model vs Chance for ESS=48
     #> It is recommended to run ODAparse() prior to NOVOboot() or supply a confusion matrix.
+    #> Default two-sided test assumed.
     #>       ESS(%) Model ESS(%) Chance
     #> 0%         13.9300     -39.17000
     #> 2.5%       28.0400     -20.11200
@@ -425,7 +437,7 @@ establish his or her own level of significance for follow-up research;
 and simulation analyses have demonstrated that for moderate and strong
 effects (as measured by ESS) the decisions regarding the overlap (or
 lack thereof) between the exact discrete 95% CIs remained the same in
-over 1000 different seed numbers.[14] Additionally, when multiple
+over 1000 different seed numbers.[^14] Additionally, when multiple
 comparisons are made, the *a priori* level of alpha can be corrected
 using a Bonferroni-Sidak type adjustment.\[10\]
 
@@ -449,55 +461,56 @@ The following *vignettes* are available in ODA:
 
 ## References
 
-[1] Yarnold, P.R., & Soltysik, R.C. (1991). Theoretical distributions of
-optima for univariate discrimination of random data. *Decision
-Sciences*, 22, 739-752.
+[^1]: Yarnold, P.R., & Soltysik, R.C. (1991). Theoretical distributions
+    of optima for univariate discrimination of random data. *Decision
+    Sciences*, 22, 739-752.
 
-[2] Yarnold, P.R., & Soltysik, R.C. (2005). *Optimal Data Analysis: A
-Guidebook with Software for Windows*. Washington, D.C.: APA Books.
+[^2]: Yarnold, P.R., & Soltysik, R.C. (2005). *Optimal Data Analysis: A
+    Guidebook with Software for Windows*. Washington, D.C.: APA Books.
 
-[3] Yarnold, P.R. (2014). “A statistical guide for the ethically
-perplexed” (Chapter 4, Panter & Sterba, *Handbook of Ethics in
-Quantitative Methodology*, Routledge, 2011): Clarifying disorientation
-regarding the etiology and meaning of the term Optimal as used in the
-Optimal Data Analysis (ODA) paradigm. *Optimal Data Analysis*, 3, 30-31.
+[^3]: Yarnold, P.R. (2014). “A statistical guide for the ethically
+    perplexed” (Chapter 4, Panter & Sterba, *Handbook of Ethics in
+    Quantitative Methodology*, Routledge, 2011): Clarifying
+    disorientation regarding the etiology and meaning of the term
+    Optimal as used in the Optimal Data Analysis (ODA) paradigm.
+    *Optimal Data Analysis*, 3, 30-31.
 
-[4] Yarnold, P.R., & Soltysik, R.C. (2010). Optimal data analysis: A
-general statistical analysis paradigm. *Optimal Data Analysis*, 1,
-10-22.
+[^4]: Yarnold, P.R., & Soltysik, R.C. (2010). Optimal data analysis: A
+    general statistical analysis paradigm. *Optimal Data Analysis*, 1,
+    10-22.
 
-[5] Yarnold, P.R. (2017). What is optimal data analysis? *Optimal Data
-Analysis*, 6, 26-42.
+[^5]: Yarnold, P.R. (2017). What is optimal data analysis? *Optimal Data
+    Analysis*, 6, 26-42.
 
-[6] Soltysik, R.C., & Yarnold, P.R. (1994). Univariable optimal
-discriminant analysis: One-tailed hypotheses. *Educational and
-Psychological Measurement*, 54, 646-653.
+[^6]: Soltysik, R.C., & Yarnold, P.R. (1994). Univariable optimal
+    discriminant analysis: One-tailed hypotheses. *Educational and
+    Psychological Measurement*, 54, 646-653.
 
-[7] Carmony, L., Yarnold, P.R., & Naeymi-Rad, F. (1998). One-tailed Type
-I error rates for balanced two-category UniODA with a random ordered
-attribute. *Annals of Operations Research*, 74, 223-238.
+[^7]: Carmony, L., Yarnold, P.R., & Naeymi-Rad, F. (1998). One-tailed
+    Type I error rates for balanced two-category UniODA with a random
+    ordered attribute. *Annals of Operations Research*, 74, 223-238.
 
-[8] Yarnold, P.R., & Soltysik, R.C. (2016). *Maximizing Predictive
-Accuracy*. Chicago, IL: ODA Books. DOI: 10.13140/RG.2.1.1368.3286
+[^8]: Yarnold, P.R., & Soltysik, R.C. (2016). *Maximizing Predictive
+    Accuracy*. Chicago, IL: ODA Books. DOI: 10.13140/RG.2.1.1368.3286
 
-[9] Yarnold, P.R., & Linden, A. (2016). Theoretical aspects of the D
-statistic. *Optimal Data Analysis*, 5, 171-174.
+[^9]: Yarnold, P.R., & Linden, A. (2016). Theoretical aspects of the D
+    statistic. *Optimal Data Analysis*, 5, 171-174.
 
-[10] Rhodes, N.J. (2020). Statistical power analysis in ODA, CTA and
-novometrics. *Optimal Data Analysis*, 9, 21-25.
+[^10]: Rhodes, N.J. (2020). Statistical power analysis in ODA, CTA and
+    novometrics. *Optimal Data Analysis*, 9, 21-25.
 
-[11] Yarnold P. R. (2018). Comparing Exact Discrete 95% CIs for Model
-vs. Chance ESS to Evaluate Statistical Significance. *Optimal Data
-Analysis*, 7, 82-84.
+[^11]: Yarnold P. R. (2018). Comparing Exact Discrete 95% CIs for Model
+    vs. Chance ESS to Evaluate Statistical Significance. *Optimal Data
+    Analysis*, 7, 82-84.
 
-[12] Yarnold P.R. (2020). Reformulating the First Axiom of Novometric
-Theory: Assessing Minimum Sample Size in Experimental Design. *Optimal
-Data Analysis*, 9, 7-8.
+[^12]: Yarnold P.R. (2020). Reformulating the First Axiom of Novometric
+    Theory: Assessing Minimum Sample Size in Experimental Design.
+    *Optimal Data Analysis*, 9, 7-8.
 
-[13] Rhodes NJ, Yarnold PR (2020). Generating novometric confidence
-intervals in R: Bootstrap analyses to compare model and chance ESS.
-*Optimal Data Analysis*, 9, 172-177.
+[^13]: Rhodes NJ, Yarnold PR (2020). Generating novometric confidence
+    intervals in R: Bootstrap analyses to compare model and chance ESS.
+    *Optimal Data Analysis*, 9, 172-177.
 
-[14] Rhodes NJ. (2020). Assessing Reproducibility of Novometric
-Bootstrap Confidence Interval Analysis Using Multiple Seed Numbers.
-*Optimal Data Analysis*, 9, 190-195.
+[^14]: Rhodes NJ. (2020). Assessing Reproducibility of Novometric
+    Bootstrap Confidence Interval Analysis Using Multiple Seed Numbers.
+    *Optimal Data Analysis*, 9, 190-195.

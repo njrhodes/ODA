@@ -1,17 +1,21 @@
 #' @title Parse ODA output files.
 #'
-#' @description Parses model details, model predictions, and loads objects.
+#' @description Parses ODA model details, model predictions, and loads objects.
 #'
-#' @param run The numerical value of the run folder in which the data file is
-#'   stored
+#' @param run The numeric value of the folder where the model output is saved.
+#'
+#' @param mod The numeric value of the model number. Additional models can be
+#'   specified in '...'
 #'
 #' @param ... Additional run numbers specified as a list
 #'
-#' @details When run, \code{ODAparse} will return model performance metrics and
-#'   data loaded within the global environment, which can be further evaluated.
+#' @details When executed, \code{ODAparse} will return model performance metrics
+#'   and data loaded within the global environment, which can be further
+#'   evaluated.
 #'
-#'   The working directory must be directed toward the project files to be
-#'   loaded and located within a \code{Run} folder inside the project tree.
+#'   The working directory must be directed toward the project, the input files
+#'   must be located within the input folder, and model output files must be
+#'   located within the output folder.
 #'
 #'   For each ODA model, \code{ODAparse} will return the \strong{Effect Strength
 #'   for Sensitivity} or ESS and the \strong{Effect Strength for Predictive
@@ -67,12 +71,7 @@
 #'   OR and 95\% CI are also presented. The Haldane-Anscombe-Gart correction is
 #'   made observed cell counts of zero and a warning is displayed.}
 #'   \item{oda.stats}{Data frame containing the classification summary for each
-#'   ODA model contained in the model.out file.} \item{oda.sda}{Data frame
-#'   containing predictions based on the model attributes and observed
-#'   classifications. Correct and incorrect classifications, e.g., False
-#'   positive and false negative status, are captured for each observation in
-#'   the dataset. Structural decomposition can be completed using these data in
-#'   subsequent ODA models.}
+#'   ODA model contained in the model.out file.}
 #'
 #' @export
 #'
@@ -95,19 +94,26 @@
 #'   Yarnold, P.R. and Soltysik, R.C. (2016). \emph{Maximizing Predictive
 #'   Accuracy}. ODA Books. DOI: 10.13140/RG.2.1.1368.3286.
 #'
-ODAparse <- function(run="",...) {
+ODAparse <- function(run="",mod="",...) {
   if(run==""){
     stop(
-      print("Message: User must specify a run number of the ODAparse results to load.\n")
+      print("Message: User must specify a single folder to parse.\n")
     )
   }
-  out <- "MODEL.OUT"
-  addlruns <- list(...)
-  if (length(addlruns) > 0) {
-    allruns <- c(run, unlist(addlruns))
-  }else {
-    allruns <- run
+  if(mod==""){
+    stop(
+      print("Message: User must specify the model number from ODArun.\n")
+    )
   }
+
+  addlmods <- list(...)
+
+  if (length(addlmods) > 0) {
+    allmods <- c(mod, unlist(addlmods))
+  }else {
+    allmods <- mod
+  }
+
   msumm <- list()
   psumm <- list()
   ksumm <- list()
@@ -115,13 +121,15 @@ ODAparse <- function(run="",...) {
   lsumm <- list()
   sdsum <- list()
   ssumm <- list()
-  for (thisrun in allruns){
+
+  for (thismod in allmods){
     #### Extract the ODA models, variables, and class summaries from the OUT file####
-    rundir <- paste(getwd(),"Runs",thisrun,sep="/")
+    out <- paste0("MODEL",thismod,".OUT")
+    rundir <- paste(getwd(),"ODA",thismod,"inputs",sep="/")
     runfile <- paste(rundir,list.files(rundir,pattern="*.csv"),sep="/")
-    outfile <- paste(getwd(),"Runs",thisrun,out,sep="/")
+    outfile <- paste(getwd(),"ODA",thismod,"outputs",out,sep="/")
     if(!file.exists(outfile)){
-      stop(cat("Error: No valid OUT file found in the directory ~/Run",thisrun,".\n"))
+      stop(cat("Error: No valid output file found in the model ",thismod,"directory .\n"))
     }
     file <- readLines(outfile)
     data_raw <- data.frame(file,stringsAsFactors = FALSE)
@@ -147,6 +155,14 @@ ODAparse <- function(run="",...) {
     vars <- matrix(unlist(vars), ncol=2, byrow=T)
     vars <- as.data.frame(vars, stringsAsFactors = T)
     class <- as.numeric(as.character(vars[,2]))
+    n.class <- grep("^*Classes:",file)
+    n.class <- data_raw[n.class,]
+    n.class <- gsub("Classes:","",n.class)
+    n.class <- as.numeric(as.character(n.class))
+    multi.class <- ifelse(max(n.class)>2,1,0)
+    if(multi.class>0){
+      stop(cat("Error: ODAparse not compatible with multiclass models.\n"))
+    }
     n.model <- seq_along(index1)
     cat.check <- grep("^*CAT ",file) # determine if a categorical model specified
     loo.check <- grep("^LOO OFF;",file)
@@ -159,7 +175,7 @@ ODAparse <- function(run="",...) {
            "Warning: Remove the attribute(s) above and complete ODArun again before running ODAparse.\n")
     }
     #### Method for standard CAT and non-CAT ODA Models: ####
-    # CAT model if indices differ > 1, otherwise non-CAT if indices differ > 0 #
+    # MULTICLASS or CAT model if indices differ > 1, otherwise not if indices differ > 0 #
     if (max(index2-index1)>0 & length(index1)==length(index2)){
       models <- c()
       classes <- c()
@@ -232,7 +248,7 @@ ODAparse <- function(run="",...) {
                                 c("Model","IF Attributes:", "THEN Predict:",c.lab))
           }
         }
-      }
+      } # WEIGHTED MODELS
       else{
         if(length(loo.check)>0 | length(loo.cat.check)>0){
           index4 <- grep("^*Summary for Class",file)+12
@@ -278,7 +294,7 @@ ODAparse <- function(run="",...) {
         }
       }
       ### Return ODA model summary ###
-      msumm[[thisrun]] <- c.model
+      msumm[[thismod]] <- c.model
 
       l.list <- list()
       for(i in seq_along(index1)){
@@ -312,9 +328,14 @@ ODAparse <- function(run="",...) {
       cut <- list()  # decision rule on left hand side taking the first one
       for(i in seq_along(index1)){
         cut[[i]]<-lh[[i]]
+        # Remove everything except numeric values
+        cut[[i]] <- lapply(cut[[i]],function(x) {
+          gsub("^([^<=<]+).*", "\\1", x)
+        })
         cut[[i]]<-gsub(".*=","",cut[[i]])
-        cut[[i]]<-gsub(".*<","",cut[[i]])
+        cut[[i]]<-gsub(".^<","",cut[[i]])
         cut[[i]]<-gsub(".[a-zA-Z]{1}([0-9]{5}|[0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1})","",cut[[i]])
+        cut[[i]]<-gsub("(\\d+(?:\\.\\d+)?)\\s*<[[:alpha:]]+>\\s*|<[[:alpha:]]+>\\s*", "\\1 ", cut[[i]])
         cut[[i]]<-as.numeric(cut[[i]])
         cut[[i]]<-cut[[i]][!is.na(cut[[i]])]
       }
@@ -332,7 +353,7 @@ ODAparse <- function(run="",...) {
         stats[, c(paste0("model.",n.model[i]))] <- cbind(data_raw[(index3[i]:index4[i]),])
       }
       ### Return ODA Performance Index###
-      ssumm[[thisrun]]<-stats
+      ssumm[[thismod]]<-stats
 
       df <- as.data.frame(matrix(0, ncol = 0, nrow = nrow(data)))
       for(i in n.model){
@@ -358,25 +379,25 @@ ODAparse <- function(run="",...) {
                  paste0(c("tp.", "tn.", "fp.", "fn."), rep(seq_along(cv), each = 4)))
       })
       ###Create predictions for each model and store for SDA###
-      index6 <- seq_along(cv)*4*nrow(data)
-      sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
-      if(length(sda) > 1){
-        sda.mat <- do.call(cbind, sda)
-        res <- c()
-        for(i in seq_along(index6)){
-          res[[i]] <- sda.mat[seq((index6[i]-min(index6)+1),index6[i]),]
-          rownames(res[[i]]) <- paste0(c(rep("tp.",each=nrow(data)),rep("tn.",each=nrow(data)),rep("fp.",each=nrow(data)),rep("fn.",each=nrow(data))),rep(seq(1,nrow(data),by=1),times=4))
-        }
-        sda.list <- do.call(rbind, res)
-      }else{
-        sda.list <- sda
-      }
-      sda.frame <- as.data.frame(sda.list)
-      sda.frame$id <- rep(seq(1,nrow(data),by=1),times=4)
-      sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
-      sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
-      ### Return SDA report for ODA Model ###
-      sdsum[[thisrun]] <- sda.frame
+      # index6 <- seq_along(cv)*4*nrow(data)
+      # sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
+      # if(length(sda) > 1){
+      #   sda.mat <- do.call(cbind, sda)
+      #   res <- c()
+      #   for(i in seq_along(index6)){
+      #     res[[i]] <- sda.mat[seq((index6[i]-min(index6)+1),index6[i]),]
+      #     rownames(res[[i]]) <- paste0(c(rep("tp.",each=nrow(data)),rep("tn.",each=nrow(data)),rep("fp.",each=nrow(data)),rep("fn.",each=nrow(data))),rep(seq(1,nrow(data),by=1),times=4))
+      #   }
+      #   sda.list <- do.call(rbind, res)
+      # }else{
+      #   sda.list <- sda
+      # }
+      # sda.frame <- as.data.frame(sda.list)
+      # sda.frame$id <- rep(seq(1,nrow(data),by=1),times=4)
+      # sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
+      # sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
+      # ### Return SDA report for ODA Model ###
+      # sdsum[[thismod]] <- sda.frame
 
       df <- predictions
       cc_list <- lapply(df, function(x){
@@ -389,7 +410,7 @@ ODAparse <- function(run="",...) {
         setNames(do.call("list", cct), names(cv))
       })
       ### Return List of ODA Cross Class Tables###
-      lsumm[[thisrun]] <- cc_list
+      lsumm[[thismod]] <- cc_list
 
       temp <- lapply(df_list,sapply,sum,na.rm=T)
 
@@ -442,20 +463,20 @@ ODAparse <- function(run="",...) {
       names(esp.m) <- paste0(rep("ESP.",length(cv)), seq_along(cv))
 
       if(length(cv)>1){
-      for(i in seq_along(n.model)){
-        if(min(tp[i,],tn[i,],fp[i,],fn[i,])==0){
-          tp[i,] <- tp[i,]+0.5
-          tn[i,] <- tn[i,]+0.5
-          fp[i,] <- fp[i,]+0.5
-          fn[i,] <- fn[i,]+0.5
-          cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
-        } else{
-          tp[i,] <- tp[i,]
-          tn[i,] <- tn[i,]
-          fp[i,] <- fp[i,]
-          fn[i,] <- fn[i,]
+        for(i in seq_along(n.model)){
+          if(min(tp[i,],tn[i,],fp[i,],fn[i,])==0){
+            tp[i,] <- tp[i,]+0.5
+            tn[i,] <- tn[i,]+0.5
+            fp[i,] <- fp[i,]+0.5
+            fn[i,] <- fn[i,]+0.5
+            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thismod," was identified.\n"))
+          } else{
+            tp[i,] <- tp[i,]
+            tn[i,] <- tn[i,]
+            fp[i,] <- fp[i,]
+            fn[i,] <- fn[i,]
+          }
         }
-      }
       } else{
         for(i in seq_along(n.model)){
           if(min(tp[i],tn[i],fp[i],fn[i])==0){
@@ -463,7 +484,7 @@ ODAparse <- function(run="",...) {
             tn[i] <- tn[i]+0.5
             fp[i] <- fp[i]+0.5
             fn[i] <- fn[i]+0.5
-            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
+            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thismod," was identified.\n"))
           } else{
             tp[i] <- tp[i]
             tn[i] <- tn[i]
@@ -503,17 +524,17 @@ ODAparse <- function(run="",...) {
       }
       ###Return ODA model performance object###
       perf_list <- as.data.frame(do.call("cbind",c(p.list,perf.list)))
-      psumm[[thisrun]] <- perf_list
+      psumm[[thismod]] <- perf_list
       ###Return data key with new variable names###
       a.key <- as.matrix(key[attribute,1])
       c.key <- as.matrix(key[class,1])
       oda.key <- data.frame(a.key,names(data),c.key,names(cv))
       names(oda.key) <- c("Attribute Label","Attribute","Class Label","Class")
-      ksumm[[thisrun]] <- oda.key
+      ksumm[[thismod]] <- oda.key
       ###Return ODA data used for analysis###
       data$class <- cv[,1]
       data <- cbind(data,predictions)
-      dsumm[[thisrun]] <- data
+      dsumm[[thismod]] <- data
     }
     #### Method for GEN ODA Models: ####
     else{
@@ -678,7 +699,7 @@ ODAparse <- function(run="",...) {
         }
       }
       ### Return ODA model summary ###
-      msumm[[thisrun]] <- c.model
+      msumm[[thismod]] <- c.model
 
       l.list <- list()
       for(i in seq_along(index1)){
@@ -732,7 +753,7 @@ ODAparse <- function(run="",...) {
         stats[, c(paste0("model.",n.model[i]))] <- cbind(data_raw[(index3[i]:index4[i]),])
       }
       ### Return ODA Performance Index###
-      ssumm[[thisrun]] <- stats
+      ssumm[[thismod]] <- stats
 
       df <- as.data.frame(matrix(0, ncol = 0, nrow = nrow(data)))
       for(i in n.model){
@@ -758,25 +779,25 @@ ODAparse <- function(run="",...) {
                  paste0(c("tp.", "tn.", "fp.", "fn."), rep(seq_along(cv), each = 4)))
       })
       ###Create predictions for each model and store for SDA###
-      index6 <- seq_along(cv)*4*nrow(data)
-      sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
-      if(length(sda) > 1){
-        sda.mat <- do.call(cbind, sda)
-        res <- c()
-        for(i in seq_along(index6)){
-          res[[i]] <- sda.mat[seq((index6[i]-min(index6)+1),index6[i]),]
-          rownames(res[[i]]) <- paste0(c(rep("tp.",each=nrow(data)),rep("tn.",each=nrow(data)),rep("fp.",each=nrow(data)),rep("fn.",each=nrow(data))),rep(seq(1,nrow(data),by=1),times=4))
-        }
-        sda.list <- do.call(rbind, res)
-      }else{
-        sda.list <- sda
-      }
-      sda.frame <- as.data.frame(sda.list)
-      sda.frame$id <- rep(seq(1,nrow(data),by=1),times=4)
-      sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
-      sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
-      ### Return SDA report for ODA Model ###
-      sdsum[[thisrun]] <- sda.frame
+      # index6 <- seq_along(cv)*4*nrow(data)
+      # sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
+      # if(length(sda) > 1){
+      #   sda.mat <- do.call(cbind, sda)
+      #   res <- c()
+      #   for(i in seq_along(index6)){
+      #     res[[i]] <- sda.mat[seq((index6[i]-min(index6)+1),index6[i]),]
+      #     rownames(res[[i]]) <- paste0(c(rep("tp.",each=nrow(data)),rep("tn.",each=nrow(data)),rep("fp.",each=nrow(data)),rep("fn.",each=nrow(data))),rep(seq(1,nrow(data),by=1),times=4))
+      #   }
+      #   sda.list <- do.call(rbind, res)
+      # }else{
+      #   sda.list <- sda
+      # }
+      # sda.frame <- as.data.frame(sda.list)
+      # sda.frame$id <- rep(seq(1,nrow(data),by=1),times=4)
+      # sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
+      # sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
+      # ### Return SDA report for ODA Model ###
+      # sdsum[[thismod]] <- sda.frame
 
       df <- predictions
       cc_list <- lapply(df, function(x){
@@ -789,7 +810,7 @@ ODAparse <- function(run="",...) {
         setNames(do.call("list", cct), names(cv))
       })
       ### Extract List of ODA Cross Class Tables###
-      lsumm[[thisrun]] <- cc_list
+      lsumm[[thismod]] <- cc_list
 
       temp <- lapply(df_list,sapply,sum,na.rm=T)
 
@@ -803,12 +824,12 @@ ODAparse <- function(run="",...) {
       tn <- temp2[,seq(2, ncol(temp2), 4)]        # TN
       fp <- temp2[,seq(3, ncol(temp2), 4)]        # FP
       fn <- temp2[,seq(4, ncol(temp2), 4)]        # FN
-      
+
       n.obs.class1 <- (tn+fp)
       n.obs.class2 <- (tp+fn)
       n.pred.class1 <- (tn+fn)
       n.pred.class2 <- (tp+fp)
-      
+
       names(n.obs.class1) <- paste0("n.obs.class1.",seq_along(cv))
       names(n.obs.class2) <- paste0("n.obs.class2.",seq_along(cv))
       names(n.pred.class1) <- paste0("n.pred.class1.",seq_along(cv))
@@ -848,7 +869,7 @@ ODAparse <- function(run="",...) {
             tn[i,] <- tn[i,]+0.5
             fp[i,] <- fp[i,]+0.5
             fn[i,] <- fn[i,]+0.5
-            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
+            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thismod," was identified.\n"))
           } else{
             tp[i,] <- tp[i,]
             tn[i,] <- tn[i,]
@@ -863,7 +884,7 @@ ODAparse <- function(run="",...) {
             tn[i] <- tn[i]+0.5
             fp[i] <- fp[i]+0.5
             fn[i] <- fn[i]+0.5
-            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thisrun," was identified.\n"))
+            cat(paste0("An observed cell count of zero for model: ",i," in run: ",thismod," was identified.\n"))
           } else{
             tp[i] <- tp[i]
             tn[i] <- tn[i]
@@ -903,28 +924,27 @@ ODAparse <- function(run="",...) {
       }
       ###Return ODA model performance object###
       perf_list <- as.data.frame(do.call("cbind",c(p.list,perf.list)))
-      psumm[[thisrun]] <- perf_list
+      psumm[[thismod]] <- perf_list
       ###Return data key with new variable names###
       a.key <- as.matrix(key[attribute,1])
       c.key <- as.matrix(key[class,1])
       oda.key <- data.frame(a.key,names(data),c.key,names(cv))
       names(oda.key) <- c("Attribute Label","Attribute","Class Label","Class")
-      ksumm[[thisrun]] <- oda.key
+      ksumm[[thismod]] <- oda.key
       ###Return ODA data used for analysis###
       data$class <- cv[,1]
       data <- cbind(data,predictions)
-      dsumm[[thisrun]] <- data
-      assign(paste0("oda.data.",thisrun), data, pos = parent.frame())
+      dsumm[[thismod]] <- data
     }
   }
-  for (thisrun in allruns){
-    assign(paste0("oda.model.",thisrun), msumm[[thisrun]], pos = parent.frame())
-    assign(paste0("oda.perf.",thisrun), psumm[[thisrun]], pos = parent.frame())
-    assign(paste0("oda.data.",thisrun), dsumm[[thisrun]], pos = parent.frame())
-    assign(paste0("oda.key.",thisrun), ksumm[[thisrun]], pos = parent.frame())
-    assign(paste0("oda.list.",thisrun), lsumm[[thisrun]], pos = parent.frame())
-    assign(paste0("oda.sda.",thisrun), sdsum[[thisrun]], pos = parent.frame())
-    assign(paste0("oda.stats.",thisrun), ssumm[[thisrun]], pos = parent.frame())
+  for (thismod in allruns){
+    assign(paste0("oda.model.",thismod), msumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.perf.",thismod), psumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.data.",thismod), dsumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.key.",thismod), ksumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.list.",thismod), lsumm[[thismod]], pos = parent.frame())
+    #assign(paste0("oda.sda.",thismod), sdsum[[thismod]], pos = parent.frame())
+    assign(paste0("oda.stats.",thismod), ssumm[[thismod]], pos = parent.frame())
   }
 }
 

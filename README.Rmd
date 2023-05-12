@@ -31,6 +31,9 @@ You can install ODA from [GitHub](https://github.com/njrhodes/ODA) with:
 ``` r
 devtools::install_github("njrhodes/ODA",ref='main')
 ```
+UPDATE (2023-05-03): Development version ODA version 2.0 is available which supports CTA.exe functions. Additional guidance on the use of CTA and Novometrics is forthcoming.
+
+UPDATE (2023-03-10): CTA.exe is now freely available and included in the package. Users should install the latest version of the ODA package. The full use of this package requires that the CTA.exe file is located in the proper installation directory. Robert C. Soltysik generated the source code that created the CTA.exe file. His email address is: rob9944@zohomail.com
 
 UPDATE (2021-09-09): MegaODA.exe is now freely available and included in the package. Users should install the latest version of the ODA package. The full use of this package requires that the MegaODA.exe file is located in the proper installation directory. Robert C. Soltysik generated the source code that created the MegaODA.exe file. His email address is: rob9944@zohomail.com
 
