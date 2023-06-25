@@ -613,7 +613,7 @@ CTAparse <- function(run="",mod="",type="",weight="",...) {
     cta.sum <- cta.sum[seq(m.type, nrow(cta.sum), m.type), ]
     cta.sum$mindenom <- min_values # replace placeholder setting with obs mindenom
     cta.sum <- as.data.frame(lapply(cta.sum,function(x) {rownames(x) <- NULL; x}))
-    cta.sum$wD <- ((100/cta.sum$Weighted.ESS)/cta.sum$Strata)-cta.sum$Strata
+    cta.sum$wD <- 100/(cta.sum$Weighted.ESS/cta.sum$Strata)-cta.sum$Strata
     min_wD_value <- min(cta.sum$wD)
     min_wD_row <- which(cta.sum$wD==min_wD_value)
     cat("The smallest observed wD statistic was:", min_wD_value, "\n")

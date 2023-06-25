@@ -286,10 +286,10 @@ ODArun <-function(run="", data="", out="", hold="", vstart="", vend="", class=""
     w <- list(class,attribute,gen,categorical)
     x <- list(attribute,class,categorical,weight)
     z <- list("maxsens","meansens","samplerep","balanced","distance","random","genmean")
-    ge <- lapply(x, function(ch) grep(gen, ch))
-    wgt <- lapply(w, function(ch) grep(weight, ch))
+    ge <- lapply(x, function(ch) grepl("\\bgen\\b", ch))
+    wgt <- lapply(w, function(ch) grepl("\\bweight\\b", ch))
 
-    if (gen != "" & sum(unlist(ge)) != 0)  {
+    if (gen != "" & any(unlist(ge)))  {
       stop(cat("Error: \"gen\" variable cannot be the same variable specified as class, attribute, categorical, or weight variables.\n"))
     }
     if (gen == "" & (primary  %in% list("genmean") | secondary  %in% list("genmean") | grepl("gensens ",primary ,fixed=T) |  grepl("gensens ",secondary,fixed=T))) {
@@ -308,7 +308,7 @@ ODArun <-function(run="", data="", out="", hold="", vstart="", vend="", class=""
     if (sidak != "" & target ==""){
       stop(cat("Error: Target significance must be declared for Sidak adjustment.\n"))
     }
-    if (weight != "" & sum(unlist(wgt)) != 0) {
+    if (weight != "" & any(unlist(wgt))) {
       stop(cat("Error: \"weight\" variable cannot be the same variable specified as class, attribute, categorical, or gen variables.\n"))
     }
     #Paste all commands into .pgm file for command line execution.

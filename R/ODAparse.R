@@ -86,7 +86,7 @@
 #'
 #' @examples
 #' # Not run:
-#' # ODAparse(1)
+#' # ODAparse(1,1)
 #'
 #' @references Yarnold P.R. and Soltysik R.C. (2005). \emph{Optimal data
 #'   analysis: Guidebook with software for Windows}. APA Books.
@@ -125,9 +125,9 @@ ODAparse <- function(run="",mod="",...) {
   for (thismod in allmods){
     #### Extract the ODA models, variables, and class summaries from the OUT file####
     out <- paste0("MODEL",thismod,".OUT")
-    rundir <- paste(getwd(),"ODA",thismod,"inputs",sep="/")
+    rundir <- paste(getwd(),"ODA",run,"inputs",sep="/")
     runfile <- paste(rundir,list.files(rundir,pattern="*.csv"),sep="/")
-    outfile <- paste(getwd(),"ODA",thismod,"outputs",out,sep="/")
+    outfile <- paste(getwd(),"ODA",run,"outputs",out,sep="/")
     if(!file.exists(outfile)){
       stop(cat("Error: No valid output file found in the model ",thismod,"directory .\n"))
     }
@@ -325,20 +325,23 @@ ODAparse <- function(run="",mod="",...) {
         rc[[i]]<-as.numeric(gsub(".*=","",rh[[i]]))
       }
       pred <- rc
+
       cut <- list()  # decision rule on left hand side taking the first one
-      for(i in seq_along(index1)){
-        cut[[i]]<-lh[[i]]
-        # Remove everything except numeric values
-        cut[[i]] <- lapply(cut[[i]],function(x) {
-          gsub("^([^<=<]+).*", "\\1", x)
+
+      cut<-lh
+
+      cut <- lapply(cut, function(x) {
+        lapply(x, function(y) {
+          if (grepl("\\d+(\\.\\d+)?", y)) {
+            as.numeric(gsub(".*?(\\d+(\\.\\d+)?).*", "\\1", y))
+          } else {
+            NULL
+          }
         })
-        cut[[i]]<-gsub(".*=","",cut[[i]])
-        cut[[i]]<-gsub(".^<","",cut[[i]])
-        cut[[i]]<-gsub(".[a-zA-Z]{1}([0-9]{5}|[0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1})","",cut[[i]])
-        cut[[i]]<-gsub("(\\d+(?:\\.\\d+)?)\\s*<[[:alpha:]]+>\\s*|<[[:alpha:]]+>\\s*", "\\1 ", cut[[i]])
-        cut[[i]]<-as.numeric(cut[[i]])
-        cut[[i]]<-cut[[i]][!is.na(cut[[i]])]
-      }
+      })
+
+      # Extract the second element from each length 2 list
+      cut <- sapply(cut, function(x) x[[2]])
 
       data <- read.csv(runfile)
       header <- names(data)
@@ -731,14 +734,21 @@ ODAparse <- function(run="",mod="",...) {
       }
       pred <- rc
       cut <- list()  # decision rule on left hand side taking the first one
-      for(i in seq_along(index1)){
-        cut[[i]]<-lh[[i]]
-        cut[[i]]<-gsub(".*=","",cut[[i]])
-        cut[[i]]<-gsub(".*<","",cut[[i]])
-        cut[[i]]<-gsub(".[a-zA-Z]{1}([0-9]{5}|[0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1})","",cut[[i]])
-        cut[[i]]<-as.numeric(cut[[i]])
-        cut[[i]]<-cut[[i]][!is.na(cut[[i]])]
-      }
+
+      cut<-lh
+
+      cut <- lapply(cut, function(x) {
+        lapply(x, function(y) {
+          if (grepl("\\d+(\\.\\d+)?", y)) {
+            as.numeric(gsub(".*?(\\d+(\\.\\d+)?).*", "\\1", y))
+          } else {
+            NULL
+          }
+        })
+      })
+
+      # Extract the second element from each length 2 list
+      cut <- sapply(cut, function(x) x[[2]])
 
       data <- read.csv(runfile)
       header <- names(data)
@@ -937,7 +947,7 @@ ODAparse <- function(run="",mod="",...) {
       dsumm[[thismod]] <- data
     }
   }
-  for (thismod in allruns){
+  for (thismod in allmods){
     assign(paste0("oda.model.",thismod), msumm[[thismod]], pos = parent.frame())
     assign(paste0("oda.perf.",thismod), psumm[[thismod]], pos = parent.frame())
     assign(paste0("oda.data.",thismod), dsumm[[thismod]], pos = parent.frame())
