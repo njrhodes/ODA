@@ -1,0 +1,124 @@
+-------------------------------------------------------------------------------
+Page 1                     Optimal Data Analysis           10:20:17  04-05-22
+ 
+VARS V1 TO V2;
+CLASS V1;
+ATTRIBUTE V2;
+MCARLO ITER 1000;
+LOO;
+GO;
+ 
+Note: In all classification performance summary tables, the following
+abbreviations are used: NP = Number Predicted; PV = Predictive Value;
+NA = Number Actual; PAC = Percentage Accuracy in Classification.
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL.OUT                                                                                                                           
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V2
+Weight:       NONE
+Gen:         OFF
+Obs:         407
+Missing:     0
+Excluded:    0
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  1
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 2                     Optimal Data Analysis           10:20:18  04-05-22
+ 
+ODA model:
+----------
+IF V2 <= 0.5 THEN V1 = 0
+IF 0.5 < V2 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  1000
+Estimated p: 0.000000
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001        63.27%         p>.001        36.73%
+ p<.01        100.00%         p>.01          0.00%
+ p<.05        100.00%         p>.05          0.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     295
+Incorrect:   112
+Overall PAC:   72.48%
+Mean PAC:      72.05%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC
+A      |       |       |
+c     0|  118  |  78   | 196    60.20%
+t      |       |       |
+u     1|  34   |  177  | 211    83.89%
+a      |       |       |
+l      -----------------
+   NP     152     255  
+   PV    77.63%  69.41%  Mean PV   73.52%
+ 
+Effect strength PAC    44.09%      Effect strength PV   47.04%
+-------------------------------------------------------------------------------
+Page 3                     Optimal Data Analysis           10:20:18  04-05-22
+ 
+Results of leave-one-out analysis
+---------------------------------
+407 observations
+ 
+Fisher's exact test (directional) classification table  p = .922E-0020
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     295
+Incorrect:   112
+Overall PAC:   72.48%
+Mean PAC:      72.05%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC
+A      |       |       |
+c     0|  118  |  78   | 196    60.20%
+t      |       |       |
+u     1|  34   |  177  | 211    83.89%
+a      |       |       |
+l      -----------------
+   NP     152     255  
+   PV    77.63%  69.41%  Mean PV   73.52%
+ 
+Effect strength PAC    44.09%      Effect strength PV   47.04%
+ 
+Summary for Class V1  Attribute V2
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            72.48%  72.48%
+PAC V1=0                    60.20%  60.20%
+PAC V1=1                    83.89%  83.89%
+Effect Strength PAC         44.09%  44.09%
+PV V1=0                     77.63%  77.63%
+PV V1=1                     69.41%  69.41%
+Effect Strength PV          47.04%  47.04%
+Effect Strength Total       45.57%  45.57%
+ 

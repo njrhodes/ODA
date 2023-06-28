@@ -1,0 +1,137 @@
+-------------------------------------------------------------------------------
+Page 1                     Optimal Data Analysis           10:57:02  06-28-23
+ 
+VARS V1 TO V2;
+CLASS V1;
+ATTRIBUTE V2;
+CAT V2;
+MCARLO ITER 25000;
+LOO;
+GO;
+ 
+Note: In all classification performance summary tables, the following
+abbreviations are used: NP = Number Predicted; PV = Predictive Value;
+NA = Number Actual; PAC = Percentage Accuracy in Classification.
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V2
+Weight:       NONE
+Gen:         OFF
+Obs:         325
+Missing:     0
+Excluded:    0
+Classes:     4
+Solution:    OPTIMAL
+Time (sec):  1
+Hypothesis:  NONDIRECTIONAL
+Categorical: ON
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 2                     Optimal Data Analysis           10:57:03  06-28-23
+ 
+ODA model:
+----------
+IF V2 = 1 THEN V1 = 1
+IF V2 = 2 THEN V1 = 2
+IF V2 = 3 THEN V1 = 3
+IF V2 = 4 THEN V1 = 4
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.000000
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001       100.00%         p>.001         0.00%
+ p<.01        100.00%         p>.01          0.00%
+ p<.05        100.00%         p>.05          0.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     216
+Incorrect:   109
+Overall PAC:   66.46%
+Mean PAC:      63.22%
+ 
+Class              Predicted
+ V1        1       2       3       4       
+       --------------------------------- NA      PAC
+       |       |       |       |       |
+A     1|  98   |  16   |   5   |   3   | 122     80.33%
+c      |       |       |       |       |
+t     2|  13   |  50   |   2   |   8   | 73     68.49%
+u      |       |       |       |       |
+a     3|   6   |   4   |  23   |  12   | 45    51.11%
+l      |       |       |       |       |
+      4|   7   |  19   |  14   |  45   | 85    52.94%
+       |       |       |       |       |
+       ---------------------------------
+   NP     124     89      44      68   
+   PV    79.03%  56.18%  52.27%  66.18%  Mean PV   63.42%
+ 
+Effect strength PAC    50.96%      Effect strength PV   51.22%
+-------------------------------------------------------------------------------
+Page 3                     Optimal Data Analysis           10:57:03  06-28-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+325 observations
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     216
+Incorrect:   109
+Overall PAC:   66.46%
+Mean PAC:      63.22%
+ 
+Class              Predicted
+ V1        1       2       3       4       
+       --------------------------------- NA      PAC
+       |       |       |       |       |
+A     1|  98   |  16   |   5   |   3   | 122     80.33%
+c      |       |       |       |       |
+t     2|  13   |  50   |   2   |   8   | 73     68.49%
+u      |       |       |       |       |
+a     3|   6   |   4   |  23   |  12   | 45    51.11%
+l      |       |       |       |       |
+      4|   7   |  19   |  14   |  45   | 85    52.94%
+       |       |       |       |       |
+       ---------------------------------
+   NP     124     89      44      68   
+   PV    79.03%  56.18%  52.27%  66.18%  Mean PV   63.42%
+ 
+Effect strength PAC    50.96%      Effect strength PV   51.22%
+ 
+Summary for Class V1  Attribute V2
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            66.46%  66.46%
+PAC V1=1                    80.33%  80.33%
+PAC V1=2                    68.49%  68.49%
+PAC V1=3                    51.11%  51.11%
+PAC V1=4                    52.94%  52.94%
+Effect Strength PAC         50.96%  50.96%
+PV V1=1                     79.03%  79.03%
+PV V1=2                     56.18%  56.18%
+PV V1=3                     52.27%  52.27%
+PV V1=4                     66.18%  66.18%
+Effect Strength PV          51.22%  51.22%
+Effect Strength Total       51.09%  51.09%
+ 

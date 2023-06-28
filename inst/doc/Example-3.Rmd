@@ -55,26 +55,27 @@ library(ODA)
 
 #setwd("Example 3")
 
-#write.csv(data.raw,file="Runs/data3.csv",row.names=F)
+#write.csv(data.raw,file="ODA/data.csv",row.names=F)
 
-#ODAclean(data="data3.csv",output=1)
+#ODAclean(data="data.csv",output=1,type="ODA")
 
 ## Load data.csv file and obtain recoded variable names
-ODAload(1)
+ODAload(1,type = "oda")
+
 # Recoded variable (v) names to be used in ODA analysis
-print(key.1)
+print(oda.key.1)
 
 ## Run MegaODA via ODArun() specifying class and attribute and categorical variables
 #Not run-already exists
 #ODArun(run=1,vstart="v1",vend="v2",class="v1",attribute="v2", categorical = "v2")
 
 ## Load ODA model into active environment and evaluate output
-ODAparse(1) 
-print(oda.model.1)
+ODAparse(1,1) 
+print(oda.model.1.1)
 
 
 ## Table 2. Confusion Matrix for a Muticategorical Class, Multi-categorical Attribute, ODA Model
-print(oda.list.1)
+print(oda.list.1.1)
 
 # Here, v1=observed Biological protein type (1-4) 
 # and x=predicted Biological protein type (1-4)

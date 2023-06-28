@@ -51,26 +51,28 @@ library(ODA)
 
 #setwd("Example 1")
 
-#write.csv(data.raw,file="Runs/data1.csv",row.names=F)
+#write.csv(data.raw,file="ODA/data.csv",row.names=F)
 
-#ODAclean("data1.csv",output=1)
+#ODAclean(output = 1, type="ODA")
 
 ## Load data.csv file and obtain recoded variable names
-ODAload(1)
+ODAload(1,type = "oda")
 
 # Recoded variable (v) names to be used in ODA analysis
-print(key.1)
+print(oda.key.1)
+
 
 ## Run MegaODA via ODArun() specifying class and attribute variables
 #Not run-already exists
 #ODArun(run=1,vstart="v1",vend="v2",class="v1",attribute="v2")
 
 ## Load ODA model into active environment and evaluate output
-ODAparse(1)
-print(oda.model.1)
+ODAparse(1,1)
+print(oda.model.1.1)
 
 ## Table 2. Confusion Matrix for Categorical ODA Model, for Training and LOO Analysis
-print(oda.list.1) 
+print(oda.list.1.1) 
+
 
 # Here, v1=observed votes (Pro = 1; Con = 0) 
 # and x=predicted votes (Pro = 1; Con = 0)

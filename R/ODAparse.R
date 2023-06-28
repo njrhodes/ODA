@@ -159,10 +159,14 @@ ODAparse <- function(run="",mod="",...) {
     n.class <- gsub("Classes:","",n.class)
     n.class <- as.numeric(as.character(n.class))
     multi.class <- ifelse(max(n.class)>2,1,0)
-    if(multi.class>0){
-      stop(cat("Error: ODAparse not compatible with multiclass models.\n"))
-    }
+
     n.model <- seq_along(index1)
+    exclude <- grep("^*EX ",file)
+    exclude <- data_raw[exclude,]
+    exclude <- gsub("EX ","",exclude)
+    exclude <- gsub(";","",exclude)
+    exclude <- strsplit(exclude, "(?=[Vv]/d)", perl=T)
+    exclude <- unlist(exclude)
     cat.check <- grep("^*CAT ",file) # determine if a categorical model specified
     loo.check <- grep("^LOO OFF;",file)
     loo.cat.check <- grep("^Warning  7: WEIGHTed CATEGORICAL LOO not available. LOO switched to OFF.",file)
@@ -249,7 +253,7 @@ ODAparse <- function(run="",mod="",...) {
         }
       } # WEIGHTED MODELS
       else{
-        if(length(loo.check)>0 | length(loo.cat.check)>0){
+        if(length(loo.check)>0 | length(loo.cat.check)>0){ # LOO off or Weighted categorical model
           index4 <- grep("^*Summary for Class",file)+12
           stats <- as.data.frame(matrix(0, ncol = 0, nrow = 13))
           e.start <- grep("^Monte Carlo summary ", file)
@@ -325,28 +329,112 @@ ODAparse <- function(run="",mod="",...) {
       }
       pred <- rc
 
-      cut <- list()  # decision rule on left hand side taking the first one
+      # Check variable initialization
+      check.cat <- FALSE
 
-      cut<-lh
+      # Iterate over each model in print.list
+      for (model in print.list) {
+        # Flag variables to track the presence of '<=', '=' and '<' in the expressions
+        has_less_than_equal <- FALSE
+        has_equal <- FALSE
+        has_less_than <- FALSE
 
-      cut <- lapply(cut, function(x) {
-        lapply(x, function(y) {
-          if (grepl("\\d+(\\.\\d+)?", y)) {
-            as.numeric(gsub(".*?(\\d+(\\.\\d+)?).*", "\\1", y))
-          } else {
-            NULL
+        # Iterate over each rule in the model
+        for (rule in model) {
+          # Extract the conditions and outcomes from the rule
+          conditions <- strsplit(rule, " ")[[1]]
+          condition_1 <- conditions[1]
+          condition_2 <- conditions[3]
+
+          # Check if the conditions contain '<=', '=', or '<'
+          if ("<=" %in% condition_1 || "<=" %in% condition_2) {
+            has_less_than_equal <- TRUE
           }
-        })
-      })
+          if ("=" %in% condition_1 || "=" %in% condition_2) {
+            has_equal <- TRUE
+          }
+          if ("<" %in% condition_1 || "<" %in% condition_2) {
+            has_less_than <- TRUE
+          }
+        }
 
-      # Extract the second element from each length 2 list
-      cut <- sapply(cut, function(x) x[[2]])
+        # Check if both '<=' and '=' or both '<=' and '<' are present in the expressions
+        if ((has_less_than_equal && has_equal) || (has_less_than_equal && has_less_than)) {
+          check.cat <- TRUE
+          break
+        }
+      }
+
+      # Check variable value
+      check.cat
+
+      cut <- list()  # decision rule on the left-hand side taking the first one
+      for (i in seq_along(index1)) {
+        cut_str <- lh[[i]]
+        cut_val <- NULL
+
+        for (j in seq_along(cut_str)) {
+          # Extract the numeric value using regular expressions
+          if (grepl("<=", cut_str[j])) {
+            cut_val[j] <- gsub(".*<=", "", cut_str[j])
+          } else if (grepl("<", cut_str[j])) {
+            cut_val[j] <- gsub(".*<", "", cut_str[j])
+          } else if (grepl("=", cut_str[j])) {
+            cut_val[j] <- gsub(".*=", "", cut_str[j])
+          }
+          # Remove any non-numeric characters
+          cut_val[j] <- gsub("[^0-9.]", "", cut_val[j])
+        }
+
+        # Convert to numeric
+        cut_val <- as.numeric(cut_val)
+        # Remove NA values
+        cut_val <- cut_val[!is.na(cut_val)]
+
+        # Store the numeric values in the cut list
+        cut[[i]] <- cut_val
+      }
+
+      if(multi.class>0 & any(cat.check)){
+        tail <- list()  # decision rule on the left-hand side taking the first one
+        for (i in seq_along(lh)) {
+          cut_str <- lh[[i]]
+          last_element <- tail(cut_str, 1)  # Extract the last element
+
+          # Clean the last element by removing non-numeric characters and "V##" patterns
+          val <- gsub("V[0-9]+", "", last_element)
+          val <- gsub("[^0-9.]", "", val)
+
+          # Convert to numeric and store the value in the cut list
+          tail[[i]] <- as.numeric(val)
+        }
+      }
+
+      if(multi.class>0 & any(cat.check)){
+        cut_new <- list()  # New values to replace the last observation
+      for (i in seq_along(cut)) {
+        cut_new[[i]] <- c(head(cut[[i]],-1), tail[[i]])  # Replace last observation with new value
+        }
+      }
+
+      if(multi.class >0 & any(cat.check)){
+        cut <- cut_new
+      } else if(multi.class == 0 & any(cat.check)){
+        cut <- cut
+      } else {
+        cut <- sapply(cut, function(x) x[[1]])
+        }
 
       data <- read.csv(runfile)
       header <- names(data)
       c.header <- seq_len(ncol(data))
       key <- data.frame(header, paste("v",c.header,sep=""))
       names(data) <- key[,2]
+      if(length(exclude>0)){
+      exclude_value <- substring(exclude, 4)
+      exclude_variable <- tolower(substring(exclude, 1, 2))
+      data <- subset(data, get(exclude_variable) != exclude_value)
+      }
       cv <- data[unique(class)]
       data[data==-9] <- NA
       data <- data[attribute]
@@ -380,6 +468,8 @@ ODAparse <- function(run="",mod="",...) {
         setNames(do.call("cbind", dfs),
                  paste0(c("tp.", "tn.", "fp.", "fn."), rep(seq_along(cv), each = 4)))
       })
+
+      predictions
 
       df <- predictions
       cc_list <- lapply(df, function(x){
@@ -712,28 +802,113 @@ ODAparse <- function(run="",mod="",...) {
         rc[[i]]<-as.numeric(gsub(".*=","",rh[[i]]))
       }
       pred <- rc
-      cut <- list()  # decision rule on left hand side taking the first one
 
-      cut<-lh
+      # Check variable initialization
+      check.cat <- FALSE
 
-      cut <- lapply(cut, function(x) {
-        lapply(x, function(y) {
-          if (grepl("\\d+(\\.\\d+)?", y)) {
-            as.numeric(gsub(".*?(\\d+(\\.\\d+)?).*", "\\1", y))
-          } else {
-            NULL
+      # Iterate over each model in print.list
+      for (model in print.list) {
+        # Flag variables to track the presence of '<=', '=' and '<' in the expressions
+        has_less_than_equal <- FALSE
+        has_equal <- FALSE
+        has_less_than <- FALSE
+
+        # Iterate over each rule in the model
+        for (rule in model) {
+          # Extract the conditions and outcomes from the rule
+          conditions <- strsplit(rule, " ")[[1]]
+          condition_1 <- conditions[1]
+          condition_2 <- conditions[3]
+
+          # Check if the conditions contain '<=', '=', or '<'
+          if ("<=" %in% condition_1 || "<=" %in% condition_2) {
+            has_less_than_equal <- TRUE
           }
-        })
-      })
+          if ("=" %in% condition_1 || "=" %in% condition_2) {
+            has_equal <- TRUE
+          }
+          if ("<" %in% condition_1 || "<" %in% condition_2) {
+            has_less_than <- TRUE
+          }
+        }
 
-      # Extract the second element from each length 2 list
-      cut <- sapply(cut, function(x) x[[2]])
+        # Check if both '<=' and '=' or both '<=' and '<' are present in the expressions
+        if ((has_less_than_equal && has_equal) || (has_less_than_equal && has_less_than)) {
+          check.cat <- TRUE
+          break
+        }
+      }
+
+      # Check variable value
+      check.cat
+
+      cut <- list()  # decision rule on the left-hand side taking the first one
+      for (i in seq_along(index1)) {
+        cut_str <- lh[[i]]
+        cut_val <- NULL
+
+        for (j in seq_along(cut_str)) {
+          # Extract the numeric value using regular expressions
+          if (grepl("<=", cut_str[j])) {
+            cut_val[j] <- gsub(".*<=", "", cut_str[j])
+          } else if (grepl("<", cut_str[j])) {
+            cut_val[j] <- gsub(".*<", "", cut_str[j])
+          } else if (grepl("=", cut_str[j])) {
+            cut_val[j] <- gsub(".*=", "", cut_str[j])
+          }
+          # Remove any non-numeric characters
+          cut_val[j] <- gsub("[^0-9.]", "", cut_val[j])
+        }
+
+        # Convert to numeric
+        cut_val <- as.numeric(cut_val)
+        # Remove NA values
+        cut_val <- cut_val[!is.na(cut_val)]
+
+        # Store the numeric values in the cut list
+        cut[[i]] <- cut_val
+      }
+
+      if(multi.class>0 & any(cat.check)){
+        tail <- list()  # decision rule on the left-hand side taking the first one
+        for (i in seq_along(lh)) {
+          cut_str <- lh[[i]]
+          last_element <- tail(cut_str, 1)  # Extract the last element
+
+          # Clean the last element by removing non-numeric characters and "V##" patterns
+          val <- gsub("V[0-9]+", "", last_element)
+          val <- gsub("[^0-9.]", "", val)
+
+          # Convert to numeric and store the value in the cut list
+          tail[[i]] <- as.numeric(val)
+        }
+      }
+
+      if(multi.class>0 & any(cat.check)){
+        cut_new <- list()  # New values to replace the last observation
+        for (i in seq_along(cut)) {
+          cut_new[[i]] <- c(head(cut[[i]],-1), tail[[i]])  # Replace last observation with new value
+        }
+      }
+
+      if(multi.class >0 & any(cat.check)){
+        cut <- cut
+      } else if(multi.class == 0 & any(cat.check)){
+        cut <- cut_new
+      } else {
+        cut <- sapply(cut, function(x) x[[1]])
+      }
 
       data <- read.csv(runfile)
       header <- names(data)
       c.header <- seq_len(ncol(data))
       key <- data.frame(header, paste("v",c.header,sep=""))
       names(data) <- key[,2]
+      if(length(exclude>0)){
+        exclude_value <- substring(exclude$V1, 4)
+        exclude_variable <- tolower(substring(exclude$V1, 1, 2))
+        data <- subset(data, get(exclude_variable) != exclude_value)
+      }
       cv <- data[unique(class)]
       data[data==-9] <- NA
       data <- data[attribute]

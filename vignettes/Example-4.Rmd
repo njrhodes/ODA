@@ -59,28 +59,29 @@ library(ODA)
 
 #setwd("Example 4")
 
-#write.csv(data.raw,file="Runs/data4.csv",row.names=F)
+#write.csv(data.raw,file="ODA/data.csv",row.names=F)
 
-#ODAclean(data="data4.csv",output=1)
+#ODAclean(data="data.csv",output=1,type="ODA")
 
 ## Load data.csv file and obtain recoded variable names
-ODAload(1)
+ODAload(1,type = "oda")
+
 # Recoded variable (v) names to be used in ODA analysis
-print(key.1)
+print(oda.key.1)
 
 ## Run MegaODA via ODArun() specifying binary class and ordered attribute variables
 #Not run-already exists
 #ODArun(run=1,vstart="v1",vend="v2",class="v2",attribute="v1")
 
 ## Load ODA model into active environment and evaluate output
-ODAparse(1) 
-print(oda.model.1)
+ODAparse(1,1) 
+print(oda.model.1.1)
 
 ## Display model performance metrics
-print(oda.perf.1)
+print(oda.perf.1.1)
 
 ## Table 2. Confusion Matrix for a Binary Class, Ordered Attribute, ODA Model
-print(oda.list.1)
+print(oda.list.1.1)
 
 # Here, v2=Observed Treatment 2  status (1 or 0)
 # and x=ODA predicted Treatment 2 status (1 or 0)
