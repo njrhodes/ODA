@@ -86,7 +86,7 @@
 #'
 #' @examples
 #' # Not run:
-#' # ODAparse(1,1)
+#' # ODAparse(run=1,mod=1)
 #'
 #' @references Yarnold P.R. and Soltysik R.C. (2005). \emph{Optimal data
 #'   analysis: Guidebook with software for Windows}. APA Books.
@@ -119,7 +119,6 @@ ODAparse <- function(run="",mod="",...) {
   ksumm <- list()
   dsumm <- list()
   lsumm <- list()
-  sdsum <- list()
   ssumm <- list()
 
   for (thismod in allmods){
@@ -381,26 +380,6 @@ ODAparse <- function(run="",mod="",...) {
         setNames(do.call("cbind", dfs),
                  paste0(c("tp.", "tn.", "fp.", "fn."), rep(seq_along(cv), each = 4)))
       })
-      ###Create predictions for each model and store for SDA###
-      # index6 <- seq_along(cv)*4*nrow(data)
-      # sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
-      # if(length(sda) > 1){
-      #   sda.mat <- do.call(cbind, sda)
-      #   res <- c()
-      #   for(i in seq_along(index6)){
-      #     res[[i]] <- sda.mat[seq((index6[i]-min(index6)+1),index6[i]),]
-      #     rownames(res[[i]]) <- paste0(c(rep("tp.",each=nrow(data)),rep("tn.",each=nrow(data)),rep("fp.",each=nrow(data)),rep("fn.",each=nrow(data))),rep(seq(1,nrow(data),by=1),times=4))
-      #   }
-      #   sda.list <- do.call(rbind, res)
-      # }else{
-      #   sda.list <- sda
-      # }
-      # sda.frame <- as.data.frame(sda.list)
-      # sda.frame$id <- rep(seq(1,nrow(data),by=1),times=4)
-      # sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
-      # sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
-      # ### Return SDA report for ODA Model ###
-      # sdsum[[thismod]] <- sda.frame
 
       df <- predictions
       cc_list <- lapply(df, function(x){
@@ -788,26 +767,6 @@ ODAparse <- function(run="",mod="",...) {
         setNames(do.call("cbind", dfs),
                  paste0(c("tp.", "tn.", "fp.", "fn."), rep(seq_along(cv), each = 4)))
       })
-      ###Create predictions for each model and store for SDA###
-      # index6 <- seq_along(cv)*4*nrow(data)
-      # sda <- lapply(df_list, function(x) as.numeric(unlist(x)))
-      # if(length(sda) > 1){
-      #   sda.mat <- do.call(cbind, sda)
-      #   res <- c()
-      #   for(i in seq_along(index6)){
-      #     res[[i]] <- sda.mat[seq((index6[i]-min(index6)+1),index6[i]),]
-      #     rownames(res[[i]]) <- paste0(c(rep("tp.",each=nrow(data)),rep("tn.",each=nrow(data)),rep("fp.",each=nrow(data)),rep("fn.",each=nrow(data))),rep(seq(1,nrow(data),by=1),times=4))
-      #   }
-      #   sda.list <- do.call(rbind, res)
-      # }else{
-      #   sda.list <- sda
-      # }
-      # sda.frame <- as.data.frame(sda.list)
-      # sda.frame$id <- rep(seq(1,nrow(data),by=1),times=4)
-      # sda.frame$outcome <- rep(seq_along(cv),each=4*nrow(data))
-      # sda.frame$classification <- c(rep("tp",each=nrow(data)),rep("tn",each=nrow(data)),rep("fp",each=nrow(data)),rep("fn",each=nrow(data)))
-      # ### Return SDA report for ODA Model ###
-      # sdsum[[thismod]] <- sda.frame
 
       df <- predictions
       cc_list <- lapply(df, function(x){
@@ -948,13 +907,12 @@ ODAparse <- function(run="",mod="",...) {
     }
   }
   for (thismod in allmods){
-    assign(paste0("oda.model.",thismod), msumm[[thismod]], pos = parent.frame())
-    assign(paste0("oda.perf.",thismod), psumm[[thismod]], pos = parent.frame())
-    assign(paste0("oda.data.",thismod), dsumm[[thismod]], pos = parent.frame())
-    assign(paste0("oda.key.",thismod), ksumm[[thismod]], pos = parent.frame())
-    assign(paste0("oda.list.",thismod), lsumm[[thismod]], pos = parent.frame())
-    #assign(paste0("oda.sda.",thismod), sdsum[[thismod]], pos = parent.frame())
-    assign(paste0("oda.stats.",thismod), ssumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.model.",run,".",thismod), msumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.perf.",run,".",thismod), psumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.data.",run,".",thismod), dsumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.key.",run,".",thismod), ksumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.list.",run,".",thismod), lsumm[[thismod]], pos = parent.frame())
+    assign(paste0("oda.stats.",run,".",thismod), ssumm[[thismod]], pos = parent.frame())
   }
 }
 
