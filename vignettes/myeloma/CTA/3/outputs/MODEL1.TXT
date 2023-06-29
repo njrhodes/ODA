@@ -1,0 +1,31 @@
+OPEN DATA.TXT;
+OUTPUT MODEL1.TXT;
+VARS V1 TO V19;
+CLASS V1;
+ATTRIBUTE V4 V9 V11 V12 V14 TO V19;
+EX V2=0;
+MISSING ALL (-9);
+WEIGHT V2;
+MC ITER 5000 CUTOFF 0.05 STOP 99.9;
+MINDENOM 56;
+PRUNE 0.05;
+ENUMERATE;
+LOO STABLE;
+GO;
+ 
+ 
+Unpruned Tree Results - Class V1
+ 
+ No tree found.
+ 
+ 
+Pruned Tree Results - Class V1
+ 
+ No tree found.
+ 
+ 
+Enumerated Tree Results - Class V1
+ 
+ No tree found.
+ 
+Time used:      0 sec.

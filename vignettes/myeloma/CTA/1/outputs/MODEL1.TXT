@@ -1,0 +1,73 @@
+OPEN DATA.TXT;
+OUTPUT MODEL1.TXT;
+VARS V1 TO V19;
+CLASS V1;
+ATTRIBUTE V4 V9 V11 V12 V14 TO V19;
+EX V2=0;
+MISSING ALL (-9);
+WEIGHT V2;
+MC ITER 5000 CUTOFF 0.05 STOP 99.9;
+MINDENOM 1;
+PRUNE 0.05;
+ENUMERATE;
+LOO STABLE;
+GO;
+ 
+ 
+Unpruned Tree Results - Class V1
+ 
+     ATTRIBUTE NODE LEV  OBS    p     WESS     LOO    WESSL   LOOp TYP  MODEL
+     --------- ---- ---  ---    -     ----     ---    -----   ---- ---  -----
+           V17   1   1   186  .023   16.51%  STABLE   16.51%  .023 ORD  <=0.5-->0,101/131,77.10%; >0.5-->1,21/55,38.18%*
+           V15   2   2   131  .020   17.57%  STABLE   17.57%  .020 ORD  <=0.5-->0,92/113,81.42%*; >0.5-->1,9/18,50.00%*
+ 
+            0       1
+        -----   -----
+    0 |    92 |    43 |  68.15%  68.90%
+    1 |    21 |    30 |  58.82%  56.53%
+        -----   -----
+       81.42%  41.10%
+       88.36%  27.51%
+ 
+OVERALL ESS=  26.97%
+WEIGHTED ESS=  25.43%
+ 
+ 
+Pruned Tree Results - Class V1
+ 
+     ATTRIBUTE NODE LEV  OBS    p     WESS     LOO    WESSL   LOOp TYP  MODEL
+     --------- ---- ---  ---    -     ----     ---    -----   ---- ---  -----
+           V17   1   1   186  .023   16.51%  STABLE   16.51%  .023 ORD  <=0.5-->0,101/131,77.10%; >0.5-->1,21/55,38.18%*
+           V15   2   2   131  .020   17.57%  STABLE   17.57%  .020 ORD  <=0.5-->0,92/113,81.42%*; >0.5-->1,9/18,50.00%*
+ 
+            0       1
+        -----   -----
+    0 |    92 |    43 |  68.15%  68.90%
+    1 |    21 |    30 |  58.82%  56.53%
+        -----   -----
+       81.42%  41.10%
+       88.36%  27.51%
+ 
+OVERALL ESS=  26.97%
+WEIGHTED ESS=  25.43%
+ 
+ 
+Enumerated Tree Results - Class V1
+ 
+     ATTRIBUTE NODE LEV  OBS    p     WESS     LOO    WESSL   LOOp TYP  MODEL
+     --------- ---- ---  ---    -     ----     ---    -----   ---- ---  -----
+           V14   1   1   255  .015   14.06%  STABLE   14.06%  .015 ORD  <=0.5-->0,160/211,75.83%; >0.5-->1,18/44,40.91%*
+           V15   2   2   211  .001   20.71%  STABLE   20.71%  .001 ORD  <=0.5-->0,146/182,80.22%*; >0.5-->1,15/29,51.72%*
+ 
+            0       1
+        -----   -----
+    0 |   146 |    40 |  78.49%  78.28%
+    1 |    36 |    33 |  47.83%  49.40%
+        -----   -----
+       80.22%  45.21%
+       88.07%  32.29%
+ 
+OVERALL ESS=  26.32%
+WEIGHTED ESS=  27.69%
+ 
+Time used:      2 sec.

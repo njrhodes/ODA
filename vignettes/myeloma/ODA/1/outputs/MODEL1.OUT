@@ -1,0 +1,2011 @@
+-------------------------------------------------------------------------------
+Page 1                     Optimal Data Analysis           09:29:17  06-26-23
+ 
+VARS V1 TO V20;
+CLASS V1;
+ATTRIBUTE V3 TO V8 V9 V11 V12 V14 V15 V16 V17 V18 V19;
+EX V2=0;
+MISSING ALL (-9);
+WEIGHT V2;
+MCARLO ITER 25000;
+LOO;
+GO;
+ 
+Note: In all classification performance summary tables, the following
+abbreviations are used: NP = Number Predicted; PV = Predictive Value;
+NA = Number Actual; PAC = Percentage Accuracy in Classification.
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V3
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  27
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 2                     Optimal Data Analysis           09:29:44  06-26-23
+ 
+ODA model:
+----------
+IF V3 <= 57.0 THEN V1 = 1
+IF 57.0 < V3 THEN V1 = 0
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.575160
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     187
+Incorrect:   68
+Return:      7292.75
+Overall PAC:   73.33%
+Mean PAC:      51.18%
+Wtd PAC:       82.73%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  185  |   1   | 186     99.46%   99.40%      7244.07
+t      |       |       |
+u     1|  67   |   2   | 69      2.90%    3.19%        48.68
+a      |       |       |
+l      -----------------
+   NP     252      3   
+   PV    73.41%  66.67%  Mean PV   70.04%
+WtdPV    83.05%  52.88% 
+ 
+Mean weighted PAC      51.30%      Mean weighted PV     67.96%
+ 
+Effect strength PAC     2.36%      Effect strength PV   40.08%
+ 
+Effect strength wtd PAC     2.59%      Effect strength wtd PV   35.93%
+-------------------------------------------------------------------------------
+Page 3                     Optimal Data Analysis           09:29:44  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .613626
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     185
+Incorrect:   70
+Return:      7246.22
+Overall PAC:   72.55%
+Mean PAC:      50.19%
+Wtd PAC:       82.20%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  184  |   2   | 186     98.92%   98.94%      7210.12
+t      |       |       |
+u     1|  68   |   1   | 69      1.45%    2.36%        36.10
+a      |       |       |
+l      -----------------
+   NP     252      3   
+   PV    73.02%  33.33%  Mean PV   53.17%
+WtdPV    82.86%  31.83% 
+ 
+Mean weighted PAC      50.65%      Mean weighted PV     57.34%
+ 
+Effect strength PAC     0.37%      Effect strength PV    6.35%
+ 
+Effect strength wtd PAC     1.30%      Effect strength wtd PV   14.69%
+ 
+Summary for Class V1  Attribute V3
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            73.33%  72.55%
+Overall Wtd Accuracy        82.73%  82.20%
+PAC V1=0                    99.46%  98.92%
+PAC V1=1                     2.90%   1.45%
+Effect Strength PAC          2.36%   0.37%
+Wtd PAC V1=0                99.40%  98.94%
+Wtd PAC V1=1                 3.19%   2.36%
+Effect Strength Wtd PAC      2.59%   1.30%
+PV V1=0                     73.41%  73.02%
+PV V1=1                     66.67%  33.33%
+Effect Strength PV          40.08%   6.35%
+Wtd PV V1=0                 83.05%  82.86%
+Wtd PV V1=1                 52.88%  31.83%
+Effect Strength Wtd PV      35.93%  14.69%
+Effect Strength Total       21.22%   3.36%
+Effect Strength Wtd Total   19.26%   8.00%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V4
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  32
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 4                     Optimal Data Analysis           09:30:16  06-26-23
+ 
+ODA model:
+----------
+IF V4 <= 890.25 THEN V1 = 0
+IF 890.25 < V4 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.361760
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     184
+Incorrect:   71
+Return:      7135.49
+Overall PAC:   72.16%
+Mean PAC:      53.11%
+Wtd PAC:       80.95%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  176  |  10   | 186    94.62%  95.52%      6961.19
+t      |       |       |
+u     1|  61   |   8   | 69     11.59%   11.41%       174.30
+a      |       |       |
+l      -----------------
+   NP     237     18   
+   PV    74.26%  44.44%  Mean PV   59.35%
+WtdPV    83.72%  34.82% 
+ 
+Mean weighted PAC      53.47%      Mean weighted PV     59.27%
+ 
+Effect strength PAC     6.22%      Effect strength PV   18.71%
+ 
+Effect strength wtd PAC     6.93%      Effect strength wtd PV   18.55%
+-------------------------------------------------------------------------------
+Page 5                     Optimal Data Analysis           09:30:16  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .077922
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     184
+Incorrect:   71
+Return:      7135.49
+Overall PAC:   72.16%
+Mean PAC:      53.11%
+Wtd PAC:       80.95%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  176  |  10   | 186    94.62%  95.52%      6961.19
+t      |       |       |
+u     1|  61   |   8   | 69     11.59%   11.41%       174.30
+a      |       |       |
+l      -----------------
+   NP     237     18   
+   PV    74.26%  44.44%  Mean PV   59.35%
+WtdPV    83.72%  34.82% 
+ 
+Mean weighted PAC      53.47%      Mean weighted PV     59.27%
+ 
+Effect strength PAC     6.22%      Effect strength PV   18.71%
+ 
+Effect strength wtd PAC     6.93%      Effect strength wtd PV   18.55%
+ 
+Summary for Class V1  Attribute V4
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            72.16%  72.16%
+Overall Wtd Accuracy        80.95%  80.95%
+PAC V1=0                    94.62%  94.62%
+PAC V1=1                    11.59%  11.59%
+Effect Strength PAC          6.22%   6.22%
+Wtd PAC V1=0                95.52%  95.52%
+Wtd PAC V1=1                11.41%  11.41%
+Effect Strength Wtd PAC      6.93%   6.93%
+PV V1=0                     74.26%  74.26%
+PV V1=1                     44.44%  44.44%
+Effect Strength PV          18.71%  18.71%
+Wtd PV V1=0                 83.72%  83.72%
+Wtd PV V1=1                 34.82%  34.82%
+Effect Strength Wtd PV      18.55%  18.55%
+Effect Strength Total       12.46%  12.46%
+Effect Strength Wtd Total   12.74%  12.74%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V5
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  28
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 6                     Optimal Data Analysis           09:30:44  06-26-23
+ 
+ODA model:
+----------
+IF V5 <= 528.1 THEN V1 = 0
+IF 528.1 < V5 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.477840
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     184
+Incorrect:   71
+Return:      6903.63
+Overall PAC:   72.16%
+Mean PAC:      57.21%
+Wtd PAC:       78.32%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  167  |  19   | 186    89.78%  90.74%      6612.46
+t      |       |       |
+u     1|  52   |  17   | 69    24.64%  19.06%       291.17
+a      |       |       |
+l      -----------------
+   NP     219     36   
+   PV    76.26%  47.22%  Mean PV   61.74%
+WtdPV    84.25%  30.14% 
+ 
+Mean weighted PAC      54.90%      Mean weighted PV     57.19%
+ 
+Effect strength PAC    14.42%      Effect strength PV   23.48%
+ 
+Effect strength wtd PAC     9.80%      Effect strength wtd PV   14.38%
+-------------------------------------------------------------------------------
+Page 7                     Optimal Data Analysis           09:30:44  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .239553
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     168
+Incorrect:   87
+Return:      6227.90
+Overall PAC:   65.88%
+Mean PAC:      52.45%
+Wtd PAC:       70.65%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  152  |  34   | 186    81.72%  82.01%      5976.51
+t      |       |       |
+u     1|  53   |  16   | 69    23.19%  16.46%       251.39
+a      |       |       |
+l      -----------------
+   NP     205     50   
+   PV    74.15%  32.00%  Mean PV   53.07%
+WtdPV    82.40%  16.09% 
+ 
+Mean weighted PAC      49.23%      Mean weighted PV     49.25%
+ 
+Effect strength PAC     4.91%      Effect strength PV    6.15%
+ 
+Effect strength wtd PAC    -1.53%      Effect strength wtd PV   -1.51%
+ 
+Summary for Class V1  Attribute V5
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            72.16%  65.88%
+Overall Wtd Accuracy        78.32%  70.65%
+PAC V1=0                    89.78%  81.72%
+PAC V1=1                    24.64%  23.19%
+Effect Strength PAC         14.42%   4.91%
+Wtd PAC V1=0                90.74%  82.01%
+Wtd PAC V1=1                19.06%  16.46%
+Effect Strength Wtd PAC      9.80%  -1.53%
+PV V1=0                     76.26%  74.15%
+PV V1=1                     47.22%  32.00%
+Effect Strength PV          23.48%   6.15%
+Wtd PV V1=0                 84.25%  82.40%
+Wtd PV V1=1                 30.14%  16.09%
+Effect Strength Wtd PV      14.38%  -1.51%
+Effect Strength Total       18.95%   5.53%
+Effect Strength Wtd Total   12.09%  -1.52%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V6
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  18
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 8                     Optimal Data Analysis           09:31:02  06-26-23
+ 
+ODA model:
+----------
+IF V6 <= 20604.0 THEN V1 = 0
+IF 20604.0 < V6 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.891400
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     182
+Incorrect:   73
+Return:      7067.44
+Overall PAC:   71.37%
+Mean PAC:      51.20%
+Wtd PAC:       80.17%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  177  |   9   | 186     95.16%   95.27%      6942.55
+t      |       |       |
+u     1|  64   |   5   | 69      7.25%    8.18%       124.89
+a      |       |       |
+l      -----------------
+   NP     241     14   
+   PV    73.44%  35.71%  Mean PV   54.58%
+WtdPV    83.19%  26.58% 
+ 
+Mean weighted PAC      51.72%      Mean weighted PV     54.89%
+ 
+Effect strength PAC     2.41%      Effect strength PV    9.16%
+ 
+Effect strength wtd PAC     3.44%      Effect strength wtd PV    9.78%
+-------------------------------------------------------------------------------
+Page 9                     Optimal Data Analysis           09:31:02  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .732810
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     179
+Incorrect:   76
+Return:      6977.73
+Overall PAC:   70.20%
+Mean PAC:      49.49%
+Wtd PAC:       79.16%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  176  |  10   | 186    94.62%  94.94%      6918.44
+t      |       |       |
+u     1|  66   |   3   | 69      4.35%    3.88%        59.29
+a      |       |       |
+l      -----------------
+   NP     242     13   
+   PV    72.73%  23.08%  Mean PV   47.90%
+WtdPV    82.49%  13.84% 
+ 
+Mean weighted PAC      49.41%      Mean weighted PV     48.17%
+ 
+Effect strength PAC    -1.03%      Effect strength PV   -4.20%
+ 
+Effect strength wtd PAC    -1.18%      Effect strength wtd PV   -3.66%
+ 
+Summary for Class V1  Attribute V6
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            71.37%  70.20%
+Overall Wtd Accuracy        80.17%  79.16%
+PAC V1=0                    95.16%  94.62%
+PAC V1=1                     7.25%   4.35%
+Effect Strength PAC          2.41%  -1.03%
+Wtd PAC V1=0                95.27%  94.94%
+Wtd PAC V1=1                 8.18%   3.88%
+Effect Strength Wtd PAC      3.44%  -1.18%
+PV V1=0                     73.44%  72.73%
+PV V1=1                     35.71%  23.08%
+Effect Strength PV           9.16%  -4.20%
+Wtd PV V1=0                 83.19%  82.49%
+Wtd PV V1=1                 26.58%  13.84%
+Effect Strength Wtd PV       9.78%  -3.66%
+Effect Strength Total        5.78%  -2.61%
+Effect Strength Wtd Total    6.61%  -2.42%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V7
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  34
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 10                    Optimal Data Analysis           09:31:36  06-26-23
+ 
+ODA model:
+----------
+IF V7 <= 432.1 THEN V1 = 1
+IF 432.1 < V7 THEN V1 = 0
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.079080
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     190
+Incorrect:   65
+Return:      7317.79
+Overall PAC:   74.51%
+Mean PAC:      53.81%
+Wtd PAC:       83.01%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  184  |   2   | 186     98.92%   98.16%      7153.20
+t      |       |       |
+u     1|  63   |   6   | 69      8.70%   10.77%       164.59
+a      |       |       |
+l      -----------------
+   NP     247      8   
+   PV    74.49%  75.00%  Mean PV   74.75%
+WtdPV    83.99%  55.08% 
+ 
+Mean weighted PAC      54.47%      Mean weighted PV     69.54%
+ 
+Effect strength PAC     7.62%      Effect strength PV   49.49%
+ 
+Effect strength wtd PAC     8.93%      Effect strength wtd PV   39.07%
+-------------------------------------------------------------------------------
+Page 11                    Optimal Data Analysis           09:31:36  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .016930
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     189
+Incorrect:   66
+Return:      7287.86
+Overall PAC:   74.12%
+Mean PAC:      53.09%
+Wtd PAC:       82.68%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  184  |   2   | 186     98.92%   98.16%      7153.20
+t      |       |       |
+u     1|  64   |   5   | 69      7.25%    8.82%       134.66
+a      |       |       |
+l      -----------------
+   NP     248      7   
+   PV    74.19%  71.43%  Mean PV   72.81%
+WtdPV    83.70%  50.08% 
+ 
+Mean weighted PAC      53.49%      Mean weighted PV     66.89%
+ 
+Effect strength PAC     6.17%      Effect strength PV   45.62%
+ 
+Effect strength wtd PAC     6.97%      Effect strength wtd PV   33.78%
+ 
+Summary for Class V1  Attribute V7
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            74.51%  74.12%
+Overall Wtd Accuracy        83.01%  82.68%
+PAC V1=0                    98.92%  98.92%
+PAC V1=1                     8.70%   7.25%
+Effect Strength PAC          7.62%   6.17%
+Wtd PAC V1=0                98.16%  98.16%
+Wtd PAC V1=1                10.77%   8.82%
+Effect Strength Wtd PAC      8.93%   6.97%
+PV V1=0                     74.49%  74.19%
+PV V1=1                     75.00%  71.43%
+Effect Strength PV          49.49%  45.62%
+Wtd PV V1=0                 83.99%  83.70%
+Wtd PV V1=1                 55.08%  50.08%
+Effect Strength Wtd PV      39.07%  33.78%
+Effect Strength Total       28.56%  25.90%
+Effect Strength Wtd Total   24.00%  20.38%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V8
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  42
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 12                    Optimal Data Analysis           09:32:18  06-26-23
+ 
+ODA model:
+----------
+IF V8 <= 3212.7 THEN V1 = 0
+IF 3212.7 < V8 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.041800
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05        100.00%         p>.05          0.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     185
+Incorrect:   70
+Return:      6874.65
+Overall PAC:   72.55%
+Mean PAC:      59.30%
+Wtd PAC:       77.99%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  164  |  22   | 186    88.17%  88.04%      6415.63
+t      |       |       |
+u     1|  48   |  21   | 69    30.43%  30.05%       459.02
+a      |       |       |
+l      -----------------
+   NP     212     43   
+   PV    77.36%  48.84%  Mean PV   63.10%
+WtdPV    85.72%  34.49% 
+ 
+Mean weighted PAC      59.04%      Mean weighted PV     60.11%
+ 
+Effect strength PAC    18.61%      Effect strength PV   26.20%
+ 
+Effect strength wtd PAC    18.08%      Effect strength wtd PV   20.21%
+-------------------------------------------------------------------------------
+Page 13                    Optimal Data Analysis           09:32:18  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .002124
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     183
+Incorrect:   72
+Return:      6821.55
+Overall PAC:   71.76%
+Mean PAC:      58.31%
+Wtd PAC:       77.39%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  163  |  23   | 186    87.63%  87.48%      6374.80
+t      |       |       |
+u     1|  49   |  20   | 69    28.99%  29.24%       446.75
+a      |       |       |
+l      -----------------
+   NP     212     43   
+   PV    76.89%  46.51%  Mean PV   61.70%
+WtdPV    85.50%  32.86% 
+ 
+Mean weighted PAC      58.36%      Mean weighted PV     59.18%
+ 
+Effect strength PAC    16.62%      Effect strength PV   23.40%
+ 
+Effect strength wtd PAC    16.72%      Effect strength wtd PV   18.37%
+ 
+Summary for Class V1  Attribute V8
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            72.55%  71.76%
+Overall Wtd Accuracy        77.99%  77.39%
+PAC V1=0                    88.17%  87.63%
+PAC V1=1                    30.43%  28.99%
+Effect Strength PAC         18.61%  16.62%
+Wtd PAC V1=0                88.04%  87.48%
+Wtd PAC V1=1                30.05%  29.24%
+Effect Strength Wtd PAC     18.08%  16.72%
+PV V1=0                     77.36%  76.89%
+PV V1=1                     48.84%  46.51%
+Effect Strength PV          26.20%  23.40%
+Wtd PV V1=0                 85.72%  85.50%
+Wtd PV V1=1                 34.49%  32.86%
+Effect Strength Wtd PV      20.21%  18.37%
+Effect Strength Total       22.40%  20.01%
+Effect Strength Wtd Total   19.15%  17.54%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V9
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  2
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 14                    Optimal Data Analysis           09:32:20  06-26-23
+ 
+ODA model:
+----------
+IF V9 <= 0.5 THEN V1 = 0
+IF 0.5 < V9 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.675120
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     174
+Incorrect:   81
+Return:      6683.35
+Overall PAC:   68.24%
+Mean PAC:      49.05%
+Wtd PAC:       75.82%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  169  |  17   | 186    90.86%  89.93%      6553.56
+t      |       |       |
+u     1|  64   |   5   | 69      7.25%    8.50%       129.79
+a      |       |       |
+l      -----------------
+   NP     233     22   
+   PV    72.53%  22.73%  Mean PV   47.63%
+WtdPV    82.42%  15.03% 
+ 
+Mean weighted PAC      49.21%      Mean weighted PV     48.72%
+ 
+Effect strength PAC    -1.89%      Effect strength PV   -4.74%
+ 
+Effect strength wtd PAC    -1.57%      Effect strength wtd PV   -2.55%
+-------------------------------------------------------------------------------
+Page 15                    Optimal Data Analysis           09:32:20  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .761854
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     174
+Incorrect:   81
+Return:      6683.35
+Overall PAC:   68.24%
+Mean PAC:      49.05%
+Wtd PAC:       75.82%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  169  |  17   | 186    90.86%  89.93%      6553.56
+t      |       |       |
+u     1|  64   |   5   | 69      7.25%    8.50%       129.79
+a      |       |       |
+l      -----------------
+   NP     233     22   
+   PV    72.53%  22.73%  Mean PV   47.63%
+WtdPV    82.42%  15.03% 
+ 
+Mean weighted PAC      49.21%      Mean weighted PV     48.72%
+ 
+Effect strength PAC    -1.89%      Effect strength PV   -4.74%
+ 
+Effect strength wtd PAC    -1.57%      Effect strength wtd PV   -2.55%
+ 
+Summary for Class V1  Attribute V9
+----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            68.24%  68.24%
+Overall Wtd Accuracy        75.82%  75.82%
+PAC V1=0                    90.86%  90.86%
+PAC V1=1                     7.25%   7.25%
+Effect Strength PAC         -1.89%  -1.89%
+Wtd PAC V1=0                89.93%  89.93%
+Wtd PAC V1=1                 8.50%   8.50%
+Effect Strength Wtd PAC     -1.57%  -1.57%
+PV V1=0                     72.53%  72.53%
+PV V1=1                     22.73%  22.73%
+Effect Strength PV          -4.74%  -4.74%
+Wtd PV V1=0                 82.42%  82.42%
+Wtd PV V1=1                 15.03%  15.03%
+Effect Strength Wtd PV      -2.55%  -2.55%
+Effect Strength Total       -3.32%  -3.32%
+Effect Strength Wtd Total   -2.06%  -2.06%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V11
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  2
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 16                    Optimal Data Analysis           09:32:22  06-26-23
+ 
+ODA model:
+----------
+IF V11 <= 0.5 THEN V1 = 0
+IF 0.5 < V11 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.687680
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     150
+Incorrect:   105
+Return:      5615.73
+Overall PAC:   58.82%
+Mean PAC:      47.16%
+Wtd PAC:       63.71%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  135  |  51   | 186    72.58%  71.58%      5216.58
+t      |       |       |
+u     1|  54   |  15   | 69    21.74%  26.13%       399.15
+a      |       |       |
+l      -----------------
+   NP     189     66   
+   PV    71.43%  22.73%  Mean PV   47.08%
+WtdPV    82.21%  16.16% 
+ 
+Mean weighted PAC      48.86%      Mean weighted PV     49.19%
+ 
+Effect strength PAC    -5.68%      Effect strength PV   -5.84%
+ 
+Effect strength wtd PAC    -2.29%      Effect strength wtd PV   -1.63%
+-------------------------------------------------------------------------------
+Page 17                    Optimal Data Analysis           09:32:22  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .860673
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     150
+Incorrect:   105
+Return:      5615.73
+Overall PAC:   58.82%
+Mean PAC:      47.16%
+Wtd PAC:       63.71%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  135  |  51   | 186    72.58%  71.58%      5216.58
+t      |       |       |
+u     1|  54   |  15   | 69    21.74%  26.13%       399.15
+a      |       |       |
+l      -----------------
+   NP     189     66   
+   PV    71.43%  22.73%  Mean PV   47.08%
+WtdPV    82.21%  16.16% 
+ 
+Mean weighted PAC      48.86%      Mean weighted PV     49.19%
+ 
+Effect strength PAC    -5.68%      Effect strength PV   -5.84%
+ 
+Effect strength wtd PAC    -2.29%      Effect strength wtd PV   -1.63%
+ 
+Summary for Class V1  Attribute V11
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            58.82%  58.82%
+Overall Wtd Accuracy        63.71%  63.71%
+PAC V1=0                    72.58%  72.58%
+PAC V1=1                    21.74%  21.74%
+Effect Strength PAC         -5.68%  -5.68%
+Wtd PAC V1=0                71.58%  71.58%
+Wtd PAC V1=1                26.13%  26.13%
+Effect Strength Wtd PAC     -2.29%  -2.29%
+PV V1=0                     71.43%  71.43%
+PV V1=1                     22.73%  22.73%
+Effect Strength PV          -5.84%  -5.84%
+Wtd PV V1=0                 82.21%  82.21%
+Wtd PV V1=1                 16.16%  16.16%
+Effect Strength Wtd PV      -1.63%  -1.63%
+Effect Strength Total       -5.76%  -5.76%
+Effect Strength Wtd Total   -1.96%  -1.96%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V12
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  1
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 18                    Optimal Data Analysis           09:32:23  06-26-23
+ 
+ODA model:
+----------
+IF V12 <= 0.5 THEN V1 = 0
+IF 0.5 < V12 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.977480
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     165
+Incorrect:   90
+Return:      6277.76
+Overall PAC:   64.71%
+Mean PAC:      46.63%
+Wtd PAC:       71.22%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  160  |  26   | 186    86.02%  85.09%      6200.62
+t      |       |       |
+u     1|  64   |   5   | 69      7.25%    5.05%        77.14
+a      |       |       |
+l      -----------------
+   NP     224     31   
+   PV    71.43%  16.13%  Mean PV   43.78%
+WtdPV    81.04%   6.63% 
+ 
+Mean weighted PAC      45.07%      Mean weighted PV     43.83%
+ 
+Effect strength PAC    -6.73%      Effect strength PV  -12.44%
+ 
+Effect strength wtd PAC    -9.86%      Effect strength wtd PV  -12.33%
+-------------------------------------------------------------------------------
+Page 19                    Optimal Data Analysis           09:32:23  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .959082
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     165
+Incorrect:   90
+Return:      6277.76
+Overall PAC:   64.71%
+Mean PAC:      46.63%
+Wtd PAC:       71.22%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  160  |  26   | 186    86.02%  85.09%      6200.62
+t      |       |       |
+u     1|  64   |   5   | 69      7.25%    5.05%        77.14
+a      |       |       |
+l      -----------------
+   NP     224     31   
+   PV    71.43%  16.13%  Mean PV   43.78%
+WtdPV    81.04%   6.63% 
+ 
+Mean weighted PAC      45.07%      Mean weighted PV     43.83%
+ 
+Effect strength PAC    -6.73%      Effect strength PV  -12.44%
+ 
+Effect strength wtd PAC    -9.86%      Effect strength wtd PV  -12.33%
+ 
+Summary for Class V1  Attribute V12
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            64.71%  64.71%
+Overall Wtd Accuracy        71.22%  71.22%
+PAC V1=0                    86.02%  86.02%
+PAC V1=1                     7.25%   7.25%
+Effect Strength PAC         -6.73%  -6.73%
+Wtd PAC V1=0                85.09%  85.09%
+Wtd PAC V1=1                 5.05%   5.05%
+Effect Strength Wtd PAC     -9.86%  -9.86%
+PV V1=0                     71.43%  71.43%
+PV V1=1                     16.13%  16.13%
+Effect Strength PV         -12.44% -12.44%
+Wtd PV V1=0                 81.04%  81.04%
+Wtd PV V1=1                  6.63%   6.63%
+Effect Strength Wtd PV     -12.33% -12.33%
+Effect Strength Total       -9.59%  -9.59%
+Effect Strength Wtd Total  -11.10% -11.10%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V14
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  3
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 20                    Optimal Data Analysis           09:32:26  06-26-23
+ 
+ODA model:
+----------
+IF V14 <= 0.5 THEN V1 = 0
+IF 0.5 < V14 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.015400
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05        100.00%         p>.05          0.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     178
+Incorrect:   77
+Return:      6687.64
+Overall PAC:   69.80%
+Mean PAC:      56.05%
+Wtd PAC:       75.87%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  160  |  26   | 186    86.02%  85.86%      6256.80
+t      |       |       |
+u     1|  51   |  18   | 69    26.09%  28.20%       430.84
+a      |       |       |
+l      -----------------
+   NP     211     44   
+   PV    75.83%  40.91%  Mean PV   58.37%
+WtdPV    85.09%  29.48% 
+ 
+Mean weighted PAC      57.03%      Mean weighted PV     57.28%
+ 
+Effect strength PAC    12.11%      Effect strength PV   16.74%
+ 
+Effect strength wtd PAC    14.06%      Effect strength wtd PV   14.56%
+-------------------------------------------------------------------------------
+Page 21                    Optimal Data Analysis           09:32:26  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .020704
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     178
+Incorrect:   77
+Return:      6687.64
+Overall PAC:   69.80%
+Mean PAC:      56.05%
+Wtd PAC:       75.87%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  160  |  26   | 186    86.02%  85.86%      6256.80
+t      |       |       |
+u     1|  51   |  18   | 69    26.09%  28.20%       430.84
+a      |       |       |
+l      -----------------
+   NP     211     44   
+   PV    75.83%  40.91%  Mean PV   58.37%
+WtdPV    85.09%  29.48% 
+ 
+Mean weighted PAC      57.03%      Mean weighted PV     57.28%
+ 
+Effect strength PAC    12.11%      Effect strength PV   16.74%
+ 
+Effect strength wtd PAC    14.06%      Effect strength wtd PV   14.56%
+ 
+Summary for Class V1  Attribute V14
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            69.80%  69.80%
+Overall Wtd Accuracy        75.87%  75.87%
+PAC V1=0                    86.02%  86.02%
+PAC V1=1                    26.09%  26.09%
+Effect Strength PAC         12.11%  12.11%
+Wtd PAC V1=0                85.86%  85.86%
+Wtd PAC V1=1                28.20%  28.20%
+Effect Strength Wtd PAC     14.06%  14.06%
+PV V1=0                     75.83%  75.83%
+PV V1=1                     40.91%  40.91%
+Effect Strength PV          16.74%  16.74%
+Wtd PV V1=0                 85.09%  85.09%
+Wtd PV V1=1                 29.48%  29.48%
+Effect Strength Wtd PV      14.56%  14.56%
+Effect Strength Total       14.42%  14.42%
+Effect Strength Wtd Total   14.31%  14.31%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V15
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  3
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 22                    Optimal Data Analysis           09:32:29  06-26-23
+ 
+ODA model:
+----------
+IF V15 <= 0.5 THEN V1 = 0
+IF 0.5 < V15 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.005840
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01        100.00%         p>.01          0.00%
+ p<.05        100.00%         p>.05          0.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     187
+Incorrect:   68
+Return:      7059.23
+Overall PAC:   73.33%
+Mean PAC:      57.11%
+Wtd PAC:       80.08%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  172  |  14   | 186    92.47%  92.42%      6735.35
+t      |       |       |
+u     1|  54   |  15   | 69    21.74%  21.20%       323.88
+a      |       |       |
+l      -----------------
+   NP     226     29   
+   PV    76.11%  51.72%  Mean PV   63.92%
+WtdPV    84.84%  36.97% 
+ 
+Mean weighted PAC      56.81%      Mean weighted PV     60.91%
+ 
+Effect strength PAC    14.21%      Effect strength PV   27.83%
+ 
+Effect strength wtd PAC    13.63%      Effect strength wtd PV   21.81%
+-------------------------------------------------------------------------------
+Page 23                    Optimal Data Analysis           09:32:29  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .002371
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     187
+Incorrect:   68
+Return:      7059.23
+Overall PAC:   73.33%
+Mean PAC:      57.11%
+Wtd PAC:       80.08%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  172  |  14   | 186    92.47%  92.42%      6735.35
+t      |       |       |
+u     1|  54   |  15   | 69    21.74%  21.20%       323.88
+a      |       |       |
+l      -----------------
+   NP     226     29   
+   PV    76.11%  51.72%  Mean PV   63.92%
+WtdPV    84.84%  36.97% 
+ 
+Mean weighted PAC      56.81%      Mean weighted PV     60.91%
+ 
+Effect strength PAC    14.21%      Effect strength PV   27.83%
+ 
+Effect strength wtd PAC    13.63%      Effect strength wtd PV   21.81%
+ 
+Summary for Class V1  Attribute V15
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            73.33%  73.33%
+Overall Wtd Accuracy        80.08%  80.08%
+PAC V1=0                    92.47%  92.47%
+PAC V1=1                    21.74%  21.74%
+Effect Strength PAC         14.21%  14.21%
+Wtd PAC V1=0                92.42%  92.42%
+Wtd PAC V1=1                21.20%  21.20%
+Effect Strength Wtd PAC     13.63%  13.63%
+PV V1=0                     76.11%  76.11%
+PV V1=1                     51.72%  51.72%
+Effect Strength PV          27.83%  27.83%
+Wtd PV V1=0                 84.84%  84.84%
+Wtd PV V1=1                 36.97%  36.97%
+Effect Strength Wtd PV      21.81%  21.81%
+Effect Strength Total       21.02%  21.02%
+Effect Strength Wtd Total   17.72%  17.72%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V16
+Weight:      V2
+Gen:         OFF
+Obs:         186
+Missing:     70
+Excluded:    0
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  2
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 24                    Optimal Data Analysis           09:32:31  06-26-23
+ 
+ODA model:
+----------
+IF V16 <= 0.5 THEN V1 = 1
+IF 0.5 < V16 THEN V1 = 0
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.091760
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     106
+Incorrect:   80
+Return:      3464.82
+Overall PAC:   56.99%
+Mean PAC:      58.78%
+Wtd PAC:       56.75%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  74   |  61   | 135    54.81%  56.73%      2865.35
+t      |       |       |
+u     1|  19   |  32   | 51    62.75%  56.84%       599.47
+a      |       |       |
+l      -----------------
+   NP     93      93   
+   PV    79.57%  34.41%  Mean PV   56.99%
+WtdPV    86.29%  21.52% 
+ 
+Mean weighted PAC      56.78%      Mean weighted PV     53.91%
+ 
+Effect strength PAC    17.56%      Effect strength PV   13.98%
+ 
+Effect strength wtd PAC    13.57%      Effect strength wtd PV    7.81%
+-------------------------------------------------------------------------------
+Page 25                    Optimal Data Analysis           09:32:31  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+186 observations
+ 
+Fisher's exact test (directional) classification table  p = .023989
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     106
+Incorrect:   80
+Return:      3464.82
+Overall PAC:   56.99%
+Mean PAC:      58.78%
+Wtd PAC:       56.75%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  74   |  61   | 135    54.81%  56.73%      2865.35
+t      |       |       |
+u     1|  19   |  32   | 51    62.75%  56.84%       599.47
+a      |       |       |
+l      -----------------
+   NP     93      93   
+   PV    79.57%  34.41%  Mean PV   56.99%
+WtdPV    86.29%  21.52% 
+ 
+Mean weighted PAC      56.78%      Mean weighted PV     53.91%
+ 
+Effect strength PAC    17.56%      Effect strength PV   13.98%
+ 
+Effect strength wtd PAC    13.57%      Effect strength wtd PV    7.81%
+ 
+Summary for Class V1  Attribute V16
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            56.99%  56.99%
+Overall Wtd Accuracy        56.75%  56.75%
+PAC V1=0                    54.81%  54.81%
+PAC V1=1                    62.75%  62.75%
+Effect Strength PAC         17.56%  17.56%
+Wtd PAC V1=0                56.73%  56.73%
+Wtd PAC V1=1                56.84%  56.84%
+Effect Strength Wtd PAC     13.57%  13.57%
+PV V1=0                     79.57%  79.57%
+PV V1=1                     34.41%  34.41%
+Effect Strength PV          13.98%  13.98%
+Wtd PV V1=0                 86.29%  86.29%
+Wtd PV V1=1                 21.52%  21.52%
+Effect Strength Wtd PV       7.81%   7.81%
+Effect Strength Total       15.77%  15.77%
+Effect Strength Wtd Total   10.69%  10.69%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V17
+Weight:      V2
+Gen:         OFF
+Obs:         186
+Missing:     70
+Excluded:    0
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  3
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 26                    Optimal Data Analysis           09:32:34  06-26-23
+ 
+ODA model:
+----------
+IF V17 <= 0.5 THEN V1 = 0
+IF 0.5 < V17 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.024000
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05        100.00%         p>.05          0.00%
+ p<.10        100.00%         p>.10          0.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     122
+Incorrect:   64
+Return:      4254.71
+Overall PAC:   65.59%
+Mean PAC:      58.00%
+Wtd PAC:       69.68%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  101  |  34   | 135    74.81%  75.71%      3824.40
+t      |       |       |
+u     1|  30   |  21   | 51    41.18%  40.80%       430.31
+a      |       |       |
+l      -----------------
+   NP     131     55   
+   PV    77.10%  38.18%  Mean PV   57.64%
+WtdPV    85.97%  25.97% 
+ 
+Mean weighted PAC      58.26%      Mean weighted PV     55.97%
+ 
+Effect strength PAC    15.99%      Effect strength PV   15.28%
+ 
+Effect strength wtd PAC    16.51%      Effect strength wtd PV   11.93%
+-------------------------------------------------------------------------------
+Page 27                    Optimal Data Analysis           09:32:34  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+186 observations
+ 
+Fisher's exact test (directional) classification table  p = .026899
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     122
+Incorrect:   64
+Return:      4254.71
+Overall PAC:   65.59%
+Mean PAC:      58.00%
+Wtd PAC:       69.68%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  101  |  34   | 135    74.81%  75.71%      3824.40
+t      |       |       |
+u     1|  30   |  21   | 51    41.18%  40.80%       430.31
+a      |       |       |
+l      -----------------
+   NP     131     55   
+   PV    77.10%  38.18%  Mean PV   57.64%
+WtdPV    85.97%  25.97% 
+ 
+Mean weighted PAC      58.26%      Mean weighted PV     55.97%
+ 
+Effect strength PAC    15.99%      Effect strength PV   15.28%
+ 
+Effect strength wtd PAC    16.51%      Effect strength wtd PV   11.93%
+ 
+Summary for Class V1  Attribute V17
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            65.59%  65.59%
+Overall Wtd Accuracy        69.68%  69.68%
+PAC V1=0                    74.81%  74.81%
+PAC V1=1                    41.18%  41.18%
+Effect Strength PAC         15.99%  15.99%
+Wtd PAC V1=0                75.71%  75.71%
+Wtd PAC V1=1                40.80%  40.80%
+Effect Strength Wtd PAC     16.51%  16.51%
+PV V1=0                     77.10%  77.10%
+PV V1=1                     38.18%  38.18%
+Effect Strength PV          15.28%  15.28%
+Wtd PV V1=0                 85.97%  85.97%
+Wtd PV V1=1                 25.97%  25.97%
+Effect Strength Wtd PV      11.93%  11.93%
+Effect Strength Total       15.64%  15.64%
+Effect Strength Wtd Total   14.22%  14.22%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V18
+Weight:      V2
+Gen:         OFF
+Obs:         186
+Missing:     70
+Excluded:    0
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  2
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 28                    Optimal Data Analysis           09:32:36  06-26-23
+ 
+ODA model:
+----------
+IF V18 <= 0.5 THEN V1 = 0
+IF 0.5 < V18 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.565360
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     119
+Incorrect:   67
+Return:      4261.34
+Overall PAC:   63.98%
+Mean PAC:      50.78%
+Wtd PAC:       69.79%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  108  |  27   | 135    80.00%  81.01%      4092.18
+t      |       |       |
+u     1|  40   |  11   | 51    21.57%  16.04%       169.16
+a      |       |       |
+l      -----------------
+   NP     148     38   
+   PV    72.97%  28.95%  Mean PV   50.96%
+WtdPV    82.21%  14.99% 
+ 
+Mean weighted PAC      48.53%      Mean weighted PV     48.60%
+ 
+Effect strength PAC     1.57%      Effect strength PV    1.92%
+ 
+Effect strength wtd PAC    -2.95%      Effect strength wtd PV   -2.80%
+-------------------------------------------------------------------------------
+Page 29                    Optimal Data Analysis           09:32:36  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+186 observations
+ 
+Fisher's exact test (directional) classification table  p = .479566
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     119
+Incorrect:   67
+Return:      4261.34
+Overall PAC:   63.98%
+Mean PAC:      50.78%
+Wtd PAC:       69.79%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  108  |  27   | 135    80.00%  81.01%      4092.18
+t      |       |       |
+u     1|  40   |  11   | 51    21.57%  16.04%       169.16
+a      |       |       |
+l      -----------------
+   NP     148     38   
+   PV    72.97%  28.95%  Mean PV   50.96%
+WtdPV    82.21%  14.99% 
+ 
+Mean weighted PAC      48.53%      Mean weighted PV     48.60%
+ 
+Effect strength PAC     1.57%      Effect strength PV    1.92%
+ 
+Effect strength wtd PAC    -2.95%      Effect strength wtd PV   -2.80%
+ 
+Summary for Class V1  Attribute V18
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            63.98%  63.98%
+Overall Wtd Accuracy        69.79%  69.79%
+PAC V1=0                    80.00%  80.00%
+PAC V1=1                    21.57%  21.57%
+Effect Strength PAC          1.57%   1.57%
+Wtd PAC V1=0                81.01%  81.01%
+Wtd PAC V1=1                16.04%  16.04%
+Effect Strength Wtd PAC     -2.95%  -2.95%
+PV V1=0                     72.97%  72.97%
+PV V1=1                     28.95%  28.95%
+Effect Strength PV           1.92%   1.92%
+Wtd PV V1=0                 82.21%  82.21%
+Wtd PV V1=1                 14.99%  14.99%
+Effect Strength Wtd PV      -2.80%  -2.80%
+Effect Strength Total        1.74%   1.74%
+Effect Strength Wtd Total   -2.87%  -2.87%
+ 
+ 
+Input file:   DATA.TXT                                                                                                                            
+Output file:  MODEL1.OUT                                                                                                                          
+Command file: ODA.PGM                                                                                                                             
+ 
+Class:       V1
+Attribute:   V19
+Weight:      V2
+Gen:         OFF
+Obs:         255
+Missing:     0
+Excluded:    1
+Classes:     2
+Solution:    OPTIMAL
+Time (sec):  2
+Hypothesis:  NONDIRECTIONAL
+Categorical: OFF
+Priors:      ON
+Degen:       OFF
+Primary:     MAXSENS
+Secondary:   SAMPLEREP
+ 
+-------------------------------------------------------------------------------
+Page 30                    Optimal Data Analysis           09:32:38  06-26-23
+ 
+ODA model:
+----------
+IF V19 <= 0.5 THEN V1 = 0
+IF 0.5 < V19 THEN V1 = 1
+ 
+ 
+Monte Carlo summary (Fisher randomization):
+-------------------------------------------
+Iterations:  25000
+Estimated p: 0.611080
+ 
+ 
+Confidence levels for estimated p:
+----------------------------------
+Desired p   Confidence      Desired p   Confidence
+---------   ----------      ---------   ----------
+ p<.001         0.00%         p>.001       100.00%
+ p<.01          0.00%         p>.01        100.00%
+ p<.05          0.00%         p>.05        100.00%
+ p<.10          0.00%         p>.10        100.00%
+ 
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     153
+Incorrect:   102
+Return:      5524.18
+Overall PAC:   60.00%
+Mean PAC:      49.33%
+Wtd PAC:       62.67%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  135  |  51   | 186    72.58%  69.31%      5051.23
+t      |       |       |
+u     1|  51   |  18   | 69    26.09%  30.96%       472.95
+a      |       |       |
+l      -----------------
+   NP     186     69   
+   PV    72.58%  26.09%  Mean PV   49.33%
+WtdPV    82.73%  17.46% 
+ 
+Mean weighted PAC      50.14%      Mean weighted PV     50.09%
+ 
+Effect strength PAC    -1.33%      Effect strength PV   -1.33%
+ 
+Effect strength wtd PAC     0.27%      Effect strength wtd PV    0.18%
+-------------------------------------------------------------------------------
+Page 31                    Optimal Data Analysis           09:32:38  06-26-23
+ 
+Results of leave-one-out analysis
+---------------------------------
+255 observations
+ 
+Fisher's exact test (directional) classification table  p = .641066
+ 
+Classification performance summary:
+-----------------------------------
+Correct:     153
+Incorrect:   102
+Return:      5524.18
+Overall PAC:   60.00%
+Mean PAC:      49.33%
+Wtd PAC:       62.67%
+ 
+Class      Predicted
+ V1        0       1       
+       ----------------- NA      PAC   Wtd PAC   Return
+A      |       |       |
+c     0|  135  |  51   | 186    72.58%  69.31%      5051.23
+t      |       |       |
+u     1|  51   |  18   | 69    26.09%  30.96%       472.95
+a      |       |       |
+l      -----------------
+   NP     186     69   
+   PV    72.58%  26.09%  Mean PV   49.33%
+WtdPV    82.73%  17.46% 
+ 
+Mean weighted PAC      50.14%      Mean weighted PV     50.09%
+ 
+Effect strength PAC    -1.33%      Effect strength PV   -1.33%
+ 
+Effect strength wtd PAC     0.27%      Effect strength wtd PV    0.18%
+ 
+Summary for Class V1  Attribute V19
+-----------------------------------
+                                           
+Performance Index           Train    LOO   
+-----------------          ------  ------
+Overall Accuracy            60.00%  60.00%
+Overall Wtd Accuracy        62.67%  62.67%
+PAC V1=0                    72.58%  72.58%
+PAC V1=1                    26.09%  26.09%
+Effect Strength PAC         -1.33%  -1.33%
+Wtd PAC V1=0                69.31%  69.31%
+Wtd PAC V1=1                30.96%  30.96%
+Effect Strength Wtd PAC      0.27%   0.27%
+PV V1=0                     72.58%  72.58%
+PV V1=1                     26.09%  26.09%
+Effect Strength PV          -1.33%  -1.33%
+Wtd PV V1=0                 82.73%  82.73%
+Wtd PV V1=1                 17.46%  17.46%
+Effect Strength Wtd PV       0.18%   0.18%
+Effect Strength Total       -1.33%  -1.33%
+Effect Strength Wtd Total    0.23%   0.23%
+ 

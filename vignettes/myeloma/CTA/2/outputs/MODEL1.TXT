@@ -1,0 +1,70 @@
+OPEN DATA.TXT;
+OUTPUT MODEL1.TXT;
+VARS V1 TO V19;
+CLASS V1;
+ATTRIBUTE V4 V9 V11 V12 V14 TO V19;
+EX V2=0;
+MISSING ALL (-9);
+WEIGHT V2;
+MC ITER 5000 CUTOFF 0.05 STOP 99.9;
+MINDENOM 30;
+PRUNE 0.05;
+ENUMERATE;
+LOO STABLE;
+GO;
+ 
+ 
+Unpruned Tree Results - Class V1
+ 
+     ATTRIBUTE NODE LEV  OBS    p     WESS     LOO    WESSL   LOOp TYP  MODEL
+     --------- ---- ---  ---    -     ----     ---    -----   ---- ---  -----
+           V17   1   1   186  .023   16.51%  STABLE   16.51%  .023 ORD  <=0.5-->0,101/131,77.10%*; >0.5-->1,21/55,38.18%*
+ 
+            0       1
+        -----   -----
+    0 |   101 |    34 |  74.81%  75.71%
+    1 |    30 |    21 |  41.18%  40.80%
+        -----   -----
+       77.10%  38.18%
+       85.97%  25.97%
+ 
+OVERALL ESS=  15.99%
+WEIGHTED ESS=  16.51%
+ 
+ 
+Pruned Tree Results - Class V1
+ 
+     ATTRIBUTE NODE LEV  OBS    p     WESS     LOO    WESSL   LOOp TYP  MODEL
+     --------- ---- ---  ---    -     ----     ---    -----   ---- ---  -----
+           V17   1   1   186  .023   16.51%  STABLE   16.51%  .023 ORD  <=0.5-->0,101/131,77.10%*; >0.5-->1,21/55,38.18%*
+ 
+            0       1
+        -----   -----
+    0 |   101 |    34 |  74.81%  75.71%
+    1 |    30 |    21 |  41.18%  40.80%
+        -----   -----
+       77.10%  38.18%
+       85.97%  25.97%
+ 
+OVERALL ESS=  15.99%
+WEIGHTED ESS=  16.51%
+ 
+ 
+Enumerated Tree Results - Class V1
+ 
+     ATTRIBUTE NODE LEV  OBS    p     WESS     LOO    WESSL   LOOp TYP  MODEL
+     --------- ---- ---  ---    -     ----     ---    -----   ---- ---  -----
+           V17   1   1   186  .023   16.51%  STABLE   16.51%  .023 ORD  <=0.5-->0,101/131,77.10%*; >0.5-->1,21/55,38.18%*
+ 
+            0       1
+        -----   -----
+    0 |   101 |    34 |  74.81%  75.71%
+    1 |    30 |    21 |  41.18%  40.80%
+        -----   -----
+       77.10%  38.18%
+       85.97%  25.97%
+ 
+OVERALL ESS=  15.99%
+WEIGHTED ESS=  16.51%
+ 
+Time used:      2 sec.

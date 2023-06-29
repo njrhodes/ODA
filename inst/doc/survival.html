@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>survival</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">survival</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This vignette provides an example workflow for analyzing myeloma data
+using R packages. The goal is to demonstrate various steps involved in
+the analysis, including data preprocessing, survival analysis, and
+predictive modeling using ODA and CTA.</p>
+</div>
+<div id="data-preparation" class="section level2">
+<h2>Data Preparation</h2>
+<p>Ensure that <code>project_dir</code> points to a valid directory path
+on your system, and uncomment the <code>setwd()</code> line to set the
+working directory accordingly.</p>
+<p>Remember to replace <code>&quot;~/Workshop&quot;</code> with the appropriate
+directory path for your case.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace &quot;~&quot; with your own directory path</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>project_dir <span class="ot">&lt;-</span> <span class="st">&quot;~/Workshop&quot;</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the working directory to &quot;project_dir&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Myeloma data extracted from publicly available gene expression data (GEO Id: GSE4581)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;myeloma&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(myeloma)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 256</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 11</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ molecular_group &lt;fct&gt; Cyclin D-1, Cyclin D-2, MMSET, MMSET, MAF, Hyperdiploi~</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ chr1q21_status  &lt;fct&gt; 3 copies, 2 copies, 2 copies, 3 copies, NA, 2 copies, ~</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ treatment       &lt;fct&gt; TT2, TT2, TT2, TT2, TT2, TT2, TT2, TT2, TT2, TT2, TT2,~</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ event           &lt;int&gt; 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, ~</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ time            &lt;dbl&gt; 69.24, 66.43, 66.50, 42.67, 65.00, 65.20, 38.27, 64.33~</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CCND1           &lt;dbl&gt; 9908.4, 16698.8, 294.5, 241.9, 472.6, 664.1, 1011.1, 1~</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CRIM1           &lt;dbl&gt; 420.9, 52.0, 617.9, 11.9, 38.8, 16.9, 151.9, 81.7, 9.1~</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ DEPDC1          &lt;dbl&gt; 523.5, 21.1, 192.9, 184.7, 212.0, 341.6, 154.1, 195.5,~</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ IRF4            &lt;dbl&gt; 16156.5, 16946.2, 8903.9, 11894.7, 7563.1, 16023.4, 16~</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TP53            &lt;dbl&gt; 10.0, 1056.9, 1762.8, 946.8, 361.4, 2096.3, 2580.0, 23~</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ WHSC1           &lt;dbl&gt; 261.9, 363.8, 10042.9, 4931.0, 165.0, 569.2, 165.1, 36~</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>myeloma <span class="sc">%&gt;%</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time<span class="sc">==</span><span class="dv">0</span>) <span class="co"># exclude time=0 (v2=0) event from survival analysis</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          molecular_group chr1q21_status treatment event time CCND1 CRIM1 DEPDC1</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GSM51054      Cyclin D-2           &lt;NA&gt;       TT2     1    0 155.1 494.3  401.1</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             IRF4  TP53 WHSC1</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GSM51054 14353.1 593.5 230.6</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy coded variables for char and factor variables</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>myeloma.oda <span class="ot">&lt;-</span> <span class="fu">dummy_cols</span>(myeloma, <span class="at">select_columns =</span> <span class="fu">c</span>(<span class="st">&quot;molecular_group&quot;</span>, <span class="st">&quot;chr1q21_status&quot;</span>))</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(myeloma.oda)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 256</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 22</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ molecular_group                    &lt;fct&gt; Cyclin D-1, Cyclin D-2, MMSET, MMSE~</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ chr1q21_status                     &lt;fct&gt; 3 copies, 2 copies, 2 copies, 3 cop~</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ treatment                          &lt;fct&gt; TT2, TT2, TT2, TT2, TT2, TT2, TT2, ~</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ event                              &lt;int&gt; 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1,~</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ time                               &lt;dbl&gt; 69.24, 66.43, 66.50, 42.67, 65.00, ~</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CCND1                              &lt;dbl&gt; 9908.4, 16698.8, 294.5, 241.9, 472.~</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CRIM1                              &lt;dbl&gt; 420.9, 52.0, 617.9, 11.9, 38.8, 16.~</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ DEPDC1                             &lt;dbl&gt; 523.5, 21.1, 192.9, 184.7, 212.0, 3~</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ IRF4                               &lt;dbl&gt; 16156.5, 16946.2, 8903.9, 11894.7, ~</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TP53                               &lt;dbl&gt; 10.0, 1056.9, 1762.8, 946.8, 361.4,~</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ WHSC1                              &lt;dbl&gt; 261.9, 363.8, 10042.9, 4931.0, 165.~</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ `molecular_group_Cyclin D-1`       &lt;int&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ `molecular_group_Cyclin D-2`       &lt;int&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ molecular_group_Hyperdiploid       &lt;int&gt; 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0,~</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ `molecular_group_Low bone disease` &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ molecular_group_MAF                &lt;int&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,~</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ molecular_group_MMSET              &lt;int&gt; 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0,~</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ molecular_group_Proliferation      &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,~</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ `chr1q21_status_2 copies`          &lt;int&gt; 0, 1, 1, 0, NA, 1, 1, 1, 0, 0, 0, 0~</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ `chr1q21_status_3 copies`          &lt;int&gt; 1, 0, 0, 1, NA, 0, 0, 0, 1, 1, 0, 0~</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ `chr1q21_status_4+ copies`         &lt;int&gt; 0, 0, 0, 0, NA, 0, 0, 0, 0, 0, 1, 1~</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ chr1q21_status_NA                  &lt;int&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,~</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co"># remove non-compatable char and factor variables from analysis</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>myeloma.oda <span class="ot">&lt;-</span> myeloma.oda[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)]</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co"># create ODA project in current directory</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co">#ODAtree(&quot;myeloma&quot;) # already run</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the working directory to &quot;myeloma&quot;</span></span></code></pre></div>
+</div>
+<div id="oda-run-1.-time-weighted-models" class="section level2">
+<h2>ODA Run 1. Time-weighted models</h2>
+<p>Here we will evaluate all attributes in a time-weighted uniODA
+analysis. LOO stable predictors are sought for use in building CTA
+models. We will need to <code>setwd(&quot;myeloma&quot;)</code> before
+executing.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write the data file to the project directory</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(file = &quot;/ODA/data.csv&quot;, myeloma.oda, row.names = FALSE)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># running this pre-processing code will create a cleaned (NA removed, replaced with -9) data.txt file</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#ODAclean(data=&quot;data.csv&quot;,output = 1, type=&quot;ODA&quot;) # already run</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#review the variable names and aliases to be used in command syntax</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAload</span>(<span class="dv">1</span>,<span class="at">type =</span> <span class="st">&quot;oda&quot;</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>oda.key<span class="fl">.1</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               label variable</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                             event       v1</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                              time       v2</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                             CCND1       v3</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                             CRIM1       v4</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                            DEPDC1       v5</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                              IRF4       v6</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                              TP53       v7</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                             WHSC1       v8</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9        molecular_group_Cyclin.D.1       v9</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       molecular_group_Cyclin.D.2      v10</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11     molecular_group_Hyperdiploid      v11</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 molecular_group_Low.bone.disease      v12</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13              molecular_group_MAF      v13</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14            molecular_group_MMSET      v14</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15    molecular_group_Proliferation      v15</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16          chr1q21_status_2.copies      v16</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17          chr1q21_status_3.copies      v17</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18         chr1q21_status_4..copies      v18</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                chr1q21_status_NA      v19</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Create ODA command syntax file within the run directory, then execute the batch file</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ODArun(run=1, # this will take about 15 minutes to run to completion</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#        vstart=&quot;v1&quot;,</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#        vend=&quot;v19&quot;,</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#        class=&quot;v1&quot;,</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#        attribute=&quot;v3 to v8 v9 v11 v12 v14 v15 v16 v17 v18 v19&quot;, # exclude v10 and v13, no solutions found</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#        miss=&quot;-9&quot;,</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#        exclude = &quot;v2=0&quot;,</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#        weight=&quot;v2&quot;) # time weighted ODA model</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># once batch completes, the resulting model file will be moved to outputs folder</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co"># the resulting model can then be parsed and reviewed</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAparse</span>(<span class="at">run=</span><span class="dv">1</span>,<span class="at">mod=</span><span class="dv">1</span>)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>oda.model.<span class="fl">1.1</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Model:                IF Attributes:  THEN Predict: Overall ESS:</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       1       V3 &lt;= 57.0 , 57.0 &lt; V3  V1 = 1, V1 = 0        2.36%</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       2   V4 &lt;= 890.25 , 890.25 &lt; V4  V1 = 0, V1 = 1        6.22%</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       3     V5 &lt;= 528.1 , 528.1 &lt; V5  V1 = 0, V1 = 1       14.42%</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       4 V6 &lt;= 20604.0 , 20604.0 &lt; V6  V1 = 0, V1 = 1        2.41%</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       5     V7 &lt;= 432.1 , 432.1 &lt; V7  V1 = 1, V1 = 0        7.62%</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       6   V8 &lt;= 3212.7 , 3212.7 &lt; V8  V1 = 0, V1 = 1       18.61%</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       7         V9 &lt;= 0.5 , 0.5 &lt; V9  V1 = 0, V1 = 1       -1.89%</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       8       V11 &lt;= 0.5 , 0.5 &lt; V11  V1 = 0, V1 = 1       -5.68%</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       9       V12 &lt;= 0.5 , 0.5 &lt; V12  V1 = 0, V1 = 1       -6.73%</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10     10       V14 &lt;= 0.5 , 0.5 &lt; V14  V1 = 0, V1 = 1       12.11%</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11     11       V15 &lt;= 0.5 , 0.5 &lt; V15  V1 = 0, V1 = 1       14.21%</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12     12       V16 &lt;= 0.5 , 0.5 &lt; V16  V1 = 1, V1 = 0       17.56%</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13     13       V17 &lt;= 0.5 , 0.5 &lt; V17  V1 = 0, V1 = 1       15.99%</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14     14       V18 &lt;= 0.5 , 0.5 &lt; V18  V1 = 0, V1 = 1        1.57%</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15     15       V19 &lt;= 0.5 , 0.5 &lt; V19  V1 = 0, V1 = 1       -1.33%</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Overall ESP: Weighted ESS: Weighted ESP: MC P-value:  LOO ESS: LOO ESP:</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        40.08%         2.59%        35.93%    0.575160     0.37%    6.35%</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2        18.71%         6.93%        18.55%    0.361760     6.22%   18.71%</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3        23.48%         9.80%        14.38%    0.477840     4.91%    6.15%</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         9.16%         3.44%         9.78%    0.891400    -1.03%   -4.20%</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5        49.49%         8.93%        39.07%    0.079080     6.17%   45.62%</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6        26.20%        18.08%        20.21%    0.041800    16.62%   23.40%</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7        -4.74%        -1.57%        -2.55%    0.675120    -1.89%   -4.74%</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8        -5.84%        -2.29%        -1.63%    0.687680    -5.68%   -5.84%</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       -12.44%        -9.86%       -12.33%    0.977480    -6.73%  -12.44%</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       16.74%        14.06%        14.56%    0.015400    12.11%   16.74%</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11       27.83%        13.63%        21.81%    0.005840    14.21%   27.83%</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12       13.98%        13.57%         7.81%    0.091760    17.56%   13.98%</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13       15.28%        16.51%        11.93%    0.024000    15.99%   15.28%</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14        1.92%        -2.95%        -2.80%    0.565360     1.57%    1.92%</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15       -1.33%         0.27%         0.18%    0.611080    -1.33%   -1.33%</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Weighted LOO ESS: Weighted LOO ESP: LOO P-value:</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1              1.30%            14.69%      .613626</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2              6.93%            18.55%      .077922</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3             -1.53%            -1.51%      .239553</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4             -1.18%            -3.66%      .732810</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5              6.97%            33.78%      .016930</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6             16.72%            18.37%      .002124</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7             -1.57%            -2.55%      .761854</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8             -2.29%            -1.63%      .860673</span></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9             -9.86%           -12.33%      .959082</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10            14.06%            14.56%      .020704</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11            13.63%            21.81%      .002371</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12            13.57%             7.81%      .023989</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13            16.51%            11.93%      .026899</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14            -2.95%            -2.80%      .479566</span></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15             0.27%             0.18%      .641066</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>oda.list.<span class="fl">1.1</span>[<span class="dv">10</span>] <span class="co"># there is one v2=0 event at time zero, must subtract from table</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $pv.10</span></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $pv.10$v1</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    x</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; v1    0   1</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0 160  26</span></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1  51  18</span></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>sn <span class="ot">&lt;-</span><span class="dv">18</span><span class="sc">/</span>(<span class="dv">18</span><span class="sc">+</span><span class="dv">51</span>)</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span><span class="dv">160</span><span class="sc">/</span>(<span class="dv">160</span><span class="sc">+</span><span class="dv">26</span>)</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="sc">*</span>(((sn<span class="sc">+</span>sp)<span class="sc">/</span><span class="dv">2</span>) <span class="sc">-</span> <span class="fl">0.5</span>) <span class="sc">/</span> <span class="fl">0.5</span></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 12.10846</span></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>oda.model.<span class="fl">1.1</span>[<span class="dv">10</span>,]</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Model:          IF Attributes:  THEN Predict: Overall ESS: Overall ESP:</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10     10 V14 &lt;= 0.5 , 0.5 &lt; V14  V1 = 0, V1 = 1       12.11%       16.74%</span></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Weighted ESS: Weighted ESP: MC P-value:  LOO ESS: LOO ESP: Weighted LOO ESS:</span></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10        14.06%        14.56%    0.015400    12.11%   16.74%            14.06%</span></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Weighted LOO ESP: LOO P-value:</span></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10            14.56%      .020704</span></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAsummary</span>(<span class="fl">1.1</span>)</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>oda.summary.<span class="fl">1.1</span> <span class="sc">%&gt;%</span></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Weighted.LOO.ESS.<span class="sc">==</span>Weighted.ESS.) <span class="sc">%&gt;%</span></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Model.,IF.Attributes.,THEN.Predict.,LOO.P.value. ) <span class="co"># v4 v9 v11 v12 v14 to v19</span></span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Model.                     IF.Attributes.         THEN.Predict. LOO.P.value.</span></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       2 c(&quot;V4 &lt;= 890.25 &quot;, &quot;890.25 &lt; V4 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .077922</span></span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       7       c(&quot;V9 &lt;= 0.5 &quot;, &quot;0.5 &lt; V9 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .761854</span></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       8     c(&quot;V11 &lt;= 0.5 &quot;, &quot;0.5 &lt; V11 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .860673</span></span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       9     c(&quot;V12 &lt;= 0.5 &quot;, &quot;0.5 &lt; V12 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .959082</span></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5      10     c(&quot;V14 &lt;= 0.5 &quot;, &quot;0.5 &lt; V14 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .020704</span></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6      11     c(&quot;V15 &lt;= 0.5 &quot;, &quot;0.5 &lt; V15 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .002371</span></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7      12     c(&quot;V16 &lt;= 0.5 &quot;, &quot;0.5 &lt; V16 &quot;) c(&quot;V1 = 1&quot;, &quot;V1 = 0&quot;)      .023989</span></span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8      13     c(&quot;V17 &lt;= 0.5 &quot;, &quot;0.5 &lt; V17 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .026899</span></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9      14     c(&quot;V18 &lt;= 0.5 &quot;, &quot;0.5 &lt; V18 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .479566</span></span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10     15     c(&quot;V19 &lt;= 0.5 &quot;, &quot;0.5 &lt; V19 &quot;) c(&quot;V1 = 0&quot;, &quot;V1 = 1&quot;)      .641066</span></span></code></pre></div>
+</div>
+<div id="cta-run-1.-mdsa-step-1" class="section level2">
+<h2>CTA Run 1. MDSA step 1</h2>
+<p>We will construct time-weighted CTA models using the LOO-stable ODA
+attributes from ODA Run 1. Here we will start by setting mindenom to 1,
+which is an unrestricted minimum denominator.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(file=&quot;CTA/data.csv&quot;,myeloma.oda,row.names = F)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#ODAclean(data=&quot;data.csv&quot;,output = 1, type=&quot;CTA&quot;)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAload</span>(<span class="dv">1</span>,<span class="at">type =</span> <span class="st">&quot;cta&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#review the variable labels and aliases</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>cta.key<span class="fl">.1</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               label variable</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                             event       v1</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                              time       v2</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                             CCND1       v3</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                             CRIM1       v4</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                            DEPDC1       v5</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                              IRF4       v6</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                              TP53       v7</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                             WHSC1       v8</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9        molecular_group_Cyclin.D.1       v9</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       molecular_group_Cyclin.D.2      v10</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11     molecular_group_Hyperdiploid      v11</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 molecular_group_Low.bone.disease      v12</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13              molecular_group_MAF      v13</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14            molecular_group_MMSET      v14</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15    molecular_group_Proliferation      v15</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16          chr1q21_status_2.copies      v16</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17          chr1q21_status_3.copies      v17</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18         chr1q21_status_4..copies      v18</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                chr1q21_status_NA      v19</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Create CTA command syntax file within the run directory, then execute the batch file</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co"># CTArun(run=1,</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#        vstart=&quot;v1&quot;,</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#        vend=&quot;v19&quot;,</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#        class=&quot;v1&quot;,</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#        attribute=&quot;v4 v9 v11 v12 v14 to v19&quot;, # wess stable in training and loo</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">#        miss=&quot;-9&quot;,</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">#        exclude = &quot;v2=0&quot;,</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">#        weight=&quot;v2&quot;,</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co">#        mindenom = 1,</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">#        enumerate = T)</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co"># once batch completes, the resulting model file will be moved to outputs folder</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># the resulting model can then be parsed and reviewed</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co"># note syntax below differs from ODAparse() as it includes type and weight</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="fu">CTAparse</span>(<span class="at">run=</span><span class="dv">1</span>,<span class="at">mod=</span><span class="dv">1</span>,<span class="at">type=</span><span class="st">&quot;Enumerated&quot;</span>,<span class="at">weight=</span>T)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The smallest observed wD statistic was: 7.834236 </span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model(s) with the smallest observed wD statistic: 3 </span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The minimum observed denominator value was: 29 </span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model(s) with the minimum observed denominator value: 3</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>cta.sum.<span class="fl">1.1</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   tree.num     Result Class mindenom n.class.0 n.class.1 Sensitivity Specificiy</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        3 Enumerated    V1       29       186        69       47.83      78.49</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     PPV   NPV Mean.PAC   ESS Strata   D Weighted.ESS       wD</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 45.21 80.22    63.16 26.32      3 8.4        27.69 7.834236</span></span></code></pre></div>
+</div>
+<div id="cta-run-2.-mdsa-step-2" class="section level2">
+<h2>CTA Run 2. MDSA step 2</h2>
+<p>Here we are updating the syntax for Run 2 by increasing the entered
+mindenom by adding 1 to the smallest denominator from Run 1.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(file=&quot;CTA/data.csv&quot;,myeloma.oda,row.names = F)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#ODAclean(data=&quot;data.csv&quot;,output = 2, type=&quot;CTA&quot;)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAload</span>(<span class="dv">2</span>,<span class="at">type =</span> <span class="st">&quot;cta&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#review the variable labels and aliases</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>cta.key<span class="fl">.2</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               label variable</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                             event       v1</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                              time       v2</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                             CCND1       v3</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                             CRIM1       v4</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                            DEPDC1       v5</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                              IRF4       v6</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                              TP53       v7</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                             WHSC1       v8</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9        molecular_group_Cyclin.D.1       v9</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       molecular_group_Cyclin.D.2      v10</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11     molecular_group_Hyperdiploid      v11</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 molecular_group_Low.bone.disease      v12</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13              molecular_group_MAF      v13</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14            molecular_group_MMSET      v14</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15    molecular_group_Proliferation      v15</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16          chr1q21_status_2.copies      v16</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17          chr1q21_status_3.copies      v17</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18         chr1q21_status_4..copies      v18</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                chr1q21_status_NA      v19</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co"># CTArun(run=2,</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co">#        vstart=&quot;v1&quot;,</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co">#        vend=&quot;v19&quot;,</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">#        class=&quot;v1&quot;,</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">#        attribute=&quot;v4 v9 v11 v12 v14 to v19&quot;, # wess stable in training and loo</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">#        miss=&quot;-9&quot;,</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">#        exclude = &quot;v2=0&quot;,</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co">#        weight=&quot;v2&quot;,</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co">#        mindenom = 30, #  mindenom from Run 1 was 29, so Run 2 mindenom = 30</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co">#        enumerate = T)</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="fu">CTAparse</span>(<span class="at">run=</span><span class="dv">2</span>,<span class="at">mod=</span><span class="dv">1</span>,<span class="at">type=</span><span class="st">&quot;Enumerated&quot;</span>,<span class="at">weight=</span>T)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The smallest observed wD statistic was: 10.11387 </span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model(s) with the smallest observed wD statistic: 3 </span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The minimum observed denominator value was: 55 </span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model(s) with the minimum observed denominator value: 3</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>cta.sum.<span class="fl">2.1</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   tree.num     Result Class mindenom n.class.0 n.class.1 Sensitivity Specificiy</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        3 Enumerated    V1       55       135        51       41.18      74.81</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     PPV  NPV Mean.PAC   ESS Strata     D Weighted.ESS       wD</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 38.18 77.1       58 15.99      2 10.51        16.51 10.11387</span></span></code></pre></div>
+</div>
+<div id="cta-run-3.-mdsa-step-3" class="section level2">
+<h2>CTA Run 3. MDSA step 3</h2>
+<p>Here we are updating the syntax for Run 3 by increasing the entered
+mindenom by adding 1 to the smallest denominator from Run 2.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(file=&quot;CTA/data.csv&quot;,myeloma.oda,row.names = F)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#ODAclean(data=&quot;data.csv&quot;,output = 3, type=&quot;CTA&quot;)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAload</span>(<span class="dv">3</span>,<span class="at">type =</span> <span class="st">&quot;cta&quot;</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#review the variable labels and aliases</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>cta.key<span class="fl">.3</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               label variable</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                             event       v1</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                              time       v2</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                             CCND1       v3</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                             CRIM1       v4</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                            DEPDC1       v5</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                              IRF4       v6</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                              TP53       v7</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                             WHSC1       v8</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9        molecular_group_Cyclin.D.1       v9</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       molecular_group_Cyclin.D.2      v10</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11     molecular_group_Hyperdiploid      v11</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 molecular_group_Low.bone.disease      v12</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13              molecular_group_MAF      v13</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14            molecular_group_MMSET      v14</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15    molecular_group_Proliferation      v15</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16          chr1q21_status_2.copies      v16</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17          chr1q21_status_3.copies      v17</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18         chr1q21_status_4..copies      v18</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                chr1q21_status_NA      v19</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># CTArun(run=3,</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#        vstart=&quot;v1&quot;,</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">#        vend=&quot;v19&quot;,</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co">#        class=&quot;v1&quot;,</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co">#        attribute=&quot;v4 v9 v11 v12 v14 to v19&quot;, # wess stable in training and loo</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="co">#        miss=&quot;-9&quot;,</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co">#        exclude = &quot;v2=0&quot;,</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co">#        weight=&quot;v2&quot;,</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co">#        mindenom = 56, #  mindenom from Run 2 was 55, so Run 3 mindenom = 56</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co">#        enumerate = T)</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co">#CTAparse(run=3,mod=1,type=&quot;Enumerated&quot;,weight=T) # Error: no tree found</span></span></code></pre></div>
+</div>
+<div id="select-globally-optimal-go-model" class="section level2">
+<h2>Select Globally Optimal (GO) Model</h2>
+<p>Review the results from CTA models in Run 1 and Run 2.</p>
+<p>These are the descendant family of models. Run 1 has a lowest wD
+value.</p>
+<p>CTA Run 1 Model 1 is therefore the globally optimal (GO) model for
+this outcome.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cta.sum.<span class="fl">1.1</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   tree.num     Result Class mindenom n.class.0 n.class.1 Sensitivity Specificiy</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        3 Enumerated    V1       29       186        69       47.83      78.49</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     PPV   NPV Mean.PAC   ESS Strata   D Weighted.ESS       wD</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 45.21 80.22    63.16 26.32      3 8.4        27.69 7.834236</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>cta.model.<span class="fl">1.1</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $model.3</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ATTRIBUTE NODE LEVEL OBS    P   WESS    LOO  WESSL LOOp TYPE    IF THEN</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       V14    1     1 255 .015 14.06% STABLE 14.06% .015  ORD &lt;=0.5    0</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       V15    2     2 211 .001 20.71% STABLE 20.71% .001  ORD &lt;=0.5    0</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        N1 PERCENT1   IF THEN    N2 PERCENT2</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 160/211   75.83% &gt;0.5    1 18/44  40.91%*</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 146/182  80.22%* &gt;0.5    1 15/29  51.72%*</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>cta.list.<span class="fl">1.1</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $model.3</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Class Pred 0 Pred 1   Sens Weighted Sens     PV Weighted PV</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0    146     40 78.49%        78.28% 80.22%      88.07%</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1     36     33 47.83%        49.40% 45.21%      32.29%</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>cta.key<span class="fl">.1</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               label variable</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                             event       v1</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                              time       v2</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                             CCND1       v3</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                             CRIM1       v4</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                            DEPDC1       v5</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                              IRF4       v6</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                              TP53       v7</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                             WHSC1       v8</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9        molecular_group_Cyclin.D.1       v9</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       molecular_group_Cyclin.D.2      v10</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11     molecular_group_Hyperdiploid      v11</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 molecular_group_Low.bone.disease      v12</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13              molecular_group_MAF      v13</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14            molecular_group_MMSET      v14</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15    molecular_group_Proliferation      v15</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16          chr1q21_status_2.copies      v16</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17          chr1q21_status_3.copies      v17</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18         chr1q21_status_4..copies      v18</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                chr1q21_status_NA      v19</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>cta.sum.<span class="fl">2.1</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   tree.num     Result Class mindenom n.class.0 n.class.1 Sensitivity Specificiy</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        3 Enumerated    V1       55       135        51       41.18      74.81</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     PPV  NPV Mean.PAC   ESS Strata     D Weighted.ESS       wD</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 38.18 77.1       58 15.99      2 10.51        16.51 10.11387</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>cta.model.<span class="fl">2.1</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $model.3</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ATTRIBUTE NODE LEVEL OBS    P   WESS    LOO  WESSL LOOp TYPE    IF THEN</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       V17    1     1 186 .023 16.51% STABLE 16.51% .023  ORD &lt;=0.5    0</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        N1 PERCENT1   IF THEN    N2 PERCENT2</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 101/131  77.10%* &gt;0.5    1 21/55  38.18%*</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>cta.list.<span class="fl">2.1</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $model.3</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Class Pred 0 Pred 1   Sens Weighted Sens     PV Weighted PV</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0    101     34 74.81%        75.71% 77.10%      85.97%</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1     30     21 41.18%        40.80% 38.18%      25.97%</span></span></code></pre></div>
+</div>
+<div id="generate-run-1-cta-model-predictions" class="section level2">
+<h2>Generate Run 1 CTA model predictions</h2>
+<p>Variables from CTA Run 1 Model 1 which produced the overall smallest
+wD: v14 and v15</p>
+<p>The CTA model is: if v14 &gt;0.5 then 1 otherwise if v15 &gt; 0.5
+then 1 otherwise 0</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># variable coded names</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cta.key<span class="fl">.1</span>[<span class="dv">14</span>,]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    label variable</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 molecular_group_MMSET      v14</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>cta.key<span class="fl">.1</span>[<span class="dv">15</span>,]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            label variable</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 molecular_group_Proliferation      v15</span></span></code></pre></div>
+<p>Using this information we can make CTA model predictions:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a copy of the data to update with CTA predictions</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>myeloma.cta <span class="ot">&lt;-</span> myeloma.oda</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>myeloma.cta<span class="sc">$</span>CTA.predicted.event <span class="ot">&lt;-</span> <span class="fu">with</span>(myeloma.cta, <span class="fu">ifelse</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  time <span class="sc">!=</span> <span class="dv">0</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(molecular_group_MMSET <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="fu">ifelse</span>(molecular_group_Proliferation <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(myeloma.cta<span class="sc">$</span>event,myeloma.cta<span class="sc">$</span>CTA.predicted.event)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    </span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0   1</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0 146  40</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1  36  33</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># compare to CTA model summary</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>cta.list.<span class="fl">1.1</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $model.3</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Class Pred 0 Pred 1   Sens Weighted Sens     PV Weighted PV</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0    146     40 78.49%        78.28% 80.22%      88.07%</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1     36     33 47.83%        49.40% 45.21%      32.29%</span></span></code></pre></div>
+</div>
+<div id="oda-run-2.-evaluate-cta-run-1-go-model-loo-stability" class="section level2">
+<h2>ODA Run 2. Evaluate CTA Run 1 GO model LOO stability</h2>
+<p>Here we will generate a reliablity assessment of the GO CTA model
+using the predictions to test LOO stability and garner the p-value in
+LOO.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(file=&quot;ODA/data2.csv&quot;,myeloma.cta,row.names = F)</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#ODAclean(data=&quot;data2.csv&quot;,output = 2, type=&quot;ODA&quot;)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAload</span>(<span class="dv">2</span>,<span class="at">type =</span> <span class="st">&quot;oda&quot;</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>oda.key<span class="fl">.2</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               label variable</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                             event       v1</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                              time       v2</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                             CCND1       v3</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                             CRIM1       v4</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                            DEPDC1       v5</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                              IRF4       v6</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                              TP53       v7</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                             WHSC1       v8</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9        molecular_group_Cyclin.D.1       v9</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       molecular_group_Cyclin.D.2      v10</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11     molecular_group_Hyperdiploid      v11</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 molecular_group_Low.bone.disease      v12</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13              molecular_group_MAF      v13</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14            molecular_group_MMSET      v14</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15    molecular_group_Proliferation      v15</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16          chr1q21_status_2.copies      v16</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17          chr1q21_status_3.copies      v17</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18         chr1q21_status_4..copies      v18</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                chr1q21_status_NA      v19</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 20              CTA.predicted.event      v20</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co"># ODArun(run=2, </span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#        vstart=&quot;v1&quot;, # takes about 10 seconds to run</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#        vend=&quot;v20&quot;,</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#        class=&quot;v1&quot;,</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#        attribute=&quot;v20&quot;, # include only v20 (CTA predictions)</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co">#        miss=&quot;-9&quot;,</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co">#        exclude = &quot;v2=0&quot;,</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">#        weight=&quot;v2&quot;) # time weighted ODA model</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ODAparse</span>(<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>oda.model.<span class="fl">2.1</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Model:          IF Attributes:  THEN Predict: Overall ESS: Overall ESP:</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      1 V20 &lt;= 0.5 , 0.5 &lt; V20  V1 = 0, V1 = 1       26.32%       25.43%</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Weighted ESS: Weighted ESP: MC P-value:  LOO ESS: LOO ESP: Weighted LOO ESS:</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        27.69%        20.36%    0.000000    26.32%   25.43%            27.69%</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Weighted LOO ESP: LOO P-value:</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1            20.36%      .000052</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>cta.sum.<span class="fl">1.1</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   tree.num     Result Class mindenom n.class.0 n.class.1 Sensitivity Specificiy</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        3 Enumerated    V1       29       186        69       47.83      78.49</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     PPV   NPV Mean.PAC   ESS Strata   D Weighted.ESS       wD</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 45.21 80.22    63.16 26.32      3 8.4        27.69 7.834236</span></span></code></pre></div>
+</div>
+<div id="use-run-1-go-cta-model-predictions-in-km-and-cox-regression-models" class="section level2">
+<h2>Use Run 1 GO CTA model predictions in KM and Cox regression
+models</h2>
+<p>We will use the package <em>survminer</em> example and code adapted
+from:</p>
+<p><a href="https://rpkgs.datanovia.com/survminer/index.html" class="uri">https://rpkgs.datanovia.com/survminer/index.html</a></p>
+<p>First, we will evaluate the CTA model predictions in KM and the Cox
+model.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a KM to predictions</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fit0 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, event) <span class="sc">~</span>CTA.predicted.event, <span class="at">data =</span> myeloma.cta)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a Cox model to predictions</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, event) <span class="sc">~</span>CTA.predicted.event, <span class="at">data =</span> myeloma.cta)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1) <span class="co"># this is a parametric cox model fit</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coxph(formula = Surv(time, event) ~ CTA.predicted.event, data = myeloma.cta)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   n= 255, number of events= 69 </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    (1 observation deleted due to missingness)</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       coef exp(coef) se(coef)     z Pr(&gt;|z|)    </span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CTA.predicted.event 0.9334    2.5431   0.2414 3.866 0.000111 ***</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     exp(coef) exp(-coef) lower .95 upper .95</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CTA.predicted.event     2.543     0.3932     1.584     4.082</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Concordance= 0.602  (se = 0.031 )</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Likelihood ratio test= 14.26  on 1 df,   p=2e-04</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Wald test            = 14.95  on 1 df,   p=1e-04</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Score (logrank) test = 16.06  on 1 df,   p=6e-05</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit1)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 693.5143</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>loglik1 <span class="ot">&lt;-</span><span class="fu">logLik</span>(fit1)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>loglik1</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &#39;log Lik.&#39; -345.7572 (df=1)</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="fu">cox.zph</span>(fit1)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     chisq df    p</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CTA.predicted.event 0.674  1 0.41</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GLOBAL              0.674  1 0.41</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the KM curves for fit0</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(fit0, <span class="at">risk.table =</span> <span class="cn">TRUE</span>, <span class="at">risk.table.col =</span> <span class="st">&quot;strata&quot;</span>, <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>           <span class="at">surv.median.line =</span> <span class="st">&quot;hv&quot;</span>, <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>(), <span class="at">palette=</span><span class="st">&quot;npg&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwAAAAJACAMAAAANcPFkAAAC91BMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrYzMzM6AAA6ADo6AGY6OgA6OmY6OpA6ZmY6ZpA6ZrY6kJA6kLY6kNtNTU1NTW5NTY5NbqtNjshNu9VNu9tNu+NNx+NNx+pNy+NN0vFTu9VYu9VZu9Vh0Otk1epk2v9mAABmADpmAGZmOgBmOmZmOpBmZgBmZjpmZmZmkJBmkLZmkNtmtttmtv9qu9Vq1OduTU1uTW5uTY5ubo5ubqtuq+Ruu9Vuu9tuu+Nux9tux+Nux+pu3viGu9WG0NuG1eCG2+uOTU2OTW6OTY6Obk2ObquOu9WOu9uOu+OOx9WOx+qOyP+O0tuO0uOO2+CO4eqO6fGO6f+QOgCQOjqQOmaQZgCQZjqQZmaQkDqQkGaQkLaQtpCQttuQ27aQ2/+gw9Wrbk2rbm6rbo6rjk2rx9Wrx9urx+OryKur0tWr3tur5OSr5P+r6eqr9PGr9P+2ZgC2Zjq2kDq2kGa2tpC2ttu225C229u22/+2/9u2///Ijk3I0tXI9OrI///T1NjbkDrbkGbbtmbbtpDb25Db27bb29vb2//b/7bb/9vb///kq27k3tvk9Ork//jk///mSzXmS1jmS1zmS3jmS4DmWVDmW6HmZ27maZbmbYDmbaHmf+vmhLPmipbmjMHmluvnSzXnfaHnhv/nmmjnn8/nqJbnuevoSzXok6Hoof/o0uvpSzXphDXp67Pp6+vqSzXqS1zqS4DqbYDqbaHqn1jqquHq6+vrq1DruXjr0pbr29zr4+Dr66jr67Pr68nr68/r6+Pr6+fr6+vtyP/uSzXuS1zuS4DubTXubaHujFzujIDupW7utYDutaHuyP/ybTXybVzybYDyjDXyqlzyyKHy48Hy4//3jDX346H3///7qlz7zG7746H7/8H7/+H7////tmb/uFP/yID/yI7/zG7/25D/27b/29v/44D/46H/5Kv/6eP/6+D/9Or//5b//7b//8H//8j//9v//+H//+T///H///j///9ID+W5AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAgAElEQVR4nO2dfZwkR13G+45kbxOIoLvJ5YIxEeUgviIbkpA90UTNJRDRVfQWRTR4XhB84SDje7g7lxV8gdvTXQEVo+L6Fo1vJ0JQPCM4RlCRCypw5nzJeMdGd891byd7qT+sX1X3TPdM90zPVE/Xr7qe55Ps9nb1PPNcV327q6p7egIBQR4rsB0AgmwKAEBeCwBAXgsAQF4LAEBeCwBAXgsAQF4LAEBeCwBAXgsAQF4LAEBeCwBAXgsAQF4LAEBeCwBAXgsAQF4LAEBeCwBAXgsAQF4LAEBeCwBAXgsApGs+CIJt++XC4/d2lHStiGn1+MlRhjLX+p59tiMwEwBI1fz2Q0I0gimxcsn+ZEnXirgyAGhImi4+2pwNArUgNp7Tw0M0Z6dWLj0Uvlu0EJX0TB3bemM3vVGXMgCwELDzpbYEANIUVmTt4qNFAKBoqlF7DOu88SUT/d9cv9uQ7Yu2nB/r3iIdAAsBCbrtAICrmrNhA1gZD4KJlUtfKSuLFuUyrRB6OfaCpW61yvThVLUN3QCaL//OL1RH543nvpL6WStPu277IXnIpgYhf110nTrAyqVt30krEyXqZbRi5bKj0mi/Lly57FuDYCrcUDsfSrbNXV0SVgOK2ra7cAbgq0bUvumAvzI+RpU6pQ6VtCJabm/fC4BGuy+i25dsGrWwoVx8tEFoyb9qE+qQLX/Jnpfcjtpj4+KflC9IlNDL1ArZtpSRKlwZn6C3kS9rqF7MFLW+RD+mFwA2Agp0gZiLRsFjEQCyvv6bGon8i1ZEy4kXnH84bPn3PZZ0arS7IrrO5yfCdQSSbCfqcCpbqzxs05Fbd7HDpnjpoWSJENGm0mV+IlymjVuvUe+Z0pG/cGfY9K9etB9QAAD+ouOfAkA39YaaGNJ/NKJJoqRSxwB0NI4Wqc7VWFOdPlQTrUX9CeVOG6g1+lXUvhIlKpZecdnbVAcjKky0r64zQKjUMYCNgAIAOKDwgK/a/MbubfujFdFy1wtSAejsYquWU4sOldEB9rmqNaQdYBMl4RIZvvyuy46Gy+32FfYwusYAoVIBsBFQAADOCht3HADVUW7oM0C03PW6XLNA81T7qouxsXss7BnrHrTcJNHFXrn0R3UXu11CfuGKeRqm1KK+dfIAS6P4oWeByggoAABr1ah1N2fHVC9YA0AH/fFt+2lFtNz1sp7XAYSu8+a36M7FXdR7/mI1yXKpnkPR7xmfZNnfnFWTLCklIjoxRQ6qTbYG5sNcByg1IADgLRoDq4mgWjCmzwe1gGb9pmhFa9lQva83MRD7gOYCABbFvn2xD2guAAB5LQAAeS0AAHktAAB5LQAAeS0AAHktAAB5LQAAeS0AAHktAAB5LQAAeS0AAHktAAB5LQAAeS0AAHktAAB5LQAAeS0AAHktAAB5LQAAeS0AAHktAAB5LQAAeS0AAHktAAB5Lc4A7ICgkSlsZKwB6FFWL8C/CI+KmbAJMnITAOBIRZVrwiYIABAAwIIJmyAAQAAACyZsggAAAQAsmLAJAgAEALBgwiYIABAAwIIJmyAAQAAACyZsggAAAQAsmLAJAgAEALBgwiYIABAAwIIJmyDeALB205z6vbl3cudi65cWACjdhE0QXwA4O3mFAmDrwIxYuDL6FQoAlG7CJognABy+/Hv1GWDzjjk6GYS/wtJeAOxqa+h3d6KiyjVhE8QTAFpdoLWbF8Xm7QfDX5RLakc9WzEAdvXYDILSxQyAsztVyw9/hWX5ukC7di0N+d5OHKnKNWETxPszACk3AEvDIeBERZVrwiaIbwAMPAaIA5Cu/u/tREWVa8ImiG8AbB2Y1rNA04PPAg1NgBMVVa4JmyBeAUD/G14HWArVXgMAbHm4YcIFgF4a+DrAUkw5xsZOVFS5JmyCAAAxzIWwBAB9u0ROVFS5JmyCAABheiW4PwFOVFS5JmyCAABRyK0QsYEBACjJww0TTwCIjY4BQEkebpj4AgBJE9DdB3Kioso1YRMEAIhC7wbVp4AOApyoqHJN2AQBAKLY26HTOkFOVFS5JmyCAABRNADq0kDiapkTFVWuCZsgAEAU/IGYxKUBzYETFVWuCZsgAECM4BNhHQQ4UVHlmrAJAgDECD8SqQYDXXcPDScnartUDzdMAEBBBDhR26V6uGHiOQCtmyOWEhrCy4naLtXDDROvAcgmYHAYnKjtUj3cMPEbgNCj69rwEAQ4UdulerhhAgDSAIgpLwJO1HapHm6YAAAFQA8EchLgRG2X6uGGCQAgj94fHQYAFTYBANqjTy8on0khSViYsAkCAIR9AHIR4ERtl+rhhgkAyAFA1xzpiILwMWETBACIsgDoMwzoLUdqu1QPN0wAQOgx0AOmUwjQQVaPnzROYioAMIgJAGh7DP+E9RYGAMA1EwBQBAAtAlaPf3T5947T0vLSbwwOA5smwyYIABBOAKBNFAMAwCkTABDzMCGgLs4/3DUy+NiADLBpMmyCAADhMgBLAIC7CQAoDAAh/u93M+ZIB05iIgAwiAkASAAwPAI9AJDjgeWl3zt+8r+WflNPE60eX/7Y8Y/RD/X7ZMLEWABgEBMnACjtG9OMv2rvA8u/tfRry2kQ/Nry/X+29Ctyg/tpq6XfWf4d+qF+319QemgIOQFAj7KiD3dDnwKiC2HRNCjOAG6YAIBCARDi07Fp0GXVuNO7RYlBQnT9jE2TYRMEAIiyARgSgQwAMkYFXfqbriRDCwAMYgIAOjyGJSAlyOrx/ADokwWbJsMmCAAQJQMwbC8oAwDd4+8zBiACAIAdEwAwOgBC9QHgH9uTRsd/a3npAdr8gQge2vQkrZEvp5dSBys5bh4kSRH/mqqZAIAUAIb5vuEiAFgCAKWbAIBuj6EIGBqA+DjhFwBA2SYAIK/H0AD0U9o9RH01kiTFerhhAgCsAyDUcT7vdFFL9z02iiQFerhhAgDyA9CzKwQA3DQBALk9ehNgFkR1+VfzzwK1O0KruqCwJMV5uGECAAb24ADAyRYBAMDMBACwAEBpEADUCwCAuQkAGAKAtH6QHQAi6U2Lu6POibZbiAkAGNwjlQAbtX0+MSYGAMOYAIAhPVgA8DAAMDUBAA4DQFJjgFhHCAAMZgIAHAfgf5IfwPzFf1v+9djz6dRNFydXw7su8j+iwom2W4gJAAAAxQRx1AQAOA6A6gItq1mgvhePAUC3AIDjAJBWwxnTvgTQlKo8F0j1YcGJtluICQAYGoDkbKhlALpvKb3vP9LuMv2lPwAACQGAYT06CAAAbpoAAEMPDgCEoocSPfDp7EFwgoRRBnHJBAD4AcA/dj+uLvN+auMgLpkAAGMAcn1kuIQkQwDw6eUH2jcdnYzdWedE2y3EBACYehRJwGi7QLLz35oF0n0gAAAACvIw+3qZSKOtbX1nKQBICAD4CkCmAAA3OQJAAf2g8gA42YMAOTx4/0iDcDIBAEXt4yIIKLPJZH2bBwBgJzcAUD8dAoCUNgZQD+q9Xz/P6wGjr/4GALm1uXdy5yItLEySZtTvK+bCUgAwKhMAwAOArQOyyV8Z/XVWsnB4JlbsFABGvSAeAHRp9EHsmbAAYPOOObF2U3jA37z9oNi6+2Cs2CEADAngAEDaPaUjD2LPhAUAazcvqnavRKcC2SWijhDlktph+4vUBtKJ+Pfsnbj+a66/jX7dFi2y1kMZ06Pver/tZCMTCwCo0xMBoH6v3Rg/C7h0BhBiPX4GWN/zTXv20a990WKJSQZX1nN6e902NJIg5ZmwACB+BjirR8NSrXEAABguyXBS900kBsEDf+F9MUHKMWEBQHwMcHg6WusuAJkCAOxMWACwdWA6mgXSHR86DWy92r1p0At39mj9Wlcv9jMpJMnwAgAWpK8D0Ekg7AktTE5e3poIchAAaubpNDgJwAAfpy8uSDkmPADoLXcAIK3He/qJMcDL+k6QsmkybY/WuHjwgTCbfw0A6K0SAehzmYBNkwEAnFQZAK7tRwCbJpP0WB3uUhibfw0A6K0yAPjm9uiAAFjf86y0GSE2TQYAcJJbAKTrguMAnKT7JuTo+KNqZBy/c0I/cnFVfwus/q6b8CmMoUn3V3i0X78cuw8jbQsAQKoCAKTw3AAABAAYSJUDIHMkwBQAkX6DxKgFAEJVDIAL2dcEuALQ/7m7AGCEqhoAdyYAiN8jxBGAob7InkSfq0x+h01vx9g8a2zu1QYAG7u37S/ibYtSVQCISY4Boj4QAGAHgBC1ILj4aBHvXIgAwAiT5PJQA1K/BsEbu4Ngooj3LkBVBaBLAKBzC5tjAEJg+6Ei3t5U1QRgXwoBAKBjC3sAzAfBmOwKsegIVRCAULEbRuWAGAB0bWEJgOZsEEzRQoPFKaC6AJDaYwC+AFTYJH0WiEW7bwkAlJOkYA83TNIBYHT4Fz4B0Ptm6VEnKdjDDRMAYLuiYtOgxRDg/i4p06QbgPkg0lgR712Aqg1AhwkAKNekxxmAjXwDYL3v41NGnoTVLhmpSfZ1AD4CAKUnYbVLRmrSBYA8/NMlMBLGABZMOq4NW0rCapeM1ARnAG4VZUxA9XbJKE0AAK+KSjxZaLgRcdV2yWhNUrpArVkgdIHKN+kEIPWTk6NPwmmXjNYEZwB+FdUeBAMAACD8BmCIYUAVd8noTDALxK+i2gCsD0NAFXfJ6ExwBuBXURqAjo8Ol5uE2y4ZnQkA4FpRcQDW9zzrZdd+fnhi6HedrLq7ZBQm6QA0qAfE5n4IPwEg6Q+Oqd8AYDQmqQDMU+9/Yzc+E2zbBADYvBmOz+3Qtr9J0JpOXP+5t6V8dHhX/IsoISM5AUCPsmof7ugMcCGdgOyBcbV3SdEmqV2ghu4CcRkE+AsAKeN7xwBAMSa4FcKFiuoaA4z6a2b475KiTDAN6kJFZQGQOh72Y5cUZQIAXKgoADAyk1QAVsbRBWJlAgBGZpIGQHN2ojk7hUEwY5NeH5rxdJcMaZI1DVqbEA0Wz0UUACBNPQjwdZcMZ5IFwPwYrgPwNolNjxafxM1dMoxJ6higplr/PM4A3E3UGAAAmJikAiAHAaIWsPmaGACQJQBgbIJpUEcqKlUAwNgEADhSUakCAMYm6QDg8wAOmXROB2GXDGKSCgA+D+CUSQcB2CWDmGRNgwrcDu2eCQAY3AQAOFJReQQABjdJ7QLh8wBumgCAwU26AMDnAdw1AQCDm2Aa1JGKyiMAMLgJAHCkovJIzwNhlwxikg6A+p4wLrOgACC3FAHYJYOY4DqAIxWVUwBgQBNMgzpSUTkFAAY0AQCOVFROAYABTdAFcqSicmrXrj23CfG/1z479v3bVoK4YoJBsCMVlVMAYEATTIM6UlE5lfoUORtBXDFJA6A5y+UmCC0AMICKIYDLv8bqIJiNAEBOpTxGlL5dBgAMPAjm8nF4LQCQUwBgcJP0MwBuhnPWZL17EAwAMAjuKScqKq8AwGAmPADY3Du5Uz/wfmFycvKKudgKAQAGEgAYzKTHdYDyRsJbB2bEwpVq8fBMxwoBAAZSFgCJ5+j2+5oxNv8aT64Eb94xJ9ZumpNLW3cfTK6IZ0wTAOhvAgC43wu0dvOi2Lydmr7s+kxOzsRW0KloR4/vOKNy/O79O/XSQEL9vkmuwmIBwNmdUXtfu/EgnQXaK0g4Axia9EegpCAMTVK7QA16LGiJXaD2AV/p8ExyBQAwNAmi6wN0VeBC/A8tAJB+HaC0SwHJLr8EAGOAQk0AQHYRi2nQrQPT4aQP9X22Xj3XXkECAIYmVLm9BsEAgMd1ADrmL0xOXn5Q4DpA4SYAIF08AOgtAFCACQBIFwBwpKJMTQBAugCAIxU1ShMCIGQi/JXw0OvW9zxrX3JN8UEsmAAARyrKxKRf5QIAPBu00iYAILsIZwBHKsrEpD8Axaicf02xJgDAkYoyMelXuRdGQwDnXdJSKgAr4+gC+WTS+VHKqxfr2UUpV5JDVQaA5uxEc3aKz0fjAUAJJgWMASoDADX92oRocPloPAAowQQAtEUAzI/h2aBemQCAmGqq9bN5OAoAMDTJM8MBAGKSgwBRC+hDASwEAAxNBp/iGypIdQBgJgBgaAIAsosAgCMVZWICALKL0gfBbJ6MrgQASjfxGwD1WCAuFwEEALBg4jkAUrUAg2CPTQCAVA3XAbw1AQA1PrcCAQBTEwyCs4vSL4Qx6v8IAGBsAgCyi7JuheAkAGBoAgCyi3AdwJGKMjEBANlFXQDIwz++IcZ7E48BYCgAULoJAOAkAFC6iSEA63tedu2z16/P/0Xd2Z+yx60QAMCCid8A4FaIipmUPgh2HQDB61IAADA0KQ0AA3EDQOBWiOqYlASA6fOFuh4zMXyS/Ca4FYJ32y3EpCwAlJIPUklt1Bkv4AMAp/6P1A7bX6QGDagT13/1tZ934vrbBnhB/m2LFW6F4H3wtmRi6OH4ILg5CwA8N/EbAJwBvDfxGwDB5olAWgDA0KTUQbBjJulnANwMVykTAJBdhHuBHKkoExMAkF0EABypKBMTAJBdhC6QIxVVrgmbIBbPABvP4XItDACUbsImiM0uEL4fwF8TNkGsAoAukLcmbIJYvRsUZ4CKmGAQnF3UYxDM5n44AGBoAgCyizAN6khFmZgAgOwiAOBIRZmYAIDsohQA5mXfh3pBbD4ZDwBKN2ETxAIADdn+m7NjjJ4NAQBKN2ETpHwA6AvyxMr4FKN7QgFA6SZsgpQPgPowAJ0FcB3AYxM2QSwBoA7+AKAqJhgEZxeldIGm1BAAF8KqYwIAsou6B8Hy6K+GAA02D4cDAIYmACC7KGUatEYzoM1ZNheCAYCpCQDILsKFMEcqqlwTNkEAgAAAFkzYBAEAAgBYMGETBAAIAGDBhE0QACAAgLEJBsHZRQDAkYoyMQEA2UUAwJGKMjEBANlFAMCRijIxAQDZRQDAkYoq14RNEAAgAIAFEzZBAIAAABZM2ATxBIDNvZM79RdErd0wOTkjxMLk5OQVc2EpACjdhE0QPwDYOjAjFq6kpc3bD4q1Gw+KwzOxYgBgaIJBcHYRCwA275gTazfRAf8sYXB4Zuvug7FiAGBoAgCyi1gAsHbzojr2a8kl2SVSPSGZS2qHpS8QrIwC2wEYiwUAZ3fGANg6MK16Qe2zAM4AhiY4A2QXsQAgfgbY3Dsdrm2NAwBA6SZsgvgBQHsMINZuaA1/AYA9EzZB/ACAej16Fihs/9Qn2no1pkGtmbAJ4gcA4XUAeRKg+X8a/srfl7cmggBA6SZsgngCQG8BAEMTDIKziwCAIxVlYgIAsosAgCMVZWICALKLPAKg+UPjwbbnHe3+ux4vSm6lHhSZS5xrGwBkF3kEQE198dNY99/1eFFiq43rcj8ez4naLtXDDRN/AGgEF90rHm+36Pbf9VhRYqu3jAcAoOImlQfgLV8QPuO6pp71uDIenQLaf9djRbHF5suDi74dAFTcpDoA1La/8QeC4Gn3xkubbx4Pwoe8N2fVw67DX4m//6q9GN9q4znPO5r/CcFO1HapHm6YVAmAL+r4ctfmD9B49mf0Hxu7x8LNDnX+/Zftxc6tqgEABsHZRRUCINj2KtnmW6Pcx1/Rbv0CALAIwtCkQgCoY39zttXAn/Kq+IYAgEEQhiYVAkC32fmoD4QzQEsAILuougB0jAEGHwSTqgGAHQ83TCoEQLILpBSbBRp8GpQEAKpuUiEA6BJWbBAcqnUdYIgLYQCg+iYVAmDbU2kaNPu7Xds3OehuUo5bIQBA5U0qBMD2N74iCJ6e/dWuzR+MbnPTALT+rseK4ouiKgBgEJxdVCUAhv1ebycqysQEAGQXAQBHKsrEBABkFwEARyrKxAQAZBcBAEcqqlwTNkEAgMBHIi2YsAkCAAQAsGDCJggAEADAggmbIABAAABjEwyCs4sAgCMVZWICALKLAIAjFWViAgCyiwCAIxVlYgIAsosAgCMVVa4JmyAAQAAACyZsggAAAQAsmLAJAgCkdtj+IjWounICgB5lONzlMMEgOLsIADhSUSYmACC7CAA4UlEmJgAguwgAOFJRJiYAILsIADhSUeWasAkCAAQAsGDCJggAEADAggmbIABAAAALJmyCAAABAIxNMAjOLgIAjlSUiQkAyC4CAI5UlIkJAMguAgCOVJSJCQDILgIAjlRUuSZsggAAAQAsmLAJAgAEALBgwiYIABAAwIIJmyAAQAAAYxMMgrOLAIAjFWViAgCyiwCAIxVlYgIAsosAgCMVZWICALKLAIAjFVWuCZsgAEAAAAsmbIIAAAEALJiwCQIABACwYMImCAAQAMDYBIPg7CIA4EhFmZgAgOwiAOBIRZmYAIDsIgDgSEWZmACA7CIA4EhFlWvCJggAEADAggmbIABAAAALJmyCAAABACyYsAkCAAQAMDbBIDi7iAcAm3sndy7Gl9orBAAwNgEA2UUsANg6MCMWrowttVeQAIChCQDILmIBwOYdc2Ltprn2UnsFCQAYmgCA7CIWAKzdvCg2bz/YXmqvCKR22P4iNai6YgHA2Z1Rew+X2itIOAOUbsImiPdnABIAKN2ETRA/AMAYgJsJmyB+ALB1YLo1CzStZ4GmMQtk04RNED8ACKf96ZiP6wAsTNgE8QSA3gIApZuwCQIABACwYMImCAAQAMCCCZsgAEAAAAsmbIIAAAEALJiwCQIABACwYMImCAAQAMCCCZsgAEAAAAsmbIIAAAEALJiwCQIApHb0UNCrsEyxCcInCZsgPZOEjYwzAL3EJjebIHySsAmSJwmfsIOJTW42QfgkYRMEAJQgNkH4JGETpMoAQFAhAgCQ1wIAkNcCAJDXAgCQ13ISgMQHJ61p7YbJyRkmYeiRegySbB2YvPwghyBUOVfM5UniIgDJByjaEj2+Ze3GgzzCLEgUGSQ5PENPeGIQhCpnIVcSFwFIPjzFls7Sjj08wyLM2gtfPMNgt1ACwaJ+1AOm7pjLkcRFAJKPz7Kprmd52dHW3a+Thzr7SdZu/m7qAtkPEp0BciRxEYDkAxQtih5jxCHMwjSd6+0nWbtBYWg/SNT5z5HERQAYHGGUNvdOswgjI2wxOQOkPODSTpIbD4qzV8xV9AzAoI9JouMdizALk6Rp+0k2X6Lam/0g0aG/omOA5AMUbUm3fyZh6AzAIMnhGX06sh4kPAPkSOIiABzmmaPj7gyPMEyuA8gE+WbfR66zkzmvSDgJAAQVJQAAeS0AAHktAAB5LQAAeS0AAHktAOComrOB1tjKJftth3FYAMBhoembCwA4LABgLgDgsDQA8ufKJXeNB8HEivwxpXtH2w/ZDueIAIDDagMwfvFRMR/Qj+2HmrNjQszLZSiHAIDDigEgD/z6xyX7G3T039g9ZTudGwIADivWBdof/iV/zOvZoQnb6dwQAHBYGQCg9zOAAIDDSgegsQ1zQ/kFABxWOgDNWXkKAAU5BQAcVjoAahoU7T+nAADktQAA5LUAAOS1AADktQAA5LUAAOS1AADktQAA5LUAAOS1AADktQAA5LUAAOS1AADktQAA5LUAAOS1AADktQAA5LUAAOS1AADktVgDMB8+3GZjd/ZDbjZ2j+V0W/mCxOMC1WfHB3eBqiXmAOjPdhcDwPx2AAB1ijkAgWqkIwFgSBeoWuINwPZXqk4QAaAP2PTg15XxiTePb/sy0RgPnn6Umq5cuOhe2v7x64LgafeqreaD7fdqkzc/NQjk1uoLJTRHuvjHyLD5Cln4/BCA5iyeqeydmAPwxlnqBHUC8BnjstnSA8GDMVn2FFqgzejp4GqpOSvXhR2c8EmZUwkAqPht0jD8mpUpBYBs//fa/NdCNsQcgEPqwd+dAATPF2+m1kyFG7uDzzra/MGAGjAdy98yTkutR8PqVr0yPhbrAuliMlwZf8ZRVSgBaM7iYVIeijsAaiaoE4AxOilQB2aWANDriZWJ8EXJvsxP//C3jQdJAGhJA/CUL/0xWiUBqKH9+yj2ANCBuWsMEI1aawSAbvbb9jfCb43btj8+waP7RR0AaCv5s0ZlT79X2uGB4n6KPQDUz3nr8ADIlv0Z3/Ejb92dAYB4ixw3B9sPbeze9nwMgX0UfwBkJ+gzqZHX9BefdANAC7oLFH0pSgwAvbJzDNAGQOqnvjWY0r6YCvVPDgBAUzUEQKDmMrsBkIXRIPhVQjw+S2OAGABjR2l6lL4+K+rktwFoyAG0fDF1ssboHfC1Qt7JAQCoGy+bvOrhXHRdNwA0Kaq+FbERfTdQDIDo+6TVl8i1pkEjAMLS8Dyix9OQV3IBgPCeoJ8YD57+trQxQGM8uEzN4K/IDv1Tnp+8y4Eujl30Kuo/bVwXjKnVsS6QuhD2jKOh3TzGwd6JNQAQNGoBAMhrAQDIawEAyGsBAMhrAQDIawEAyGsBAMhrAQDIawEAyGtxBmAHBI1MYSNjDUCPsnoB/kV4VMyETZCRmwAARyqqXBM2QQCAAAAWTNgEAQACAFgwYRMEAAgAYMGETRAAIACABRM2QQCAAAAWTNgEAQACAFgwYRMEAAgAYMGETRAAIACABRM2QQCAAAAWTNgEAQACAFgwYRMEAAgAYMGETRAWAJxZWlq677EnHllaUgvi/N9+qsfWTzxycvU9j+rl1kJU0jNmbOvzD9MbdWTs2pKCvZsWTkcLQ8lgH3cGObW09PZeO2d0ScTqcVU/SyfrhrvDNIjWGeMM5STJAcDpd8pKPkXtMaruf3iwx/vFm/mwANCWp1uhuwA4/zBFkv+yk+Khh99N7f9B+cfQu3v4fRwFkTvnA8fl+5+Sf1Kq8pO0At33WN1wdxQSpFU3php1klQAwmfp6wcS6uO9ary6hT7x8U/+nTo6n//wv9DxbvVPP/LOR+Uhm9qC/PXLH1FnALn09k/SykSJehmtWH3vY9LoU7pw9b3/LI9c4Yba+dEYDp0ASKRpwyceke2ufvrt0oT+eaff+agYTkPv4zDI+YflAaEu33/1+EmKZeVcpHVK1sdDhmpeVBcAAAqSSURBVLujiCCtujH0KSKJ3Bv1M5lJ0gBozk40Z6c2dutnJJ9p90V0m5Rt91TYku977ExY7aceVIfsU3TsIQAImDP3/bt8QaKEXqZWyMavjFTh6vEH6W3ky87oszjh0e5odQAgtz6dAEAFEMPv7WH3cRRE7d2WiU0AaEfKc5HZ7igiCB8A1C6pq5+pSgOAmn5tQjT0k2XPtOtTA3D6wXDd+YdP0lFcHe9la5WHbTpy6zFAyMp7Hk2WCBFtKl1OPxgu08at16j3bI001Id26p163zv+WP7886X76w8tv+v9et0fqnUlSwV53zv+aHlp6VejVT//++XnCBXbB1Z2R1vJurGoDyzfL38+tPzbGeVZAMyPiYbuAtHROA6AGgyr86tqoqeiDg8N/9QGao1+FQGQKFHY6BXv/U/VA4oKEwD0PAOI1vmdxn0R2aeXeg1MesrgIKOCnKaO4Af1gf/M0vA5jA93ui+oTAx2RwFBRLJubCZR3Y76+cxBQOoYoKZa/7w+A3SOAVTTPhUdy6MzwIdVi0w7AyRKwiUy/Pgn3vtYuNwGIOwC9R4DRACcUu3uneE8jJWORwjAg7FuJnUMLSRRaVQEMjEcAxczGInqxmqSoQCQgwBRC6IvUumYBTpNrVj1gchVd911F19ukhgDrL7nX/UYoF1CfuEK1WxORZ3/5BngiUce7DULpCPp3p0agZod8IwBUGOA1uyPQc/XsLZVJZGJ4fG/qJ63rhvbSU72TJL/OoDQADzxT7r38wnq3v+9mgV6j57koXqX/aPYLNCnnnhEzQKllEizP/lU9LIQgCfaR4w+1wH02FOxrcacp4wq3BSAM0kADOZBzWo7PMzVDXeHeZBE3VhOEg2Cs+okawwg1ej3bYm9L4gVp75ngNMGU+/CHAAdJJoPs3cGCGu5brg7zINwOgMMMw3qCACtfmb2HFc+mQKgfn5Q9trUzjapdbPaDmv5A4a7wzyIYDQGGPxC2HwQicu3hWbOAp3WfbPT+h6A0q8DtINQJ1G1ulNLFmeBwlPP+wx3h3kQFSbqNxvKxq0Q0SUwLsLNcKWbsAnC4mY42wIApZuwCWIHgMS9QPYFAEo3YRPECgDJe4HsCwCUbsImiBUAkvcC2RcAKN2ETRBrALTvBbIvAFC6CZsgdsYAiXuB7AsAlG7CJogdAJL3AlkXACjdhE0QTIMKAGDBhE0QS7NAXOZ/tABA6SZsglgbBHMSACjdhE0QO10gNsNfLQBQugmbIJbOAAGuBPttwiYIBsECAFgwYRPE5hgAF8L8NWETBAAIAGDBhE0QCwC48IGYtlDbIzFhEwTToAIAWDBhEwSDYJEKwPqeXUr76uLIrl1X3WPkb7SPL9xJOa4RJ6JE1pKIYyqINAkXrAWJhTGWeZJzPZOkADC/bb+aCZ2IO1y9+ORrVAVfvSgufG2vBvfka/atv2hOL7cWopKeSRNbx/7IOgNcuPPqxfqRZ87JgPaa3bmQvnqUyFqSY7tulXviGlGPFmwFicL8RREEGCehxvGhOzOTdAPQkO2/OTsmGQgJOCabmDhCNRs2ynPfeGuPN4w38+EBOLfrmX0BOCLb3ok9+8jYXm0fC3PWo0S2klxQlSzjfChasBSkFaZulqGYJKpt1M9lVkwXAHQnqFgZn2pdD9bHe9V4dQt98rVv+Hp1nLvw0u+n3sf6V37dM+dkT4D+tfLXZ3+dOgPIpaveQCsTJepltGL9lkVpdI8uXL/l+2TfIdxQ6chVr+97Bljfc2u4f2wCcOSatolKZCvJOh0KxLGr7jkRLVgK0gpTN8tQVBJqJdk10wWAGgHTWSCaBj3XPqtrAGTbPRK25KsXz8m2TP/YI7eKY9eoX/KUI7cjYM5d/bPyBYkSeplaIRu/MlKFFE++jXzZuVY/un8XiDo/ev8Y7miTffzka75CBg5JPGJ6xDPv8MoI9WjBahAyMd4foigUL9w5GADq4B8B0D666kZ57NZw3YU799FRXB3v5Wniwkvn5H/hGCBk5UVzyRIhok2ly7Fbw2XauPWaxHtlPB6d9KGv+hy98Be7dr1gFA/WziWV4q+/63MSiezpTdGueJPFfRKJQwbZOm6r96qalC7QlBoCCFHTXSDqrMQbpRoMK7RV5+hI1OGhyRi1gVqjX0UAJEqEaG16y8+pHlBUmAFAHNKk9GG/iLFnARMNV91TNz4RFZDknJ4FEqZj4ELOAKYZtMx3iT4DZGVJuRB28VE1BGgE+mpA5xhANe0j0bE8OgO8VDXXtDNAoiRcIsPXvv6WxXC5DcAAXSA1LA/3j90Or9rL9SiRiQyT0NSLMtEL9oLoMC8wN7HQBZJHfpoBbc62PhHZMQt0jJqn6gMRVrrrrrv4cpPEGGD9RT+uxwDtEvILV6hKOhJ1/gc+A4RM6/1jNg9aEADZR5mSkhzRzb4eLVgLEoZhcSEsGgRnNZA8F8L0dQChG+WT36N7P6+n7v03qFmgF+lJHjoKy/5RbBbonidfo2aBUkqk2ZffE70sBIC2bgfvA0D4T7I95RHOvdDQM3snl5JEHlH0+9ePmV0WMQ4ShWEBwMDToAOo9wWx4pQKQPhP+mv692Wf4HLJbBboGvpxqzTJ3smlJGnN9J0wnYw1DNIKwwKAwS+E5ZdVAMKDvroVwvCMb9rxUIOWegFjYKMkx/StGFfd86ZowVKQRBhDHyu3QrATboYr3YRNENwMJwCABRM2QQCAAAAWTNgEAQACAFgwYRMEAAgAYMGETRAAIACABRM2QQCAAAAWTNgEAQACAFgwYRMEAAgAYMGETRAAIACABRM2QQCAAAAWTNgEAQAi/FQYBI1EYSPjDEAv9To7lCo2QfgkYRMkTxIAYCg2QfgkYRMEAJQgNkH4JGETpMoAQFAhAgCQ1wIAkNcCAJDXAgCQ13ISgM29kztNn0VlrrUbJidnmITZOsAiydaBycsPcghClXPFXJ4kLgJAtb1wpe0Um7cfFGs3HuQRZkGiyCDJ4RlxducigyBUOQu5krgIwOYdc2LtJvMHEJvpLO3YwzMswqy98MUzDHYLJRAs6mft5kWKkSOJiwCof51E3L5kCg5htu5+nTzU2U+ydvN3UxfIfpDoDJAjiYsAyLOs7R2stXVgmkWYhWk619tPsnaDwtB+kKjznyOJiwAwOMIobe6dZhFGRthicgZYZHJSlIMzcfaKuYqeARj0MUl0vGMRZmGSNG0/yeZLVHuzHyQ69Fd0DEA9D/sTL7r9MwlDZwAGSQ7P6NOR9SDhGSBHEhcB4DDPHB13Z3iEYXIdQCbIN/s+cp2dzHlFwkkAIKgoAQDIawEAyGsBAMhrAQDIawEAyGsBAEfVnA20xlYu2d9/cyhDAMBhoembCwA4LABgLgDgsDQA8ufKJXeNB8HEivwxpXtH2w/ZDueIAIDDagMwfvFRMR/Qj+2HmrNjQszLZSiHAIDDigEgD/z6xyX7G3T039g9ZTudGwIADivWBdof/iV/zOvZoQnb6dwQAHBYGQCg9zOAAIDDSgegsQ1zQ/kFABxWOgDNWXkKAAU5BQAcVjoAahoU7T+nAADktQAA5LUAAOS1AADktQAA5LUAAOS1AADktQAA5LUAAOS1AADktf4fEpJiWSQNAN8AAAAASUVORK5CYII=" /><!-- --></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the stratified cox model for fit1 by variable</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggadjustedcurves</span>(fit1, <span class="at">data =</span> myeloma.cta, <span class="at">method =</span> <span class="st">&quot;average&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;CTA.predicted.event&quot;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>(), <span class="at">palette=</span><span class="st">&quot;npg&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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oL4YoOoFOA4AQYggL0C98UcACDIE4SHQYb0LwIEwCFIE2Z3gcutf7wLcuN0cDgEg+CYIT4OeVjOgPz443hgFASD4JnAgzD2JrVoILkEA9yS2aiG4BAHck9iqheASBHBPYqsWgksQwD2JrVoILkEA9yS2aiG4BAHck9iqheASBHBPYqsWgksQwD2JrVoILkEA9yS2aiHsjUCAyAgIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoIagW4JiRi1AnQ8h49AATvCASIjICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICggyAnwN3b8Yur+tnkl/H4uCgux+Px8/Oie3kQAIJ3RHQB7j8dF5cvq2d3706Kya8nxdnxytsIACEKQUyAu/fnxeR1tcH/Vmlwdnz/+8nK2wgAIQpBTIDJm6t62z9N+awcEtUjofKXyjy+JiRiogvw7cWKAPefjupR0LIXoAeAEIWgoge4e3s0e3WxH4AAEKIQFOwDFJNfFru/CAAhLkFwFuhoNgs0q/9qTHT/B9OgEKISpI8DlJ1ANf9f7f6Wj88WE0EIACEKgSPBQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg6BWgGtCIkadAC3v0QNA8I5AgMgICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIOAAEIICDoICCCEgKCDgABCCAg6CAgghICgg4AAQggIOggIIISAoIMgJ8Dd2/GLq9Vnyxc6lgcBIHhHRBfg/tNxcfly5dnyha7lQQAI3hHRBbh7f15MXp8vny1f6FoeBIDgHRFdgMmbq+Lu3cny2fKFUZnH14RETHQBvr2Y1/vs2fKFKvQAEKIQNPYAXcuDABC8I9gHiIyAoIMgOAt0tJgFOprOAh0xCwQhNkH6OEC1zec4AAQxAkeChRAQdBAQQAgBQQcBAYQQEHQQEEAIAUEHAQGEEBB0EBBACAFBBwEBhBAQdBAQQAgBQQcBAYQQEHQQEEAIAUEHAQGEEBB0EBBACAFBBwEBhBAQdBAQQAgBQQcBAYQQEHQQEEAIAUEHAQGEEBB0EBBACAFBB0GtAC0Ztb2ZSiw0wkIbFo3wWfbLDBYg+j8aOxYaYaENgRuBALtioREW2oAAQrHQCAttSFEAQlIJApCsgwAk6yAAyToIQLKOfwHW7iCaZCa/jMfHyTek+karxNtw/2n87CRwI7wLsP5NYimm+g6Eya8nqTfkspQ48TacHVdfzhK2Ed4FWP8WgRTzrfqwz44Tb8jk3/79OPGVUS19EbqivAuw/j0yqWbrC3FSy/3vfys3nGm3YfLmv6shUNhGeBdg/ZvEEk31XSBpN+TyqBo5pN2GyS+1wmEbQQ/QkLu3R4k3pFz4ewM9QMN30/kO+wDbqbY8iTfkclzlKOk2FHf/UVd+YvsA698klmKm9Z98Q6oeIPE2nB1Pu7KQjeA4wFamW8/j1Bti4DhAufTPz1M7DkBISkEAknUQgGQdBCBZBwFI1kEAknUQIEL++Y/i9ueP0ktBmoIA4UPxKw4ChA8CKA4CBM/tk9HoaSnB7c+/1c/KPw6L4seH0ejBZ+llIwgQPlUPUAnw5OGX4mJU/fHg848Pj4rionxOZIMA4bMQ4LDqDg7rF26qrf/3V4fSy5Z9ECB85gJUuwLzPy5GdZ5KL1v2QYDwaRSA0Y+OIED4NAlw89NH4aUidRAgfKqh/qYAPz6UXQAWyAcBIuR09GhTgHoalPqXDwKQrIMAJOsgAMk6CECyDgKQrIMAJOsgAMk6CECyDgKQrIMAJOv8PzA6KBlHg7fPAAAAAElFTkSuQmCC" /><!-- --></p>
+<p>Next, we will create a group prediction for the Run 1 CTA model
+strata and evaluate these in KM and the Cox model.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Use Run 1 GO CTA model strata for predicting survival over time ####</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>cta.model.<span class="fl">1.1</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $model.3</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ATTRIBUTE NODE LEVEL OBS    P   WESS    LOO  WESSL LOOp TYPE    IF THEN</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       V14    1     1 255 .015 14.06% STABLE 14.06% .015  ORD &lt;=0.5    0</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       V15    2     2 211 .001 20.71% STABLE 20.71% .001  ORD &lt;=0.5    0</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        N1 PERCENT1   IF THEN    N2 PERCENT2</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 160/211   75.83% &gt;0.5    1 18/44  40.91%*</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 146/182  80.22%* &gt;0.5    1 15/29  51.72%*</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>myeloma.cta<span class="sc">$</span>group <span class="ot">&lt;-</span> <span class="fu">with</span>(myeloma.cta, <span class="fu">ifelse</span>(</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  time <span class="sc">!=</span> <span class="dv">0</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(molecular_group_MMSET <span class="sc">&lt;=</span> <span class="fl">0.5</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>         <span class="fu">ifelse</span>(molecular_group_Proliferation <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="st">&quot;MMSET=0 &amp; Prolif=1&quot;</span>, <span class="st">&quot;MMSET=0 &amp; Prolif=0&quot;</span>),</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;MMSET=1&quot;</span>),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># fit KM to CTA strata </span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, event) <span class="sc">~</span>group, <span class="at">data =</span> myeloma.cta)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#fit a Cox model to CTA strata</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, event) <span class="sc">~</span>group, <span class="at">data =</span> myeloma.cta)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit3) <span class="co"># this is a parametric cox model fit</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coxph(formula = Surv(time, event) ~ group, data = myeloma.cta)</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   n= 255, number of events= 69 </span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    (1 observation deleted due to missingness)</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           coef exp(coef) se(coef)     z Pr(&gt;|z|)    </span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; groupMMSET=0 &amp; Prolif=1 1.1289    3.0921   0.3083 3.662  0.00025 ***</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; groupMMSET=1            0.7962    2.2172   0.2888 2.757  0.00584 ** </span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                         exp(coef) exp(-coef) lower .95 upper .95</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; groupMMSET=0 &amp; Prolif=1     3.092     0.3234     1.690     5.658</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; groupMMSET=1                2.217     0.4510     1.259     3.905</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Concordance= 0.608  (se = 0.032 )</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Likelihood ratio test= 15.15  on 2 df,   p=5e-04</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Wald test            = 16.27  on 2 df,   p=3e-04</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Score (logrank) test = 17.68  on 2 df,   p=1e-04</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit3)</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 694.6243</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>loglik3 <span class="ot">&lt;-</span><span class="fu">logLik</span>(fit3)</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>loglik3</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &#39;log Lik.&#39; -345.3122 (df=2)</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="fu">cox.zph</span>(fit3)</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        chisq df    p</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; group  0.779  2 0.68</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GLOBAL 0.779  2 0.68</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the KM curves for fit2</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(fit2, <span class="at">risk.table =</span> <span class="cn">TRUE</span>, <span class="at">risk.table.col =</span> <span class="st">&quot;strata&quot;</span>, <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>           <span class="at">surv.median.line =</span> <span class="st">&quot;hv&quot;</span>, <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>(), <span class="at">palette=</span><span class="st">&quot;npg&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the stratified cox model for fit3 by variable</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggadjustedcurves</span>(fit3, <span class="at">data =</span> myeloma.cta, <span class="at">method =</span> <span class="st">&quot;average&quot;</span>, <span class="at">variable =</span> <span class="st">&quot;group&quot;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>(), <span class="at">palette=</span><span class="st">&quot;npg&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="other-resources-and-vignettes-for-the-oda-package" class="section level2">
+<h2>Other resources and vignettes for the ODA package</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#vignette(package=&quot;ODA&quot;,&quot;Example-1&quot;)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#vignette(package=&quot;ODA&quot;,&quot;Example-2&quot;)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#vignette(package=&quot;ODA&quot;,&quot;Example-3&quot;)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#vignette(package=&quot;ODA&quot;,&quot;Example-4&quot;)</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
